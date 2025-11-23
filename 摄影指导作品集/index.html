@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>摄影指导_朴恩在 · 个人简介</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 作品卡片 hover + 跳转样式 */
+        .work-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .work-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.15);
+        }
+        /* 语言切换按钮 */
+        .lang-btn {
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .lang-btn.active {
+            background: #475569;
+            color: white;
+        }
+        /* 轮播图容器 - 仅适配1-33.jpg */
+        .carousel-container {
+            height: 70vh;
+            min-height: 600px;
+            max-height: 800px;
+            overflow: hidden;
+            position: relative;
+        }
+        .carousel-slide {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+        .carousel-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            flex-shrink: 0;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 120px;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.3), transparent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.3s ease;
+        }
+        .carousel-btn.right {
+            right: 0;
+            background: linear-gradient(to left, rgba(0,0,0,0.3), transparent);
+        }
+        .carousel-btn:hover {
+            background: linear-gradient(to right, rgba(0,0,0,0.5), transparent);
+        }
+        .carousel-btn.right:hover {
+            background: linear-gradient(to left, rgba(0,0,0,0.5), transparent);
+        }
+        /* 详情页链接 */
+        .work-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+        }
+        /* 返回按钮样式 */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            background: #475569;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+        .back-btn:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-slate-900 lang-text" data-key="title">摄影指导_朴恩在 · 个人简介</h1>
+            <div class="flex gap-2">
+                <div class="lang-btn border border-gray-300 active" data-lang="zh">中文</div>
+                <div class="lang-btn border border-gray-300" data-lang="ko">한국어</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 轮播图（仅1-33.jpg随机轮播） -->
+    <section class="carousel-container mt-4">
+        <div class="carousel-slide" id="carouselSlide"></div>
+        <button class="carousel-btn left" id="prevBtn">
+            <svg class="w-8 h-8 ml-4" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <button class="carousel-btn right" id="nextBtn">
+            <svg class="w-8 h-8 mr-4" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+    </section>
+
+    <!-- 个人简介 -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="w-full md:w-1/3">
+                <img src="assets/images/34.jpg" alt="个人形象照" class="w-full h-auto rounded-lg shadow-lg object-cover">
+            </div>
+            <div class="w-full md:w-2/3">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6 lang-text" data-key="aboutMe">摄影指导_朴恩在</h2>
+                <p class="text-lg text-gray-700 mb-4 lang-text" data-key="intro1">
+                    以影像设定影片的感知方式。光与影决定情绪的结构，镜头选择塑造叙事的锋芒。画面的存在必须准确、克制、富有指向性——不装饰，不冗余，只揭示故事的核心，让影片以一种独特而不可替代的方式“看世界”
+                </p>
+                <p class="text-lg text-gray-700 mb-6 lang-text" data-key="intro2">
+                    电影中的摄影，本质上是一位隐形的演员——只是这位演员的眼睛是镜头。它以影像代替身体，以运动代替情绪，通过每一次观看的角度与节奏，为角色完成另一层次的表演。
+                </p>
+                <p class="text-lg text-gray-700 mb-6 lang-text" data-key="intro3">
+                    电影拍的是故事，而我们看的是故事里的 “人”
+                </p>
+                
+                <p class="text-lg text-gray-700 mb-4 font-semibold lang-text" data-key="shortFilmTitle">短篇电影</p>
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm1">Gently again（再次温柔）</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm2">여름 감기(黄热病)</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm3">평행선（平行线）</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm4">보헤미아II:뮤직비디오（放荡不羁2：MV）</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm5">운석（陨石）</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm6">Can We Kiss Forever(Mv)</span>
+                 </div>
+                 
+                 <p class="text-lg text-gray-700 mb-4 font-semibold lang-text" data-key="adTitle">广告宣传</p>
+                 <div class="flex flex-wrap gap-4">
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad1">다슈（美妆广告）</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad2">24 WNGP世界自然健美比赛（活动宣传）</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad3">25 중앙대 트래일러（25年中央大学电影节宣传片）</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad4">보헤미아II:뮤직비디오（放荡不羁2：MV）</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 代表作品（跳转详情页） -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white rounded-xl shadow-sm mb-16">
+        <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center lang-text" data-key="works">详细内容</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- 作品1：跳转work1.html -->
+            <div class="work-card bg-gray-50 rounded-lg shadow-md overflow-hidden">
+                <a href="work1.html" class="work-link">
+                    <img src="assets/images/封面照/1.jpg" alt="剧情片《逆光》" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-slate-900 mb-2 lang-text" data-key="work1Title">作品集</h3>
+                        <p class="text-gray-600 mb-3 lang-text" data-key="work1Desc1">短篇电影  MV  美妆广告  活动拍摄  幽默喜剧</p>
+                        <p class="text-gray-700 mb-4 lang-text" data-key="work1Desc2">影像锚定影片感知，光影构筑情绪结构，镜头淬炼叙事锋芒，画面以精准克制的指向性直抵故事核心，赋予影片独一无二的世界视域。</p>
+                        <div class="text-slate-800 font-medium hover:text-slate-600 flex items-center lang-text" data-key="detail">查看作品详情 →</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 作品2：跳转work2.html -->
+            <div class="work-card bg-gray-50 rounded-lg shadow-md overflow-hidden">
+                <a href="work2.html" class="work-link">
+                    <img src="assets/images/封面照/2.jpg" alt="纪录片《远山》" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-slate-900 mb-2 lang-text" data-key="work2Title">现场剧照</h3>
+                        <p class="text-gray-600 mb-3 lang-text" data-key="work2Desc1">现场剧照On-set</p>
+                        <p class="text-gray-700 mb-4 lang-text" data-key="work2Desc2">纪实类作品的摄影工作，核心在于“在不确定中寻找确定性” 需实时调整设备参数与拍摄角度</p>
+                        <div class="text-slate-800 font-medium hover:text-slate-600 flex items-center lang-text" data-key="detail">查看作品详情 →</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 作品3：跳转work3.html -->
+            <div class="work-card bg-gray-50 rounded-lg shadow-md overflow-hidden">
+                <a href="work3.html" class="work-link">
+                    <img src="assets/images/封面照/3.jpg" alt="商业广告《时光》" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-slate-900 mb-2 lang-text" data-key="work3Title">联系方式</h3>
+                        <p class="text-gray-600 mb-3 lang-text" data-key="work3Desc1">微信  ins  邮箱  电话  kakao talk</p>
+                        <p class="text-gray-700 mb-4 lang-text" data-key="work3Desc2">期待与您一同去交流新的故事，也期能与您一同让故事 “动” 起来</p>
+                        <div class="text-slate-800 font-medium hover:text-slate-600 flex items-center lang-text" data-key="detail">查看作品详情 →</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400 lang-text" data-key="copyright">© 2025 摄影指导_朴恩在 · 作品集 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. 轮播图：仅1-33.jpg随机生成
+        const carouselSlide = document.getElementById('carouselSlide');
+        const totalPhotos = 33; // 固定1-33张
+        const photoIndexes = Array.from({length: totalPhotos}, (_, i) => i + 1);
+        photoIndexes.sort(() => Math.random() - 0.5);
+        photoIndexes.forEach(index => {
+            const img = document.createElement('img');
+            img.src = `assets/images/${index}.jpg`;
+            img.alt = `摄影作品${index}`;
+            img.className = 'carousel-img';
+            carouselSlide.appendChild(img);
+        });
+
+        // 2. 轮播图切换逻辑
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentIndex = 0;
+        const slideWidth = 100;
+
+        function goToSlide(index) {
+            const totalSlides = carouselSlide.children.length;
+            currentIndex = (index + totalSlides) % totalSlides;
+            carouselSlide.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+        }
+
+        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+        let autoSlideInterval = setInterval(() => goToSlide(currentIndex + 1), 3000);
+        carouselSlide.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+        carouselSlide.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(() => goToSlide(currentIndex + 1), 3000);
+        });
+
+        // 3. 多语言切换（完全匹配当前中文内容）
+        const langConfig = {
+            zh: {
+                title: '摄影指导_朴恩在 · 个人简介',
+                aboutMe: '摄影指导_朴恩在',
+                intro1: '以影像设定影片的感知方式。光与影决定情绪的结构，镜头选择塑造叙事的锋芒。画面的存在必须准确、克制、富有指向性——不装饰，不冗余，只揭示故事的核心，让影片以一种独特而不可替代的方式“看世界”',
+                intro2: '电影中的摄影，本质上是一位隐形的演员——只是这位演员的眼睛是镜头。它以影像代替身体，以运动代替情绪，通过每一次观看的角度与节奏，为角色完成另一层次的表演。',
+                intro3: '电影拍的是故事，而我们看的是故事里的 “人”',
+                shortFilmTitle: '短篇电影',
+                shortFilm1: 'Gently again（再次温柔）',
+                shortFilm2: '여름 감기(黄热病)',
+                shortFilm3: '평행선（平行线）',
+                shortFilm4: '보헤미아II:뮤직비디오（放荡不羁2：MV）',
+                shortFilm5: '운석（陨石）',
+                shortFilm6: 'Can We Kiss Forever(Mv)',
+                adTitle: '广告宣传',
+                ad1: '다슈（美妆广告）',
+                ad2: '24 WNGP世界自然健美比赛（活动宣传）',
+                ad3: '25 중앙대 트래일러（25年中央大学电影节宣传片）',
+                ad4: '보헤미아II:뮤직비디오（放荡不羁2：MV）',
+                works: '详细内容',
+                work1Title: '作品集',
+                work1Desc1: '短篇电影  MV  美妆广告  活动拍摄  幽默喜剧',
+                work1Desc2: '影像锚定影片感知，光影构筑情绪结构，镜头淬炼叙事锋芒，画面以精准克制的指向性直抵故事核心，赋予影片独一无二的世界视域。',
+                work2Title: '现场剧照',
+                work2Desc1: '现场剧照On-set',
+                work2Desc2: '纪实类作品的摄影工作，核心在于“在不确定中寻找确定性” 需实时调整设备参数与拍摄角度',
+                work3Title: '联系方式',
+                work3Desc1: '微信  ins  邮箱  电话  kakao talk',
+                work3Desc2: '期待与您一同去交流新的故事，也期能与您一同让故事 “动” 起来',
+                detail: '查看作品详情 →',
+                copyright: '© 2025 摄影指导_朴恩在 · 作品集 版权所有'
+            },
+            ko: {
+                title: '촬영감독_박은재 · 프로필',
+                aboutMe: '촬영감독_박은재',
+                intro1: '영상을 통해 영화의 인지 방식을 설정합니다. 빛과 그림자가 감정의 구조를 결정하고, 렌즈 선택이 서사의 날카로움을 만듭니다. 화면은 정확하고 절제되며 지향성이 있어야 합니다 — 장식하지 않고, 잉여하지 않고, 이야기의 핵심만을 드러내어 영화가 독특하고 대체 불가능한 방식으로 "세상을 바라보게" 합니다.',
+                intro2: '영화 속 촬영은 본질적으로 보이지 않는 배우입니다 — 다만 이 배우의 눈은 렌즈입니다. 영상으로 몸을 대체하고, 움직임으로 감정을 대체하며, 매번 보는 각도와 리듬을 통해 캐릭터의 또 다른 층위의 연기를 완성합니다.',
+                intro3: '영화는 이야기를 찍지만, 우리는 이야기 속 "사람"을 보는 것입니다',
+                shortFilmTitle: '단편 영화',
+                shortFilm1: 'Gently again（再次温柔）',
+                shortFilm2: '여름 감기(黄热病)',
+                shortFilm3: '평행선（平行线）',
+                shortFilm4: '보헤미아II:뮤직비디오（放浪不羁2：MV）',
+                shortFilm5: '운석（陨石）',
+                shortFilm6: 'Can We Kiss Forever(Mv)',
+                adTitle: '광고 홍보',
+                ad1: '다슈（뷰티 광고）',
+                ad2: '24 WNGP 세계 자연 건강 미용 대회（행사 홍보）',
+                ad3: '25 중앙대 트레일러（25년 중앙대학교 영화제 홍보 영상）',
+                ad4: '보헤미아II:뮤직비디오（放浪不羁2：MV）',
+                works: '상세 내용',
+                work1Title: '작품',
+                work1Desc1: '단편 영화  MV  뷰티 광고  행사 촬영  유머 코미디',
+                work1Desc2: '영상으로 영화의 인지를 고정하고, 빛과 그림자로 감정 구조를 구축하며, 렌즈로 서사의 날카로움을 다듬고, 화면은 정확하고 절제된 지향성으로 이야기의 핵심에 직접 다가가 영화에 독一无二의 세계 시각을 부여합니다.',
+                work2Title: '현장 스틸컷',
+                work2Desc1: '현장 스틸컷 On-set',
+                work2Desc2: '다큐멘터리 작품의 촬영 작업은 "불확실성 속에서 확실성을 찾는 것"이 핵심 — 장비 매개변수와 촬영 각도를 실시간으로 조정해야 합니다',
+                work3Title: '연락처',
+                work3Desc1: '위챗  인스타그램  이메일  전화  카카오톡',
+                work3Desc2: '새로운 이야기를 함께交流하고, 이야기를 함께 "움직이게" 만들기를 기대합니다',
+                detail: '작품 상세 보기 →',
+                copyright: '© 2025 촬영감독_박은재 · 작품집 저작권 소유'
+            }
+        };
+
+        const langBtns = document.querySelectorAll('.lang-btn');
+        const langTexts = document.querySelectorAll('.lang-text');
+
+        function switchLang(targetLang) {
+            langBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === targetLang) btn.classList.add('active');
+            });
+            langTexts.forEach(text => {
+                const key = text.dataset.key;
+                text.textContent = langConfig[targetLang][key];
+            });
+            document.documentElement.lang = targetLang;
+        }
+
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchLang(btn.dataset.lang);
+            });
+        });
+    </script>
+</body>
+</html>
