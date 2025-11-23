@@ -50,6 +50,16 @@
       font-size: clamp(14px, 3vw, 16px);
     }
 
+    /* 导航栏样式：新增滚动隐藏过渡动画 */
+    nav {
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      transition: transform 0.3s ease-in-out; /* 丝滑过渡 */
+    }
+
     /* 针对手机屏幕的特殊调整（小于768px时生效） */
     @media (max-width: 768px) {
       /* 轮播图高度适配手机 */
@@ -65,6 +75,10 @@
       /* 导航栏标题缩小 */
       nav h1 {
         font-size: clamp(16px, 4vw, 20px);
+      }
+      /* 手机端导航栏隐藏类 */
+      nav.hide-on-scroll {
+        transform: translateY(-100%);
       }
     }
 
@@ -391,6 +405,27 @@
                 switchLang(btn.dataset.lang);
             });
         });
+
+        // ========== 新增：导航栏滚动隐藏逻辑 ==========
+        const nav = document.querySelector('nav');
+        let lastScrollY = window.scrollY;
+        const isMobile = window.innerWidth <= 768;
+
+        // 仅在手机端执行滚动监听
+        if (isMobile) {
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                // 上滑（当前滚动位置 > 上一次位置）且滚动距离超过50px时隐藏
+                if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                    nav.classList.add('hide-on-scroll');
+                } else {
+                    // 下滑/回到顶部时显示
+                    nav.classList.remove('hide-on-scroll');
+                }
+                // 更新上一次滚动位置
+                lastScrollY = currentScrollY;
+            });
+        }
     </script>
 </body>
 </html>

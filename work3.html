@@ -36,7 +36,7 @@
     h1 { font-size: clamp(22px, 5vw, 32px); }
     h3 { font-size: clamp(16px, 3.5vw, 18px); }
 
-    /* 导航栏：粘性定位+自适应边距 */
+    /* 导航栏：粘性定位+自适应边距+滚动隐藏过渡 */
     nav {
       background: white;
       box-shadow: 0 2px 12px rgba(0,0,0,0.04);
@@ -44,7 +44,15 @@
       position: sticky;
       top: 0;
       z-index: 999;
+      transition: transform 0.3s ease-in-out; /* 丝滑过渡动画 */
     }
+    /* 手机端导航栏隐藏类 */
+    @media (max-width: 768px) {
+        nav.hide-on-scroll {
+            transform: translateY(-100%);
+        }
+    }
+
     .nav-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -262,7 +270,7 @@
         © 2025 朴恩在摄影工作室 · 保留所有权利
     </footer>
 
-    <!-- 多语言切换脚本 -->
+    <!-- 多语言切换脚本 + 导航栏滚动隐藏逻辑 -->
     <script>
         const langConfig = {
             zh: {
@@ -304,7 +312,34 @@
         }
 
         langBtns.forEach(btn => btn.addEventListener('click', () => switchLang(btn.dataset.lang)));
-        window.addEventListener('load', () => switchLang('zh'));
+        window.addEventListener('load', () => {
+            switchLang('zh');
+            // 页面加载完成后初始化滚动监听
+            initNavScroll();
+        });
+
+        // ========== 导航栏滚动隐藏逻辑 ==========
+        function initNavScroll() {
+            const nav = document.querySelector('nav');
+            let lastScrollY = window.scrollY;
+            const isMobile = window.innerWidth <= 768;
+
+            // 仅在手机端执行滚动监听
+            if (isMobile) {
+                window.addEventListener('scroll', () => {
+                    const currentScrollY = window.scrollY;
+                    // 上滑（当前滚动位置 > 上一次位置）且滚动距离超过50px时隐藏
+                    if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                        nav.classList.add('hide-on-scroll');
+                    } else {
+                        // 下滑/回到顶部时显示
+                        nav.classList.remove('hide-on-scroll');
+                    }
+                    // 更新上一次滚动位置
+                    lastScrollY = currentScrollY;
+                });
+            }
+        }
     </script>
 
     <script>
