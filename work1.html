@@ -1,174 +1,189 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-   <head>
-  <!-- 响应式核心代码：让手机适配屏幕 -->
+  <!-- 修复重复的<head>标签，合并响应式核心代码 -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>商业广告《时光》- 朴恩在作品集</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- 可选：简单的响应式样式（让元素适配手机） -->
   <style>
-    /* 让页面宽度适应屏幕，避免溢出 */
-    body {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: hidden;
+    /* 基础响应式重置 */
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
-    /* 图片自动适应容器宽度 */
+    body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      font-family: 微软雅黑, sans-serif;
+    }
     img {
       max-width: 100%;
       height: auto;
+      display: block;
     }
-    /* 文字在手机上不太小 */
-    p, span, a {
-      font-size: 16px;
+    /* 文字自适应 */
+    p, span, a, .film-title, .film-genre, .film-synopsis {
+      font-size: clamp(14px, 3vw, 16px);
       line-height: 1.5;
     }
-  </style>
-</head>
-    <title>商业广告《时光》- 朴恩在作品集</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .lang-btn {
-            padding: 4px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .lang-btn.active {
-            background: #475569;
-            color: white;
-        }
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 8px 16px;
-            background: #475569;
-            color: white;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: background 0.2s ease;
-        }
-        .back-btn:hover {
-            background: #334155;
-        }
-        /* 作品网格容器：一行2组，自动换行 */
+
+    /* 语言切换按钮 */
+    .lang-btn {
+        padding: 4px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+        background: #475569;
+        color: white;
+    }
+    /* 返回按钮 */
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 16px;
+        background: #475569;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background 0.2s ease;
+    }
+    .back-btn:hover {
+        background: #334155;
+    }
+    /* 作品网格容器：PC端2列，手机端1列 */
+    .film-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+        width: 100%;
+    }
+    /* 单组作品：PC端横排，手机端紧凑排列 */
+    .film-item {
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+        background: white;
+        padding: 1.2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    .film-item:hover {
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        transform: translateY(-2px);
+    }
+    /* 16:9海报容器 */
+    .poster-wrapper {
+        position: relative;
+        width: 180px;
+        padding-bottom: 101.25px; /* 16:9比例 */
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    .poster-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.3s ease;
+    }
+    .poster-wrapper:hover .poster-img {
+        opacity: 0.9;
+    }
+    /* YouTube图标 */
+    .youtube-icon {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        background: rgba(255,0,0,0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    /* 影片信息区 */
+    .film-details {
+        flex: 1;
+        padding: 4px 0;
+    }
+    .film-title {
+        font-size: clamp(16px, 4vw, 1.1rem);
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 4px;
+        line-height: 1.3;
+    }
+    .film-genre {
+        font-size: clamp(12px, 2.5vw, 0.85rem);
+        color: #64748b;
+        margin-bottom: 6px;
+        font-style: italic;
+    }
+    .film-synopsis {
+        font-size: clamp(13px, 3vw, 0.9rem);
+        color: #475569;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-clamp: 3;
+        box-orient: vertical;
+    }
+
+    /* 手机端（≤768px）适配 */
+    @media (max-width: 768px) {
+        /* 网格改为1列 */
         .film-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2.5rem; /* 组与组之间的间距（横向+纵向） */
-            width: 100%;
-        }
-        /* 单组作品：左海报+右文本 */
-        .film-item {
-            display: flex;
+            grid-template-columns: 1fr;
             gap: 1.5rem;
-            align-items: flex-start;
-            background: white;
-            padding: 1.2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
         }
-        .film-item:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
-        /* 16:9海报容器（点击跳转YouTube） */
+        /* 海报缩小 */
         .poster-wrapper {
-            position: relative;
-            width: 180px; /* 海报宽度（可按需调整） */
-            padding-bottom: 101.25px; /* 严格16:9比例（180×9/16=101.25） */
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            flex-shrink: 0;
+            width: 120px;
+            padding-bottom: 67.5px;
         }
-        .poster-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.3s ease;
+        /* 作品项内边距减小 */
+        .film-item {
+            padding: 0.8rem;
+            gap: 1rem;
         }
-        .poster-wrapper:hover .poster-img {
-            opacity: 0.9;
-        }
-        /* YouTube跳转提示图标（固定显示，增强识别性） */
-        .youtube-icon {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            width: 32px;
-            height: 32px;
-            background: rgba(255,0,0,0.9);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            z-index: 10;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        /* 影片信息文本区（右侧预留） */
-        .film-details {
-            flex: 1;
-            padding: 4px 0;
-        }
-        .film-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 4px;
-            line-height: 1.3;
-        }
-        .film-genre {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-bottom: 6px;
-            font-style: italic;
-        }
+        /* 简介行数减少 */
         .film-synopsis {
-            font-size: 0.9rem;
-            color: #475569;
-            line-height: 1.5;
-            /* 修复line-clamp提示：添加前缀+明确属性 */
-            display: -webkit-box;
-            -webkit-line-clamp: 3; 
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            /* 补充标准写法（消除提示） */
-            line-clamp: 3;
-            box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
         }
-        /* 响应式适配：移动端改为一行1组 */
-        @media (max-width: 768px) {
-            .film-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .poster-wrapper {
-                width: 140px;
-                padding-bottom: 78.75px;
-            }
-            .film-synopsis {
-                -webkit-line-clamp: 2;
-                line-clamp: 2;
-            }
+        /* 导航栏标题缩小 */
+        nav h1 {
+            font-size: clamp(16px, 4vw, 20px);
         }
-        @media (min-width: 1200px) {
-            .poster-wrapper {
-                width: 220px;
-                padding-bottom: 123.75px;
-            }
+    }
+
+    /* 大屏PC端（≥1200px）适配 */
+    @media (min-width: 1200px) {
+        .poster-wrapper {
+            width: 220px;
+            padding-bottom: 123.75px;
         }
-    </style>
+    }
+  </style>
 </head>
 <body class="bg-gray-50 font-sans">
     <!-- 导航栏 -->
@@ -191,7 +206,7 @@
         </a>
 
         <div class="mt-10">
-            <!-- 9组作品：一行2组，自动分行 -->
+            <!-- 9组作品：PC端2列，手机端1列 -->
             <div class="film-grid">
                 <!-- 作品1 -->
                 <div class="film-item">
@@ -357,7 +372,7 @@
     </footer>
 
     <script>
-        // 多语言配置（指定作品名不翻译，仅翻译类型/梗概）
+        // 多语言配置
         const langConfig = {
             zh: {
                 title: '商业广告《时光》- 作品详情',

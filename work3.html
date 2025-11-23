@@ -1,225 +1,192 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <head>
-  <!-- 响应式核心代码：让手机适配屏幕 -->
+  <!-- 合并重复的<head>标签，统一响应式配置 -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>联系方式 - 朴恩在摄影工作室</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- 可选：简单的响应式样式（让元素适配手机） -->
   <style>
-    /* 让页面宽度适应屏幕，避免溢出 */
-    body {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: hidden;
+    /* 基础重置：适配所有设备 */
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
-    /* 图片自动适应容器宽度 */
+    body {
+      background: #f8f9fa;
+      font-family: 'Inter', 'Noto Sans KR', 微软雅黑, system-ui;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
     img {
       max-width: 100%;
       height: auto;
+      display: block;
     }
-    /* 文字在手机上不太小 */
-    p, span, a {
-      font-size: 16px;
-      line-height: 1.5;
+    /* 文字自适应：不同设备自动调整大小 */
+    h1, h2, h3, p, span, a {
+      font-size: clamp(14px, 3vw, 16px);
+      line-height: 1.6;
+    }
+    h1 { font-size: clamp(22px, 5vw, 32px); }
+    h3 { font-size: clamp(16px, 3.5vw, 18px); }
+
+    /* 导航栏：粘性定位+自适应边距 */
+    nav {
+      background: white;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      padding: 16px 4%;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-title {
+      font-weight: 600;
+      color: #1f2937;
+      font-size: clamp(16px, 4vw, 18px);
+    }
+    .back-link {
+      color: #4b5563;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.3s ease;
+      font-size: clamp(14px, 3vw, 16px);
+    }
+    .back-link:hover {
+      color: #165dff;
+    }
+
+    /* 语言切换按钮：自适应大小 */
+    .lang-btn {
+      padding: 4px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid #e0e0e0;
+      margin-left: 8px;
+      font-size: clamp(12px, 2.5vw, 14px);
+    }
+    .lang-btn.active {
+      background: #475569;
+      color: white;
+      border-color: #475569;
+    }
+
+    /* 主容器：自适应内边距 */
+    .contact-container {
+      max-width: 800px;
+      margin: clamp(20px, 8vw, 40px) auto;
+      padding: 0 4%;
+    }
+
+    /* 页面标题：自适应间距 */
+    .page-header {
+      text-align: center;
+      margin-bottom: clamp(24px, 10vw, 48px);
+    }
+    .page-desc {
+      color: #6b7280;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* 联系方式网格：自动适配设备宽度 */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: clamp(16px, 5vw, 24px);
+    }
+
+    /* 联系方式卡片：自适应内边距 */
+    .contact-card {
+      background: white;
+      border-radius: 12px;
+      padding: clamp(20px, 8vw, 32px) clamp(16px, 5vw, 24px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .contact-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    /* 图标容器：自适应大小 */
+    .contact-icon {
+      width: clamp(50px, 12vw, 64px);
+      height: clamp(50px, 12vw, 64px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: clamp(16px, 5vw, 20px);
+    }
+    .contact-icon i {
+      font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+
+    /* 平台图标配色 */
+    .icon-wechat { background: #07c160; color: white; }
+    .icon-phone-cn { background: #165dff; color: white; }
+    .icon-phone-kr { background: #7b61ff; color: white; }
+    .icon-email { background: #ff6b35; color: white; }
+    .icon-instagram { 
+      background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d); 
+      color: white; 
+    }
+    .icon-kakao { background: #fae100; color: #1f2937; }
+
+    /* 联系方式链接：自动换行 */
+    .contact-link {
+      color: #6b7280;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      word-break: break-all;
+    }
+    .contact-link:hover {
+      color: #165dff;
+    }
+
+    /* 页脚：自适应内边距 */
+    footer {
+      background: white;
+      padding: clamp(16px, 5vw, 24px);
+      text-align: center;
+      color: #6b7280;
+      font-size: clamp(12px, 3vw, 14px);
+      margin-top: clamp(30px, 10vw, 60px);
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.04);
     }
   </style>
-</head>
-    <title>联系方式 - 朴恩在摄影工作室</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入字体图标（包含社交/通讯图标） -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* 基础样式 */
-        body {
-            background: #f8f9fa;
-            font-family: 'Inter', 'Noto Sans KR', system-ui, -apple-system, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        /* 导航栏 */
-        nav {
-            background: white;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        }
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1f2937;
-        }
-        .back-link {
-            color: #4b5563;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: color 0.3s ease;
-        }
-        .back-link:hover {
-            color: #165dff;
-        }
-        /* 语言切换按钮 */
-        .lang-btn {
-            padding: 4px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid #e0e0e0;
-            margin-left: 8px;
-        }
-        .lang-btn.active {
-            background: #475569;
-            color: white;
-            border-color: #475569;
-        }
-        /* 主容器 */
-        .contact-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 24px;
-        }
-        /* 页面标题 */
-        .page-header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-        .page-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 12px;
-        }
-        .page-desc {
-            color: #6b7280;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        /* 联系方式卡片网格 */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-        }
-        /* 联系方式卡片 */
-        .contact-card {
-            background: white;
-            border-radius: 12px;
-            padding: 32px 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .contact-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-        }
-        /* 图标容器 */
-        .contact-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        /* 不同平台图标配色 */
-        .icon-wechat {
-            background: #07c160;
-            color: white;
-        }
-        .icon-phone-cn {
-            background: #165dff;
-            color: white;
-        }
-        .icon-phone-kr {
-            background: #7b61ff;
-            color: white;
-        }
-        .icon-email {
-            background: #ff6b35;
-            color: white;
-        }
-        .icon-instagram {
-            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-            color: white;
-        }
-        .icon-kakao {
-            background: #fae100;
-            color: #1f2937;
-        }
-        /* 卡片标题 */
-        .contact-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 12px;
-        }
-        /* 联系方式文本/链接 */
-        .contact-link {
-            color: #6b7280;
-            font-size: 16px;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            word-break: break-all;
-        }
-        .contact-link:hover {
-            color: #165dff;
-        }
-        /* 页脚 */
-        footer {
-            background: white;
-            padding: 24px;
-            text-align: center;
-            color: #6b7280;
-            font-size: 14px;
-            margin-top: 60px;
-            box-shadow: 0 -2px 12px rgba(0,0,0,0.04);
-        }
-        /* 响应式适配 */
-        @media (max-width: 768px) {
-            .page-title {
-                font-size: 26px;
-            }
-            .contact-card {
-                padding: 24px 16px;
-            }
-            .contact-icon {
-                width: 56px;
-                height: 56px;
-            }
-        }
-    </style>
 </head>
 <body>
     <!-- 导航栏 -->
     <nav>
         <div class="nav-container">
             <div class="nav-title lang-text" data-key="navTitle">联系方式</div>
-            <div class="flex items-center">
+            <div class="flex items-center flex-wrap gap-4">
                 <a href="index.html" class="back-link lang-text" data-key="backLink">
                     <i class="fas fa-arrow-left"></i>
                     返回首页
                 </a>
-                <!-- 语言切换按钮 -->
                 <span class="lang-btn active" data-lang="zh">中文</span>
                 <span class="lang-btn" data-lang="ko">한국어</span>
             </div>
@@ -228,18 +195,16 @@
 
     <!-- 主内容区 -->
     <div class="contact-container">
-        <!-- 页面标题 -->
         <div class="page-header">
             <h1 class="page-title lang-text" data-key="pageTitle">与我取得联系</h1>
             <p class="page-desc lang-text" data-key="pageDesc">欢迎通过以下方式沟通合作、咨询拍摄相关事宜，我会尽快回复</p>
         </div>
 
-        <!-- 联系方式卡片网格（6张卡片，一行两个） -->
         <div class="contact-grid">
             <!-- 微信 -->
             <div class="contact-card">
                 <div class="contact-icon icon-wechat">
-                    <i class="fab fa-weixin fa-2x"></i>
+                    <i class="fab fa-weixin"></i>
                 </div>
                 <h3 class="contact-title lang-text" data-key="contactWechat">微信</h3>
                 <a href="weixin://dl/chat?PEnzai999" class="contact-link">eziortu</a>
@@ -248,7 +213,7 @@
             <!-- 中国电话 -->
             <div class="contact-card">
                 <div class="contact-icon icon-phone-cn">
-                    <i class="fas fa-phone-alt fa-2x"></i>
+                    <i class="fas fa-phone-alt"></i>
                 </div>
                 <h3 class="contact-title lang-text" data-key="contactCnPhone">中国电话</h3>
                 <a href="tel:+8613812345678" class="contact-link">+86 138-2526-7531</a>
@@ -257,7 +222,7 @@
             <!-- 韩国电话 -->
             <div class="contact-card">
                 <div class="contact-icon icon-phone-kr">
-                    <i class="fas fa-phone-square-alt fa-2x"></i>
+                    <i class="fas fa-phone-square-alt"></i>
                 </div>
                 <h3 class="contact-title lang-text" data-key="contactKrPhone">韩国电话</h3>
                 <a href="tel:+821012345678" class="contact-link">+82 10-5949-5527</a>
@@ -266,7 +231,7 @@
             <!-- 邮箱 -->
             <div class="contact-card">
                 <div class="contact-icon icon-email">
-                    <i class="fas fa-envelope fa-2x"></i>
+                    <i class="fas fa-envelope"></i>
                 </div>
                 <h3 class="contact-title lang-text" data-key="contactEmail">邮箱</h3>
                 <a href="mailto:contact@penzai-photo.com" class="contact-link">piaoenzai@gmail.com</a>
@@ -275,7 +240,7 @@
             <!-- Instagram -->
             <div class="contact-card">
                 <div class="contact-icon icon-instagram">
-                    <i class="fab fa-instagram fa-2x"></i>
+                    <i class="fab fa-instagram"></i>
                 </div>
                 <h3 class="contact-title lang-text" data-key="contactInstagram">Instagram</h3>
                 <a href="https://instagram.com/penzai_photo" target="_blank" class="contact-link">eziortu</a>
@@ -284,7 +249,7 @@
             <!-- Kakao Talk -->
             <div class="contact-card">
                 <div class="contact-icon icon-kakao">
-                    <i class="fas fa-comment-dots fa-2x"></i>
+                    <i class="fas fa-comment-dots"></i>
                 </div>
                 <h3 class="contact-title lang-text" data-key="contactKakao">Kakao Talk</h3>
                 <a href="kakaotalk://profile/penzai999" class="contact-link">eziortu</a>
@@ -299,7 +264,6 @@
 
     <!-- 多语言切换脚本 -->
     <script>
-        // 多语言配置
         const langConfig = {
             zh: {
                 navTitle: "联系方式",
@@ -329,50 +293,20 @@
             }
         };
 
-        // 元素获取
         const langBtns = document.querySelectorAll('.lang-btn');
         const langTexts = document.querySelectorAll('.lang-text');
 
-        // 初始化语言（默认中文）
-        function initLang() {
-            switchLang('zh');
-        }
-
-        // 语言切换核心函数
         function switchLang(targetLang) {
-            // 更新按钮激活状态
-            langBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.lang === targetLang) {
-                    btn.classList.add('active');
-                }
-            });
-
-            // 更新所有文本内容
-            langTexts.forEach(text => {
-                const key = text.dataset.key;
-                text.textContent = langConfig[targetLang][key];
-            });
-
-            // 更新页面语言属性
+            langBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === targetLang));
+            langTexts.forEach(text => text.textContent = langConfig[targetLang][text.dataset.key]);
             document.documentElement.lang = targetLang;
-
-            // 更新页面标题
             document.title = targetLang === 'zh' ? '联系方式 - 朴恩在摄影工作室' : '연락처 - 박은재 촬영 스튜디오';
         }
 
-        // 绑定语言切换按钮事件
-        langBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                switchLang(btn.dataset.lang);
-            });
-        });
-
-        // 页面加载时初始化
-        window.addEventListener('load', initLang);
+        langBtns.forEach(btn => btn.addEventListener('click', () => switchLang(btn.dataset.lang)));
+        window.addEventListener('load', () => switchLang('zh'));
     </script>
 
-    <!-- 引入Tailwind配置（可选） -->
     <script>
         tailwind.config = {
             theme: {
