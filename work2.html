@@ -1,8 +1,34 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+  <!-- 响应式核心代码：让手机适配屏幕 -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- 可选：简单的响应式样式（让元素适配手机） -->
+  <style>
+    /* 让页面宽度适应屏幕，避免溢出 */
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    /* 图片自动适应容器宽度 */
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    /* 文字在手机上不太小 */
+    p, span, a {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
     <title>现场剧照On-set still</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
