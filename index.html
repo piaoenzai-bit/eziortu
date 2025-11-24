@@ -367,166 +367,352 @@
         </div>
     </section>
 
-    <!-- 摄影作品相册（手动添加图片，不再动态生成） -->
-    <div class="gallery-container">
-        <h2 class="gallery-title">Film still 作品静帧</h2>
+<!-- 摄影作品相册：独立模块（含左右按钮+滑动+页码） -->
+<div class="gallery-container" style="
+    width: 100%;
+    max-width: 80rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    min-width: auto !important;
+">
+    <h2 class="gallery-title" style="
+        text-align: center;
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 1.5rem;
+        font-family: 微软雅黑, sans-serif;
+    ">Film still 作品静帧</h2>
+    
+    <div class="gallery-wrapper" id="galleryWrapper2" style="
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 100%;
+    ">
+        <!-- 左切换按钮 -->
+        <button class="gallery-btn left" id="prevBtn2" aria-label="上一张" style="
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            opacity: 1 !important;
+            visibility: visible !important;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        ">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 24px; height: 24px; color: #374151;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+        </button>
+
+        <!-- 右切换按钮 -->
+        <button class="gallery-btn right" id="nextBtn2" aria-label="下一张" style="
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            opacity: 1 !important;
+            visibility: visible !important;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        ">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 24px; height: 24px; color: #374151;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+        </button>
         
-        <div class="gallery-wrapper" id="galleryWrapper">
-            <!-- 图片滑动轨道：手动添加1-33.jpg -->
-            <div class="gallery-slide" id="gallerySlide">
-                <!-- 第1张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/26.jpg" alt="摄影作品1" class="gallery-img">
-                </div>
-                <!-- 第2张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/11.jpg" alt="摄影作品2" class="gallery-img">
-                </div>
-                <!-- 第3张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/2.jpg" alt="摄影作品3" class="gallery-img">
-                </div>
-                <!-- 第4张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/18.jpg" alt="摄影作品4" class="gallery-img">
-                </div>
-                <!-- 第5张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/4.jpg" alt="摄影作品5" class="gallery-img">
-                </div>
-                <!-- 第6张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/12.jpg" alt="摄影作品6" class="gallery-img">
-                </div>
-                <!-- 第7张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/20.jpg" alt="摄影作品7" class="gallery-img">
-                </div>
-                <!-- 第8张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/28.jpg" alt="摄影作品8" class="gallery-img">
-                </div>
-                <!-- 第9张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/5.jpg" alt="摄影作品9" class="gallery-img">
-                </div>
-                <!-- 第10张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/13.jpg" alt="摄影作品10" class="gallery-img">
-                </div>
-                <!-- 第11张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/21.jpg" alt="摄影作品11" class="gallery-img">
-                </div>
-                <!-- 第12张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/29.jpg" alt="摄影作品12" class="gallery-img">
-                </div>
-                <!-- 第13张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/3.jpg" alt="摄影作品13" class="gallery-img">
-                </div>
-                <!-- 第14张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/10.jpg" alt="摄影作品14" class="gallery-img">
-                </div>
-                <!-- 第15张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/19.jpg" alt="摄影作品15" class="gallery-img">
-                </div>
-                <!-- 第16张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/27.jpg" alt="摄影作品16" class="gallery-img">
-                </div>
-                <!-- 第17张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/1.jpg" alt="摄影作品17" class="gallery-img">
-                </div>
-                <!-- 第18张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/9.jpg" alt="摄影作品18" class="gallery-img">
-                </div>
-                <!-- 第19张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/17.jpg" alt="摄影作品19" class="gallery-img">
-                </div>
-                <!-- 第20张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/25.jpg" alt="摄影作品20" class="gallery-img">
-                </div>
-                <!-- 第21张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/33.jpg" alt="摄影作品21" class="gallery-img">
-                </div>
-                <!-- 第22张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/8.jpg" alt="摄影作品22" class="gallery-img">
-                </div>
-                <!-- 第23张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/16.jpg" alt="摄影作品23" class="gallery-img">
-                </div>
-                <!-- 第24张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/24.jpg" alt="摄影作品24" class="gallery-img">
-                </div>
-                <!-- 第25张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/32.jpg" alt="摄影作品25" class="gallery-img">
-                </div>
-                <!-- 第26张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/7.jpg" alt="摄影作品26" class="gallery-img">
-                </div>
-                <!-- 第27张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/15.jpg" alt="摄影作品27" class="gallery-img">
-                </div>
-                <!-- 第28张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/23.jpg" alt="摄影作品28" class="gallery-img">
-                </div>
-                <!-- 第29张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/31.jpg" alt="摄影作品29" class="gallery-img">
-                </div>
-                <!-- 第30张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/6.jpg" alt="摄影作品30" class="gallery-img">
-                </div>
-                <!-- 第31张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/14.jpg" alt="摄影作品31" class="gallery-img">
-                </div>
-                <!-- 第32张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/22.jpg" alt="摄影作品32" class="gallery-img">
-                </div>
-                <!-- 第33张 -->
-                <div class="gallery-item">
-                    <img src="assets/images/30.jpg" alt="摄影作品33" class="gallery-img">
-                </div>
+        <!-- 图片滑动轨道 -->
+        <div class="gallery-slide" id="gallerySlide2" style="
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 500px;
+        ">
+            <!-- 第1张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/26.jpg" alt="摄影作品1" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
             </div>
-
-            <!-- 左右控制按钮 -->
-            <button class="gallery-btn left" id="prevBtn">
-                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-            </button>
-            <button class="gallery-btn right" id="nextBtn">
-                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </button>
-
-            <!-- 页码指示器 -->
-            <div class="gallery-dots" id="galleryDots"></div>
+            <!-- 第2张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/11.jpg" alt="摄影作品2" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第3张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/2.jpg" alt="摄影作品3" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第4张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/18.jpg" alt="摄影作品4" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第5张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/4.jpg" alt="摄影作品5" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第6张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/12.jpg" alt="摄影作品6" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第7张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/20.jpg" alt="摄影作品7" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第8张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/28.jpg" alt="摄影作品8" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第9张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/5.jpg" alt="摄影作品9" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第10张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/13.jpg" alt="摄影作品10" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第11张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/21.jpg" alt="摄影作品11" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第12张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/29.jpg" alt="摄影作品12" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第13张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/3.jpg" alt="摄影作品13" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第14张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/10.jpg" alt="摄影作品14" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第15张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/19.jpg" alt="摄影作品15" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第16张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/27.jpg" alt="摄影作品16" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第17张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/1.jpg" alt="摄影作品17" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第18张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/9.jpg" alt="摄影作品18" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第19张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/17.jpg" alt="摄影作品19" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第20张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/25.jpg" alt="摄影作品20" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第21张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/33.jpg" alt="摄影作品21" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第22张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/8.jpg" alt="摄影作品22" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第23张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/16.jpg" alt="摄影作品23" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第24张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/24.jpg" alt="摄影作品24" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第25张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/32.jpg" alt="摄影作品25" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第26张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/7.jpg" alt="摄影作品26" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第27张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/15.jpg" alt="摄影作品27" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第28张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/23.jpg" alt="摄影作品28" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第29张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/31.jpg" alt="摄影作品29" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第30张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/6.jpg" alt="摄影作品30" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第31张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/14.jpg" alt="摄影作品31" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第32张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/22.jpg" alt="摄影作品32" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <!-- 第33张 -->
+            <div class="gallery-item" style="flex-shrink: 0; width: 100%; height: 100%; position: relative;">
+                <img src="assets/images/30.jpg" alt="摄影作品33" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
         </div>
-        
-        <p class="touch-tip">👉 左右滑动查看更多作品</p>
-    </div>
 
+        <!-- 页码指示器 -->
+        <div class="gallery-dots" id="galleryDots2" style="
+            position: absolute;
+            bottom: 16px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 20;
+        "></div>
+    </div>
+    
+    <!-- 手机端滑动提示 -->
+    <p class="touch-tip" style="
+        text-align: center;
+        font-size: clamp(0.875rem, 2vw, 1rem);
+        color: #6b7280;
+        margin-top: 1rem;
+        display: none;
+        font-family: 微软雅黑, sans-serif;
+    ">左右滑动/点击按钮查看更多作品</p>
+</div>
+
+<!-- 相册交互脚本（修复变量冲突） -->
+<script>
+// 用IIFE包裹，避免全局变量冲突
+(function() {
+    const gallerySlide = document.getElementById('gallerySlide2');
+    const galleryDots = document.getElementById('galleryDots2');
+    const galleryWrapper = document.getElementById('galleryWrapper2');
+    const prevBtn = document.getElementById('prevBtn2');
+    const nextBtn = document.getElementById('nextBtn2');
+    const totalImages = gallerySlide.querySelectorAll('.gallery-item').length;
+    let currentIndex = 0;
+
+    // 初始化页码指示器
+    function initDots() {
+        for (let i = 0; i < totalImages; i++) {
+            const dot = document.createElement('div');
+            dot.style.cssText = `
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.6);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            `;
+            if (i === 0) {
+                dot.style.cssText += `
+                    background: white;
+                    width: 28px;
+                    border-radius: 4px;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+                `;
+            }
+            dot.dataset.index = i;
+            dot.addEventListener('click', () => goToSlide(i));
+            galleryDots.appendChild(dot);
+        }
+    }
+
+    // 切换到指定幻灯片
+    function goToSlide(index) {
+        if (index < 0) index = totalImages - 1;
+        if (index >= totalImages) index = 0;
+
+        gallerySlide.style.transform = `translateX(-${index * 100}%)`;
+
+        // 更新页码样式
+        document.querySelectorAll('#galleryDots2 .gallery-dot').forEach((dot, idx) => {
+            dot.style.cssText = `
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.6);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            `;
+            if (idx === index) {
+                dot.style.cssText += `
+                    background: white;
+                    width: 28px;
+                    border-radius: 4px;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+                `;
+            }
+        });
+
+        currentIndex = index;
+    }
+
+    // 左右按钮点击事件
+    prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+    // 触摸滑动功能（手机端）
+    let touchStartX = 0;
+    galleryWrapper.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+    });
+    galleryWrapper.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const diffX = touchEndX - touchStartX;
+        if (diffX > 50) goToSlide(currentIndex - 1); // 右滑→上一张
+        if (diffX < -50) goToSlide(currentIndex + 1); // 左滑→下一张
+    });
+
+    // 适配手机端高度
+    function adaptMobileHeight() {
+        if (window.innerWidth <= 768) {
+            gallerySlide.style.height = '350px';
+            document.querySelector('.touch-tip').style.display = 'block';
+        } else {
+            gallerySlide.style.height = '500px';
+            document.querySelector('.touch-tip').style.display = 'none';
+        }
+    }
+
+    // 初始化
+    initDots();
+    adaptMobileHeight();
+    window.addEventListener('resize', adaptMobileHeight);
+})();
+</script>
     <!-- 代表作品（跳转详情页）- 三个卡片完整保留 -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white rounded-xl shadow-sm mb-16">
         <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center lang-text" data-key="works">详细内容</h2>
