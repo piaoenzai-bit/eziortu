@@ -33,7 +33,7 @@
     }
 
     /* 图片/视频完全适配 */
-    img, video {
+    img {
       max-width: 100%;
       height: auto;
       display: block; /* 避免底部留白 */
@@ -59,6 +59,7 @@
       z-index: 50;
       transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
       padding: 12px 0; /* 上下内边距更舒展 */
+      width: 100%; /* 确保占满屏幕宽度 */
     }
     /* 导航栏内容容器（独立控制间距）- 修正Tailwind语法错误 */
     .nav-content {
@@ -114,12 +115,6 @@
 
     /* 针对手机屏幕的特殊调整（小于768px时生效） */
     @media (max-width: 768px) {
-      /* 轮播图高度适配手机 */
-      .carousel-container {
-        height: 50vh !important;
-        min-height: 300px !important;
-        max-height: 500px !important;
-      }
       /* 作品卡片图片高度适配手机 */
       .work-card img {
         height: 40vh !important;
@@ -128,9 +123,12 @@
       .nav-title {
         font-size: clamp(16px, 3vw, 18px);
       }
-      /* 手机端导航栏隐藏类 */
+      /* 手机端导航栏隐藏类 - 固定定位确保完全隐藏 */
       nav.hide-on-scroll {
         transform: translateY(-100%);
+        position: fixed; /* 脱离文档流，避免占用空间 */
+        top: 0;
+        left: 0;
       }
     }
 
@@ -144,48 +142,25 @@
         transform: translateY(-5px);
         box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.15);
     }
-    /* 轮播图容器 - 仅适配1-33.jpg */
-    .carousel-container {
-        height: 70vh;
-        min-height: 600px;
-        max-height: 800px;
-        overflow: hidden;
-        position: relative;
+    /* 视频容器 - 16:9固定比例（核心优化） */
+    .video-container {
+      width: 100%;
+      position: relative;
+      margin-top: 4px;
+      /* 16:9比例公式：padding-bottom = (9/16)*100% = 56.25% */
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
     }
-    .carousel-slide {
-        display: flex;
-        height: 100%;
-        transition: transform 0.5s ease;
-    }
-    .carousel-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        flex-shrink: 0;
-    }
-    .carousel-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 120px;
-        height: 100%;
-        background: linear-gradient(to right, rgba(0,0,0,0.3), transparent);
-        color: white;
-        border: none;
-        cursor: pointer;
-        z-index: 10;
-        transition: background 0.3s ease;
-    }
-    .carousel-btn.right {
-        right: 0;
-        background: linear-gradient(to left, rgba(0,0,0,0.3), transparent);
-    }
-    .carousel-btn:hover {
-        background: linear-gradient(to right, rgba(0,0,0,0.5), transparent);
-    }
-    .carousel-btn.right:hover {
-        background: linear-gradient(to left, rgba(0,0,0,0.5), transparent);
+    /* 视频样式：16:9比例填充，居中显示 */
+    .feature-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 保持比例填充容器，裁剪多余部分 */
+      object-position: center; /* 居中显示核心内容 */
     }
     /* 详情页链接 */
     .work-link {
@@ -209,11 +184,133 @@
     .back-btn:hover {
         background: #334155;
     }
+
+    /* 相册样式（合并到主样式，不再重复HTML） */
+    .gallery-container {
+        width: 100%;
+        max-width: 80rem; /* 电脑端最大宽度，与主站一致 */
+        margin: 2rem auto;
+        padding: 0 1rem; /* 移动端边距 */
+        @media (min-width: 640px) {
+            padding: 0 1.5rem;
+        }
+        @media (min-width: 1024px) {
+            padding: 0 2rem;
+        }
+    }
+    .gallery-title {
+        text-align: center;
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 1.5rem;
+    }
+    .gallery-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px; /* 圆角提升质感 */
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* 柔和阴影 */
+    }
+    .gallery-slide {
+        display: flex;
+        transition: transform 0.5s ease-in-out; /* 平滑滑动过渡 */
+        /* 调整高度：从400px改为500px（电脑端），保持16:9比例 */
+        height: 500px; 
+        @media (max-width: 768px) {
+            /* 移动端高度从280px改为350px */
+            height: 350px; 
+        }
+    }
+    .gallery-item {
+        flex-shrink: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    .gallery-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 保持比例，裁剪多余部分 */
+        object-position: center; /* 居中显示核心内容 */
+    }
+    .gallery-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 56px;
+        height: 56px;
+        background: rgba(255,255,255,0.9);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        opacity: 0;
+        visibility: hidden;
+    }
+    .gallery-wrapper:hover .gallery-btn {
+        opacity: 1;
+        visibility: visible;
+    }
+    .gallery-btn.left {
+        left: 20px;
+    }
+    .gallery-btn.right {
+        right: 20px;
+    }
+    .gallery-btn:hover {
+        background: white;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .gallery-btn svg {
+        width: 28px;
+        height: 28px;
+        color: #374151;
+    }
+    .gallery-dots {
+        position: absolute;
+        bottom: 24px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        z-index: 20;
+    }
+    .gallery-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.6);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .gallery-dot.active {
+        background: white;
+        width: 28px;
+        border-radius: 4px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .touch-tip {
+        text-align: center;
+        font-size: clamp(0.875rem, 2vw, 1rem);
+        color: #6b7280;
+        margin-top: 1rem;
+        display: none;
+        @media (max-width: 768px) {
+            display: block;
+        }
+    }
   </style>
 </head>
 <body class="bg-gray-50 font-sans">
     <!-- 导航栏（优化排版结构） -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
+    <nav class="bg-white shadow-md sticky top-0 z-50" id="mainNav">
         <div class="nav-content">
             <h1 class="nav-title lang-text" data-key="title">摄影指导_朴恩在 · 个人简介</h1>
             <div class="lang-group">
@@ -223,15 +320,12 @@
         </div>
     </nav>
 
-    <!-- 轮播图（仅1-33.jpg随机轮播） -->
-    <section class="carousel-container mt-4">
-        <div class="carousel-slide" id="carouselSlide"></div>
-        <button class="carousel-btn left" id="prevBtn">
-            <svg class="w-8 h-8 ml-4" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-        </button>
-        <button class="carousel-btn right" id="nextBtn">
-            <svg class="w-8 h-8 mr-4" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-        </button>
+    <!-- 视频播放区域（添加loop属性实现自动循环，其他属性不变） -->
+    <section class="video-container">
+        <video class="feature-video" id="featureVideo" poster="assets/images/33.jpg" controls autoplay muted playsinline loop>
+            <source src="assets/video/1.mp4" type="video/mp4">
+            您的浏览器不支持HTML5视频播放，请更新浏览器版本
+        </video>
     </section>
 
     <!-- 个人简介 -->
@@ -257,23 +351,184 @@
                     <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm1">Gently again（再次温柔）</span>
                     <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm2">여름 감기(黄热病)</span>
                     <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm3">평행선（平行线）</span>
-                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm4">보헤미아II:뮤직비디오（放荡不羁2：MV）</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm4">보헤미아 1 （放荡不羁1）</span>
+                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm4">보헤미아 2 :뮤직비디오（放荡不羁2：MV）</span>
                     <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm5">운석（陨石）</span>
                     <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm6">Can We Kiss Forever(Mv)</span>
                  </div>
                  
                  <p class="text-lg text-gray-700 mb-4 font-semibold lang-text" data-key="adTitle">广告宣传</p>
+                 <p class="text-lg text-gray-700 mb-4 font-semibold lang-text" data-key="adTitle">广告宣传</p>
                  <div class="flex flex-wrap gap-4">
                     <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad1">다슈（美妆广告）</span>
                     <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad2">24 WNGP世界自然健美比赛（活动宣传）</span>
                     <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad3">25 중앙대 트래일러（25年中央大学电影节宣传片）</span>
-                    <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad4">보헤미아II:뮤직비디오（放荡不羁2：MV）</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 代表作品（跳转详情页） -->
+    <!-- 摄影作品相册（手动添加图片，不再动态生成） -->
+    <div class="gallery-container">
+        <h2 class="gallery-title">Film still 作品静帧</h2>
+        
+        <div class="gallery-wrapper" id="galleryWrapper">
+            <!-- 图片滑动轨道：手动添加1-33.jpg -->
+            <div class="gallery-slide" id="gallerySlide">
+                <!-- 第1张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/26.jpg" alt="摄影作品1" class="gallery-img">
+                </div>
+                <!-- 第2张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/11.jpg" alt="摄影作品2" class="gallery-img">
+                </div>
+                <!-- 第3张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/2.jpg" alt="摄影作品3" class="gallery-img">
+                </div>
+                <!-- 第4张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/18.jpg" alt="摄影作品4" class="gallery-img">
+                </div>
+                <!-- 第5张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/4.jpg" alt="摄影作品5" class="gallery-img">
+                </div>
+                <!-- 第6张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/12.jpg" alt="摄影作品6" class="gallery-img">
+                </div>
+                <!-- 第7张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/20.jpg" alt="摄影作品7" class="gallery-img">
+                </div>
+                <!-- 第8张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/28.jpg" alt="摄影作品8" class="gallery-img">
+                </div>
+                <!-- 第9张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/5.jpg" alt="摄影作品9" class="gallery-img">
+                </div>
+                <!-- 第10张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/13.jpg" alt="摄影作品10" class="gallery-img">
+                </div>
+                <!-- 第11张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/21.jpg" alt="摄影作品11" class="gallery-img">
+                </div>
+                <!-- 第12张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/29.jpg" alt="摄影作品12" class="gallery-img">
+                </div>
+                <!-- 第13张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/3.jpg" alt="摄影作品13" class="gallery-img">
+                </div>
+                <!-- 第14张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/10.jpg" alt="摄影作品14" class="gallery-img">
+                </div>
+                <!-- 第15张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/19.jpg" alt="摄影作品15" class="gallery-img">
+                </div>
+                <!-- 第16张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/27.jpg" alt="摄影作品16" class="gallery-img">
+                </div>
+                <!-- 第17张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/1.jpg" alt="摄影作品17" class="gallery-img">
+                </div>
+                <!-- 第18张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/9.jpg" alt="摄影作品18" class="gallery-img">
+                </div>
+                <!-- 第19张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/17.jpg" alt="摄影作品19" class="gallery-img">
+                </div>
+                <!-- 第20张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/25.jpg" alt="摄影作品20" class="gallery-img">
+                </div>
+                <!-- 第21张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/33.jpg" alt="摄影作品21" class="gallery-img">
+                </div>
+                <!-- 第22张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/8.jpg" alt="摄影作品22" class="gallery-img">
+                </div>
+                <!-- 第23张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/16.jpg" alt="摄影作品23" class="gallery-img">
+                </div>
+                <!-- 第24张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/24.jpg" alt="摄影作品24" class="gallery-img">
+                </div>
+                <!-- 第25张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/32.jpg" alt="摄影作品25" class="gallery-img">
+                </div>
+                <!-- 第26张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/7.jpg" alt="摄影作品26" class="gallery-img">
+                </div>
+                <!-- 第27张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/15.jpg" alt="摄影作品27" class="gallery-img">
+                </div>
+                <!-- 第28张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/23.jpg" alt="摄影作品28" class="gallery-img">
+                </div>
+                <!-- 第29张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/31.jpg" alt="摄影作品29" class="gallery-img">
+                </div>
+                <!-- 第30张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/6.jpg" alt="摄影作品30" class="gallery-img">
+                </div>
+                <!-- 第31张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/14.jpg" alt="摄影作品31" class="gallery-img">
+                </div>
+                <!-- 第32张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/22.jpg" alt="摄影作品32" class="gallery-img">
+                </div>
+                <!-- 第33张 -->
+                <div class="gallery-item">
+                    <img src="assets/images/30.jpg" alt="摄影作品33" class="gallery-img">
+                </div>
+            </div>
+
+            <!-- 左右控制按钮 -->
+            <button class="gallery-btn left" id="prevBtn">
+                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <button class="gallery-btn right" id="nextBtn">
+                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+
+            <!-- 页码指示器 -->
+            <div class="gallery-dots" id="galleryDots"></div>
+        </div>
+        
+        <p class="touch-tip">👉 左右滑动查看更多作品</p>
+    </div>
+
+    <!-- 代表作品（跳转详情页）- 三个卡片完整保留 -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white rounded-xl shadow-sm mb-16">
         <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center lang-text" data-key="works">详细内容</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -310,7 +565,7 @@
                     <div class="p-6">
                         <h3 class="text-xl font-semibold text-slate-900 mb-2 lang-text" data-key="work3Title">联系方式</h3>
                         <p class="text-gray-600 mb-3 lang-text" data-key="work3Desc1">微信  ins  邮箱  电话  kakao talk</p>
-                        <p class="text-gray-700 mb-4 lang-text" data-key="work3Desc2">期待与您一同去交流新的故事，也期能与您一同让故事 “动” 起来</p>
+                        <p class="text-gray-700 mb-4 lang-text" data-key="work3Desc2">期待与您一同去交流新的故事，也期能与您一同让故事 “动起来”</p>
                         <div class="text-slate-800 font-medium hover:text-slate-600 flex items-center lang-text" data-key="detail">查看作品详情 →</div>
                     </div>
                 </a>
@@ -318,156 +573,163 @@
         </div>
     </section>
 
-    <!-- 页脚 -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-gray-400 lang-text" data-key="copyright">© 2025 摄影指导_朴恩在 · 作品集 版权所有</p>
-        </div>
-    </footer>
-
+    <!-- 新增：多语言切换脚本 -->
     <script>
-        // 1. 轮播图：仅1-33.jpg随机生成
-        const carouselSlide = document.getElementById('carouselSlide');
-        const totalPhotos = 33; // 固定1-33张
-        const photoIndexes = Array.from({length: totalPhotos}, (_, i) => i + 1);
-        photoIndexes.sort(() => Math.random() - 0.5);
-        photoIndexes.forEach(index => {
-            const img = document.createElement('img');
-            img.src = `assets/images/${index}.jpg`;
-            img.alt = `摄影作品${index}`;
-            img.className = 'carousel-img';
-            carouselSlide.appendChild(img);
-        });
-
-        // 2. 轮播图切换逻辑
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        let currentIndex = 0;
-        const slideWidth = 100;
-
-        function goToSlide(index) {
-            const totalSlides = carouselSlide.children.length;
-            currentIndex = (index + totalSlides) % totalSlides;
-            carouselSlide.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
-        }
-
-        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
-        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
-
-        // 自动轮播
-        let autoSlideInterval = setInterval(() => goToSlide(currentIndex + 1), 3000);
-        carouselSlide.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
-        carouselSlide.addEventListener('mouseleave', () => {
-            autoSlideInterval = setInterval(() => goToSlide(currentIndex + 1), 3000);
-        });
-
-        // 3. 多语言切换（完全匹配当前中文内容）
+        // 多语言配置（对应页面中所有data-key）
         const langConfig = {
             zh: {
-                title: '摄影指导_朴恩在 · 个人简介',
-                aboutMe: '摄影指导_朴恩在',
-                intro1: '以影像设定影片的感知方式。光与影决定情绪的结构，镜头选择塑造叙事的锋芒。画面的存在必须准确、克制、富有指向性——不装饰，不冗余，只揭示故事的核心，让影片以一种独特而不可替代的方式“看世界”',
-                intro2: '电影中的摄影，本质上是一位隐形的演员——只是这位演员的眼睛是镜头。它以影像代替身体，以运动代替情绪，通过每一次观看的角度与节奏，为角色完成另一层次的表演。',
-                intro3: '电影拍的是故事，而我们看的是故事里的 “人”',
-                shortFilmTitle: '短篇电影',
-                shortFilm1: 'Gently again（再次温柔）',
-                shortFilm2: '여름 감기(黄热病)',
-                shortFilm3: '평행선（平行线）',
-                shortFilm4: '보헤미아II:뮤직비디오（放荡不羁2：MV）',
-                shortFilm5: '운석（陨石）',
-                shortFilm6: 'Can We Kiss Forever(Mv)',
-                adTitle: '广告宣传',
-                ad1: '다슈（美妆广告）',
-                ad2: '24 WNGP世界自然健美比赛（活动宣传）',
-                ad3: '25 중앙대 트래일러（25年中央大学电影节宣传片）',
-                ad4: '보헤미아II:뮤직비디오（放荡不羁2：MV）',
-                works: '详细内容',
-                work1Title: '作品集',
-                work1Desc1: '短篇电影  MV  美妆广告  活动拍摄  幽默喜剧',
-                work1Desc2: '影像锚定影片感知，光影构筑情绪结构，镜头淬炼叙事锋芒，画面以精准克制的指向性直抵故事核心，赋予影片独一无二的世界视域。',
-                work2Title: '现场剧照',
-                work2Desc1: '现场剧照On-set',
-                work2Desc2: '纪实类作品的摄影工作，核心在于“在不确定中寻找确定性” 需实时调整设备参数与拍摄角度',
-                work3Title: '联系方式',
-                work3Desc1: '微信  ins  邮箱  电话  kakao talk',
-                work3Desc2: '期待与您一同去交流新的故事，也期能与您一同让故事 “动” 起来',
-                detail: '查看作品详情 →',
-                copyright: '© 2025 摄影指导_朴恩在 · 作品集 版权所有'
+                title: "摄影指导_朴恩在 · 个人简介",
+                aboutMe: "摄影指导_朴恩在",
+                intro1: "以影像设定影片的感知方式。光与影决定情绪的结构，镜头选择塑造叙事的锋芒。画面的存在必须准确、克制、富有指向性——不装饰，不冗余，只揭示故事的核心，让影片以一种独特而不可替代的方式“看世界”",
+                intro2: "电影中的摄影，本质上是一位隐形的演员——只是这位演员的眼睛是镜头。它以影像代替身体，以运动代替情绪，通过每一次观看的角度与节奏，为角色完成另一层次的表演。",
+                intro3: "电影拍的是故事，而我们看的是故事里的 “人”",
+                shortFilmTitle: "短篇电影",
+                shortFilm1: "Gently again（再次温柔）",
+                shortFilm2: "여름 감기(黄热病)",
+                shortFilm3: "평행선（平行线）",
+                shortFilm4: "보헤미아 1 （放荡不羁1）",
+                shortFilm5: "운석（陨石）",
+                shortFilm6: "Can We Kiss Forever(Mv)",
+                adTitle: "广告宣传",
+                ad1: "다슈（美妆广告）",
+                ad2: "24 WNGP世界自然健美比赛（活动宣传）",
+                ad3: "25 중앙대 트래일러（25年中央大学电影节宣传片）",
+                works: "详细内容",
+                work1Title: "作品集",
+                work1Desc1: "短篇电影  MV  美妆广告  活动拍摄  幽默喜剧",
+                work1Desc2: "影像锚定影片感知，光影构筑情绪结构，镜头淬炼叙事锋芒，画面以精准克制的指向性直抵故事核心，赋予影片独一无二的世界视域。",
+                work2Title: "现场剧照",
+                work2Desc1: "现场剧照On-set",
+                work2Desc2: "纪实类作品的摄影工作，核心在于“在不确定中寻找确定性” 需实时调整设备参数与拍摄角度",
+                work3Title: "联系方式",
+                work3Desc1: "微信  ins  邮箱  电话  kakao talk",
+                work3Desc2: "期待与您一同去交流新的故事，也期能与您一同让故事 “动起来”",
+                detail: "查看作品详情 →"
             },
             ko: {
-                title: '촬영감독_박은재 · 프로필',
-                aboutMe: '촬영감독_박은재',
-                intro1: '영상을 통해 영화의 인지 방식을 설정합니다. 빛과 그림자가 감정의 구조를 결정하고, 렌즈 선택이 서사의 날카로움을 만듭니다. 화면은 정확하고 절제되며 지향성이 있어야 합니다 — 장식하지 않고, 잉여하지 않고, 이야기의 핵심만을 드러내어 영화가 독특하고 대체 불가능한 방식으로 "세상을 바라보게" 합니다.',
-                intro2: '영화 속 촬영은 본질적으로 보이지 않는 배우입니다 — 다만 이 배우의 눈은 렌즈입니다. 영상으로 몸을 대체하고, 움직임으로 감정을 대체하며, 매번 보는 각도와 리듬을 통해 캐릭터의 또 다른 층위의 연기를 완성합니다.',
-                intro3: '영화는 이야기를 찍지만, 우리는 이야기 속 "사람"을 보는 것입니다',
-                shortFilmTitle: '단편 영화',
-                shortFilm1: 'Gently again（再次温柔）',
-                shortFilm2: '여름 감기(黄热病)',
-                shortFilm3: '평행선（平行线）',
-                shortFilm4: '보헤미아II:뮤직비디오（放浪不羁2：MV）',
-                shortFilm5: '운석（陨石）',
-                shortFilm6: 'Can We Kiss Forever(Mv)',
-                adTitle: '광고 홍보',
-                ad1: '다슈（뷰티 광고）',
-                ad2: '24 WNGP 세계 자연 건강 미용 대회（행사 홍보）',
-                ad3: '25 중앙대 트레일러（25년 중앙대학교 영화제 홍보 영상）',
-                ad4: '보헤미아II:뮤직비디오（放浪不羁2：MV）',
-                works: '상세 내용',
-                work1Title: '작품',
-                work1Desc1: '단편 영화  MV  뷰티 광고  행사 촬영  유머 코미디',
-                work1Desc2: '영상으로 영화의 인지를 고정하고, 빛과 그림자로 감정 구조를 구축하며, 렌즈로 서사의 날카로움을 다듬고, 화면은 정확하고 절제된 지향성으로 이야기의 핵심에 직접 다가가 영화에 독一无二의 세계 시각을 부여합니다.',
-                work2Title: '현장 스틸컷',
-                work2Desc1: '현장 스틸컷 On-set',
-                work2Desc2: '다큐멘터리 작품의 촬영 작업은 "불확실성 속에서 확실성을 찾는 것"이 핵심 — 장비 매개변수와 촬영 각도를 실시간으로 조정해야 합니다',
-                work3Title: '연락처',
-                work3Desc1: '위챗  인스타그램  이메일  전화  카카오톡',
-                work3Desc2: '새로운 이야기를 함께交流하고, 이야기를 함께 "움직이게" 만들기를 기대합니다',
-                detail: '작품 상세 보기 →',
-                copyright: '© 2025 촬영감독_박은재 · 작품집 저작권 소유'
+                title: "촬영감독_박은재 · 개인 소개",
+                aboutMe: "촬영감독_박은재",
+                intro1: "영상으로 영화의 지각 방식을 정의합니다. 빛과 그림자는 감정의 구조를 결정하고, 렌즈 선택은 서사의 날카로움을 만듭니다. 화면은 정확하고 절제되며 방향성을 가져야 합니다 — 장식적이거나 불필요하지 않고, 이야기의 핵심만을 드러내어 영화가 독특하고 대체 불가능한 방식으로 '세상을 보게' 합니다.",
+                intro2: "영화 속 촬영은 본질적으로 보이지 않는 배우입니다 — 오직 그 배우의 눈이 렌즈일 뿐입니다. 영상으로 몸을 대체하고, 감정을 움직임으로 표현하며, 매번 보는 각도와 리듬을 통해 캐릭터에게 또 다른 층위의 연기를 완성합니다.",
+                intro3: "영화는 이야기를 담지만, 우리는 그 이야기 속의 '사람'을 보는 것입니다",
+                shortFilmTitle: "단편 영화",
+                shortFilm1: "Gently again（再次温柔）",
+                shortFilm2: "여름 감기(黄热病)",
+                shortFilm3: "평행선（平行线）",
+                shortFilm4: "보헤미아 1 （放荡不羁1）",
+                shortFilm5: "운석（陨石）",
+                shortFilm6: "Can We Kiss Forever(MV)",
+                adTitle: "광고 홍보",
+                ad1: "다슈（美妆广告）",
+                ad2: "24 WNGP 세계 자연 보디빌딩 대회（活动宣传）",
+                ad3: "25 중앙대 트레일러（25年中央大学电影节宣传片）",
+                works: "상세 내용",
+                work1Title: "작품집",
+                work1Desc1: "단편 영화  MV  뷰티 광고  행사 촬영  흑우머",
+                work1Desc2: "영상으로 영화의 지각 방식을 정의하고, 빛과 그림자로 감정의 구조를 만드며, 렌즈로 서사의 날카로움을 다듬고, 정확하고 절제된 방향성으로 화면이 이야기의 핵심에 도달하도록 하여 영화에 독특하고 대체 불가능한 세계관을 부여합니다.",
+                work2Title: "현장 스틸컷",
+                work2Title: "현장 스틸컷",
+                work2Desc1: "현장 스틸컷 On-set",
+                work2Desc2: "기록적 작품의 촬영 작업은 '불확실함 속에서 확실함을 찾는 것'이 핵심입니다 — 장비 매개변수를 실시간으로 조정해야 합니다.",
+                work3Title: "연락처",
+                work3Desc1: "위챗  인스타그램  이메일  전화  카카오톡",
+                work3Desc2: "새로운 이야기를 함께交流하고, 함께 이야기를 '살아있게' 만들기를 기대합니다",
+                detail: "작품 상세 보기 →"
             }
         };
 
+        // 获取语言按钮和多语言文本元素
         const langBtns = document.querySelectorAll('.lang-btn');
         const langTexts = document.querySelectorAll('.lang-text');
 
+        // 切换语言的函数
         function switchLang(targetLang) {
+            // 切换按钮的active状态
             langBtns.forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.dataset.lang === targetLang) btn.classList.add('active');
+                if (btn.dataset.lang === targetLang) {
+                    btn.classList.add('active');
+                }
             });
+
+            // 替换所有多语言文本
             langTexts.forEach(text => {
                 const key = text.dataset.key;
-                text.textContent = langConfig[targetLang][key];
+                if (langConfig[targetLang][key]) {
+                    text.textContent = langConfig[targetLang][key];
+                }
             });
+
+            // 更新页面语言属性
             document.documentElement.lang = targetLang;
         }
 
+        // 给语言按钮绑定点击事件
         langBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 switchLang(btn.dataset.lang);
             });
         });
+    </script>
 
-        // ========== 导航栏滚动隐藏逻辑 ==========
-        const nav = document.querySelector('nav');
-        let lastScrollY = window.scrollY;
-        const isMobile = window.innerWidth <= 768;
+    <!-- 相册交互脚本 -->
+    <script>
+        // 1. 获取元素
+        const gallerySlide = document.getElementById('gallerySlide');
+        const galleryDots = document.getElementById('galleryDots');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const galleryWrapper = document.getElementById('galleryWrapper');
+        // 获取手动添加的图片数量
+        const totalImages = gallerySlide.querySelectorAll('.gallery-item').length;
+        let currentIndex = 0;
 
-        // 仅在手机端执行滚动监听
-        if (isMobile) {
-            window.addEventListener('scroll', () => {
-                const currentScrollY = window.scrollY;
-                // 上滑（当前滚动位置 > 上一次位置）且滚动距离超过50px时隐藏
-                if (currentScrollY > lastScrollY && currentScrollY > 50) {
-                    nav.classList.add('hide-on-scroll');
-                } else {
-                    // 下滑/回到顶部时显示
-                    nav.classList.remove('hide-on-scroll');
-                }
-                // 更新上一次滚动位置
-                lastScrollY = currentScrollY;
-            });
+        // 2. 初始化页码指示器
+        function initDots() {
+            for (let i = 0; i < totalImages; i++) {
+                const dot = document.createElement('div');
+                dot.className = `gallery-dot ${i === 0 ? 'active' : ''}`;
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => goToSlide(i));
+                galleryDots.appendChild(dot);
+            }
         }
+
+        // 3. 切换到指定图片
+        function goToSlide(index) {
+            // 边界处理
+            if (index < 0) index = totalImages - 1;
+            if (index >= totalImages) index = 0;
+
+            // 滑动图片
+            gallerySlide.style.transform = `translateX(-${index * 100}%)`;
+
+            // 更新页码
+            document.querySelectorAll('.gallery-dot').forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === index);
+            });
+
+            currentIndex = index;
+        }
+
+        // 4. 绑定按钮事件
+        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+        // 5. 移动端触摸滑动
+        let touchStartX = 0;
+        galleryWrapper.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        galleryWrapper.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diffX = touchEndX - touchStartX;
+            if (diffX > 50) goToSlide(currentIndex - 1);
+            if (diffX < -50) goToSlide(currentIndex + 1);
+        });
+
+        // 初始化页码
+        initDots();
     </script>
 </body>
 </html>
