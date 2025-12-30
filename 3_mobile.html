@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>光痕叙事</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      :root {
+        --bg: 0;
+        --fg: 255;
+      }
+
+      body {
+        margin: 0;
+        background: rgb(var(--bg), var(--bg), var(--bg));
+        color: rgb(var(--fg), var(--fg), var(--fg));
+        font-family: "Courier New", monospace;
+        transition: background 0.15s linear, color 0.15s linear;
+      }
+
+      /* ================= 背景画幅 ================= */
+      .format {
+        position: absolute;
+        inset: 0;
+        border: 1.5px solid rgb(var(--fg), var(--fg), var(--fg));
+        transform-origin: center;
+        pointer-events: none;
+        transition: border-color 0.15s linear;
+      }
+
+      /* ================= HUD ================= */
+      .hud {
+        font-size: 11px;
+        text-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+      .blink {
+        animation: blink 1s infinite;
+      }
+
+      /* ================= Section ================= */
+      section {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4rem 1.5rem;
+      }
+
+      /* 核心：统一并缩短模块间距 */
+      .content-flow {
+        min-height: auto;
+        padding: 1.8rem 1.5rem;
+      }
+      .content-flow + .content-flow {
+        margin-top: -0.5rem;
+      }
+
+      .panel {
+        border: 1px solid rgb(var(--fg), var(--fg), var(--fg));
+        padding: 1.5rem;
+        backdrop-filter: blur(2px);
+        transition: border-color 0.15s linear;
+      }
+
+      .title {
+        font-size: 0.75rem;
+        letter-spacing: 0.3em;
+        opacity: 0.7;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ================= 背景画幅 ================= -->
+    <div
+      class="fixed inset-0 z-0 flex items-center justify-center overflow-hidden"
+    >
+      <div class="relative aspect-[2.39/1] w-[92vw]">
+        <div class="format" data-depth="0"></div>
+        <div class="format" data-depth="1"></div>
+        <div class="format" data-depth="2"></div>
+        <div class="format" data-depth="3"></div>
+        <div class="format" data-depth="4"></div>
+      </div>
+    </div>
+
+    <!-- ================= HUD ================= -->
+    <div
+      class="fixed top-4 left-4 z-20 hud text-red-500 flex items-center gap-2"
+    >
+      <span class="w-2 h-2 bg-red-500 rounded-full blink"></span> REC
+    </div>
+    <div class="fixed top-4 right-4 z-20 hud">BAT 97%</div>
+    <div class="fixed bottom-4 right-4 z-20 hud font-bold" id="timecode">
+      00:00:00:00
+    </div>
+
+    <main class="relative z-10">
+      <!-- 封面 -->
+      <section>
+        <div class="text-center">
+          <h1 class="text-4xl tracking-widest mb-4">光痕叙事</h1>
+          <p class="tracking-widest opacity-70">摄影 · 朴恩在</p>
+        </div>
+      </section>
+
+      <!-- 个人简介 -->
+      <section>
+        <div class="panel max-w-xl w-full">
+          <div class="title">PROFILE</div>
+          <div class="aspect-[3/4] mb-4 overflow-hidden border">
+            <img
+              src="assets/IP Photos/1.jpg"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <p class="text-sm leading-relaxed">
+            摄影并非站在镜头之外的记录者。<br /><br />
+            它进入叙事，参与情绪，与演员一同完成表演。
+          </p>
+        </div>
+      </section>
+
+      <!-- 视频监视器 -->
+      <section class="content-flow flex justify-center">
+        <div class="w-full max-w-[900px]">
+          <div
+            class="relative bg-black rounded-xl overflow-hidden border border-zinc-700 font-mono mx-auto"
+          >
+            <div
+              class="flex justify-between px-4 py-2 text-xs text-white border-b border-zinc-700"
+            >
+              <div class="flex gap-4">
+                <span>FPS 24</span><span>SHUTTER 180°</span><span>EI 800</span>
+              </div>
+              <span class="text-yellow-400">[LDS]</span>
+            </div>
+
+            <div class="relative aspect-video bg-black">
+              <video
+                src="assets/video/1.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                class="absolute inset-0 w-full h-full object-cover"
+              ></video>
+              <div class="absolute inset-6 border border-white/70"></div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-5 h-5 border border-white/70"></div>
+              </div>
+            </div>
+
+            <div
+              class="flex justify-between px-4 py-2 text-xs border-t border-zinc-700"
+            >
+              <span class="text-white">BAT 13.2V</span>
+              <span class="text-red-500 font-bold">00:57:29:08</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 静帧 -->
+      <section class="content-flow">
+        <div class="panel w-full max-w-3xl relative">
+          <div class="title">STILL FRAMES</div>
+
+          <!-- 图片网格 -->
+          <div class="grid grid-cols-2 gap-3">
+            <img
+              src="assets/StillFrames/01.jpg"
+              class="aspect-video object-cover"
+            />
+            <img
+              src="assets/StillFrames/5.jpg"
+              class="aspect-video object-cover"
+            />
+            <img
+              src="assets/StillFrames/28.jpg"
+              class="aspect-video object-cover"
+            />
+            <img
+              src="assets/StillFrames/33.jpg"
+              class="aspect-video object-cover"
+            />
+          </div>
+
+          <!-- 进入按钮 -->
+          <a
+            href="stillframes.html"
+            class="absolute right-4 bottom-4 text-white text-[11px] tracking-widest px-3 py-1 border border-white opacity-80 hover:opacity-100 transition"
+          >
+            VIEW ALL →
+          </a>
+        </div>
+      </section>
+
+      <!-- 现场 -->
+      <section class="content-flow">
+        <div class="panel max-w-xl w-full">
+          <div class="title">ON SET</div>
+          <img
+            src="assets/On-set photos/4.jpg"
+            class="aspect-video object-cover"
+          />
+          <!-- 进入按钮 -->
+          <a
+            href="stillframes.html"
+            class="absolute right-4 bottom-4 text-white text-[11px] tracking-widest px-3 py-1 border border-white opacity-80 hover:opacity-100 transition"
+          >
+            VIEW ALL →
+          </a>
+        </div>
+      </section>
+
+      <!-- 联系 -->
+      <section class="content-flow">
+        <div class="panel max-w-md w-full text-center">
+          <div class="title">CONTACT</div>
+          <p class="text-sm">
+            Email · piaoenzai@gmail.com<br />
+            Phone · 138-2526-7531<br />
+            WeChat · eziortu
+          </p>
+          <p class="text-xs text-zinc-500 mt-2">AVAILABLE FOR COLLABORATION</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      /* ===== 时间码 ===== */
+      let h = 0,
+        m = 0,
+        s = 0,
+        f = 0;
+      const fps = 24;
+      const timecode = document.getElementById("timecode");
+
+      setInterval(() => {
+        if (++f >= fps) {
+          f = 0;
+          if (++s >= 60) {
+            s = 0;
+            if (++m >= 60) {
+              m = 0;
+              h++;
+            }
+          }
+        }
+        timecode.textContent = `${String(h).padStart(2, "0")}:${String(
+          m
+        ).padStart(2, "0")}:${String(s).padStart(2, "0")}:${String(f).padStart(
+          2,
+          "0"
+        )}`;
+      }, 1000 / fps);
+
+      /* ===== 滚动统一驱动 ===== */
+      const formats = document.querySelectorAll(".format");
+
+      window.addEventListener("scroll", () => {
+        const scrollMax = document.body.scrollHeight - innerHeight;
+        const p = Math.min(scrollY / scrollMax, 1);
+
+        /* 背景慢，字体快 */
+        const bg = Math.round(p * 255);
+        const fg = Math.round(255 - Math.min(p * 380, 255));
+
+        document.documentElement.style.setProperty("--bg", bg);
+        document.documentElement.style.setProperty("--fg", fg);
+
+        formats.forEach((el, i) => {
+          const d = i * 0.15;
+          const scale = 1 + p * (0.6 + d);
+          const x = p * (120 + i * 60);
+          const y = p * (80 + i * 40);
+          const r = p * (12 + i * 6);
+
+          el.style.transform = `
+            scale(${scale})
+            translate(${x}px, ${y}px)
+            rotate(${r}deg)
+          `;
+        });
+      });
+    </script>
+  </body>
+</html>
