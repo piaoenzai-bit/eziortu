@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>On-Set Photos - 光痕叙事 · 朴恩在</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/lucide@0.292.0/dist/umd/lucide.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        overflow-x: hidden;
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        transition: all 0.8s ease;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .animate-fade-in-up {
+        animation: fadeInUp 0.9s forwards;
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.8s forwards;
+        animation-delay: 0.4s;
+        opacity: 0;
+      }
+      .photo-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .photo-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+      .photo-container {
+        overflow: hidden;
+        border-radius: 0.75rem 0.75rem 0 0;
+      }
+      /* 统一所有照片比例为16:9 */
+      .photo-container {
+        aspect-ratio: 16/9;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              emerald: { 400: "#34d399" },
+              zinc: {
+                300: "#d4d4d8",
+                400: "#a1a1aa",
+                500: "#71717a",
+                700: "#3f3f46",
+                800: "#27272a",
+                900: "#18181b",
+              },
+            },
+            fontFamily: {
+              mono: ["monospace", "Courier New"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-white text-black min-h-screen">
+    <nav class="py-6 px-6 border-b border-zinc-200 sticky top-0 bg-white z-50">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="index.html" class="text-xl font-light tracking-wider"
+          >光痕叙事 · 朴恩在</a
+        >
+        <div class="flex gap-8 text-sm">
+          <a href="index.html" class="hover:text-zinc-500 transition">HOME</a>
+          <a href="StillFrames.html" class="hover:text-zinc-500 transition"
+            >STILL FRAMES</a
+          >
+          <a
+            href="Onsetphotos.html"
+            class="font-medium text-black border-b border-black pb-1"
+            >ON-SET PHOTOS</a
+          >
+          <a href="index.html#contact" class="hover:text-zinc-500 transition"
+            >CONTACT</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-16">
+      <section class="mb-16 animate-fade-in-up">
+        <h1 class="text-4xl md:text-5xl font-light leading-tight text-black">
+          On-Set<br />Photos
+        </h1>
+        <p class="mt-6 text-zinc-600 max-w-md">
+          Candid moments captured during the filming process.
+        </p>
+      </section>
+
+      <!-- 与 StillFrames.html 完全一致的网格布局结构 -->
+      <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <!-- 第一组：焦点大图（01） -->
+        <div
+          class="md:col-span-12 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/21.jpg"
+              alt="On-Set Photo 01"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 01</div>
+        </div>
+
+        <!-- 第二组-->
+        <div
+          class="md:col-span-8 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/5.jpg"
+              alt="On-Set Photo 02"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 02</div>
+        </div>
+        <div class="md:col-span-4 flex flex-col gap-6">
+          <div
+            class="rounded-xl overflow-hidden photo-card border border-zinc-200 h-full"
+          >
+            <div class="photo-container">
+              <img
+                src="assets/On-set photos/17.jpg"
+                alt="On-Set Photo 03"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="py-4 px-4 text-sm font-mono text-zinc-700">
+              PHOTO 03
+            </div>
+          </div>
+          <div
+            class="rounded-xl overflow-hidden photo-card border border-zinc-200 h-full"
+          >
+            <div class="photo-container">
+              <img
+                src="assets/On-set photos/9.jpg"
+                alt="On-Set Photo 04"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="py-4 px-4 text-sm font-mono text-zinc-700">
+              PHOTO 04
+            </div>
+          </div>
+        </div>
+
+        <!-- 第三组 -->
+        <div
+          class="md:col-span-4 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/1.jpg"
+              alt="On-Set Photo 05"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 05</div>
+        </div>
+        <div
+          class="md:col-span-4 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/25.jpg"
+              alt="On-Set Photo 06"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 06</div>
+        </div>
+        <div
+          class="md:col-span-4 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/22.jpg"
+              alt="On-Set Photo 07"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 07</div>
+        </div>
+
+        <!-- 第四组-->
+        <div class="md:col-span-4 flex flex-col gap-6">
+          <div
+            class="rounded-xl overflow-hidden photo-card border border-zinc-200 h-full"
+          >
+            <div class="photo-container">
+              <img
+                src="assets/On-set photos/19.jpg"
+                alt="On-Set Photo 08"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="py-4 px-4 text-sm font-mono text-zinc-700">
+              PHOTO 08
+            </div>
+          </div>
+          <div
+            class="rounded-xl overflow-hidden photo-card border border-zinc-200 h-full"
+          >
+            <div class="photo-container">
+              <img
+                src="assets/On-set photos/15.jpg"
+                alt="On-Set Photo 09"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="py-4 px-4 text-sm font-mono text-zinc-700">
+              PHOTO 09
+            </div>
+          </div>
+        </div>
+        <div
+          class="md:col-span-8 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/10.jpg"
+              alt="On-Set Photo 10"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 10</div>
+        </div>
+
+        <!-- 第五组-->
+        <div
+          class="md:col-span-4 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/8.jpg"
+              alt="On-Set Photo 11"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 11</div>
+        </div>
+        <div
+          class="md:col-span-4 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/7.jpg"
+              alt="On-Set Photo 12"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 12</div>
+        </div>
+        <div
+          class="md:col-span-4 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/20.jpg"
+              alt="On-Set Photo 13"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 13</div>
+        </div>
+
+        <!-- 第六组 -->
+        <div
+          class="md:col-span-12 rounded-xl overflow-hidden photo-card border border-zinc-200"
+        >
+          <div class="photo-container">
+            <img
+              src="assets/On-set photos/23.jpg"
+              alt="On-Set Photo 14"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="py-4 px-4 text-sm font-mono text-zinc-700">PHOTO 14</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="py-16 px-6 border-t border-zinc-200 mt-20">
+      <div
+        class="max-w-7xl mx-auto text-center text-sm text-zinc-500 font-mono"
+      >
+        <p>© 2025 · 光痕叙事 · Image as Performance</p>
+        <p class="mt-2">All Rights Reserved</p>
+      </div>
+    </footer>
+
+    <script>
+      lucide.createIcons();
+
+      window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const scrollProgress = Math.min(
+          Math.max(scrollY / (documentHeight - windowHeight), 0),
+          1
+        );
+
+        const photoCards = document.querySelectorAll(".photo-card");
+        photoCards.forEach((card) => {
+          const cardTop = card.getBoundingClientRect().top;
+          if (cardTop < windowHeight * 0.8) {
+            card.style.opacity = 1;
+            card.style.transform = "translateY(0)";
+          }
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const photoCards = document.querySelectorAll(".photo-card");
+        photoCards.forEach((card, index) => {
+          card.style.opacity = 0;
+          card.style.transform = "translateY(20px)";
+          card.style.transition = `opacity 0.6s ease ${
+            index * 0.08
+          }s, transform 0.6s ease ${index * 0.08}s`;
+          window.dispatchEvent(new Event("scroll"));
+        });
+      });
+    </script>
+  </body>
+</html>
