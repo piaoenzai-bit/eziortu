@@ -1,312 +1,279 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>光痕叙事 - 影像创作者主页</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/lucide@0.292.0/dist/umd/lucide.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      /* 自定义动画（替代 framer-motion） */
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>光痕叙事 - 影像创作者主页</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/lucide@0.292.0/dist/umd/lucide.min.css" rel="stylesheet" />
+  
+  <style>
+    /* 自定义动画（替代 framer-motion） */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
       }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.3;
-        }
-      }
-      .animate-fade-in-up {
-        animation: fadeInUp 0.9s forwards;
-      }
-      .animate-fade-in {
-        animation: fadeIn 0.8s forwards;
-        animation-delay: 0.4s;
+    }
+    
+    @keyframes fadeIn {
+      from {
         opacity: 0;
       }
-      .animate-blink {
-        animation: blink 1s infinite;
-      }
-      .hover-scale {
-        transition: transform 0.3s ease;
-        cursor: pointer; /* 新增：鼠标悬浮显示手型，提示可点击 */
-      }
-      .hover-scale:hover {
-        transform: scale(1.03);
-      }
-      .hover-lift {
-        transition: transform 0.3s ease;
-      }
-      .hover-lift:hover {
-        transform: translateY(-6px);
-      }
-      /* 画幅线条基础样式 */
-      .format {
-        position: absolute;
-        border: 2px solid;
-        /* 过渡动画：加快归位速度，更丝滑 */
-        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        /* 初始状态重置 */
-        transform: translate(0, 0) rotate(0deg);
+      to {
         opacity: 1;
       }
-      /* 页面容器：恢复滚动（原overflow-hidden移除） */
-      body {
-        overflow-x: hidden;
-        /* 新增：背景过渡动画，让颜色变化更丝滑 */
-        transition: background-color 0.8s ease;
+    }
+    
+    @keyframes blink {
+      0%, 100% {
+        opacity: 1;
       }
-      /* 监视器参数样式 */
-      .monitor-param {
-        position: absolute;
-        font-family: "Courier New", monospace;
-        font-size: 12px;
-        text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
-        z-index: 1;
-        /* 参数归位过渡 */
-        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        /* 初始状态重置 */
-        transform: translate(0, 0);
-        opacity: 0.9;
+      50% {
+        opacity: 0.3;
       }
-      /* 画幅容器初始状态 */
-      #formatContainer {
-        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        transform: translate(-50%, -50%) scale(1.2) rotate(0deg);
-        opacity: 0.7;
-        left: 50%;
-        top: 50%;
-      }
-    </style>
-    <!-- Tailwind 配置 -->
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              emerald: { 400: "#34d399" },
-              zinc: {
-                300: "#d4d4d8",
-                400: "#a1a1aa",
-                500: "#71717a",
-                700: "#3f3f46",
-                800: "#27272a",
-                900: "#18181b",
-              },
-            },
-            fontFamily: {
-              mono: ["monospace", "Courier New"],
+    }
+    
+    /* 动画类 */
+    .animate-fade-in-up {
+      animation: fadeInUp 0.9s forwards;
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.8s forwards;
+      animation-delay: 0.4s;
+      opacity: 0;
+    }
+    
+    .animate-blink {
+      animation: blink 1s infinite;
+    }
+    
+    /* 交互效果 */
+    .hover-scale {
+      transition: transform 0.3s ease;
+      cursor: pointer; /* 鼠标悬浮显示手型，提示可点击 */
+    }
+    
+    .hover-scale:hover {
+      transform: scale(1.03);
+    }
+    
+    .hover-lift {
+      transition: transform 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-6px);
+    }
+    
+    /* 画幅线条基础样式 */
+    .format {
+      position: absolute;
+      border: 2px solid;
+      /* 过渡动画：加快归位速度，更丝滑 */
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      /* 初始状态重置 */
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 1;
+    }
+    
+    /* 页面容器：恢复滚动（原overflow-hidden移除） */
+    body {
+      overflow-x: hidden;
+      /* 新增：背景过渡动画，让颜色变化更丝滑 */
+      transition: background-color 0.8s ease;
+    }
+    
+    /* 监视器参数样式 */
+    .monitor-param {
+      position: absolute;
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+      z-index: 1;
+      /* 参数归位过渡 */
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      /* 初始状态重置 */
+      transform: translate(0, 0);
+      opacity: 0.9;
+    }
+    
+    /* 画幅容器初始状态 */
+    #formatContainer {
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform: translate(-50%, -50%) scale(1.2) rotate(0deg);
+      opacity: 0.7;
+      left: 50%;
+      top: 50%;
+    }
+  </style>
+  
+  <!-- Tailwind 配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 400: "#34d399" },
+            zinc: {
+              300: "#d4d4d8",
+              400: "#a1a1aa",
+              500: "#71717a",
+              700: "#3f3f46",
+              800: "#27272a",
+              900: "#18181b",
             },
           },
+          fontFamily: {
+            mono: ["monospace", "Courier New"],
+          },
         },
-      };
-    </script>
-  </head>
-  <body class="bg-black text-white min-h-screen">
-    <!-- 背景层：彩色嵌套线条 + 深色底 + 监视器元素 -->
-<div class="fixed inset-0 z-0 overflow-hidden" id="bgRoot">
-  <!-- 可变背景色 -->
-  <div class="absolute inset-0" id="bgColorLayer"></div>
+      },
+    };
+  </script>
+</head>
 
+<body class="bg-black text-white min-h-screen">
+  <!-- 背景层：彩色嵌套线条 + 深色底 + 监视器元素 -->
+  <div class="fixed inset-0 z-0 overflow-hidden" id="bgRoot">
+    <!-- 可变背景色 -->
+    <div class="absolute inset-0" id="bgColorLayer"></div>
 
-      <!-- 彩色嵌套线条容器（居中放大） -->
-      <div
-        id="formatContainer"
-        class="absolute inset-0 flex justify-center items-center"
-      >
-        <div class="relative w-[900px] h-[700px] scale-[1.2] opacity-70">
-          <!-- 各尺寸的彩色线条 -->
-          <div
-            class="format border-[#ffd700] w-[800px] h-[550px] top-[100px] left-[50px]"
-          ></div>
-          <div
-            class="format border-[#add8e6] w-[700px] h-[480px] top-[135px] left-[100px]"
-          ></div>
-          <div
-            class="format border-[#00fa9a] w-[600px] h-[410px] top-[170px] left-[150px]"
-          ></div>
-          <div
-            class="format border-[#00bfff] w-[500px] h-[340px] top-[205px] left-[200px]"
-          ></div>
-          <div
-            class="format border-[#ff6347] w-[450px] h-[300px] top-[230px] left-[225px]"
-          ></div>
-          <div
-            class="format border-[#ff8c00] w-[400px] h-[260px] top-[255px] left-[250px]"
-          ></div>
-          <div
-            class="format border-[#9370db] w-[350px] h-[220px] top-[280px] left-[275px]"
-          ></div>
-          <div
-            class="format border-[#f08080] w-[300px] h-[180px] top-[305px] left-[300px]"
-          ></div>
-          <div
-            class="format border-[#20b2aa] w-[250px] h-[140px] top-[330px] left-[325px]"
-          ></div>
-          <div
-            class="format border-[#dda0dd] w-[200px] h-[110px] top-[350px] left-[350px]"
-          ></div>
-          <div
-            class="format border-[#98fb98] w-[160px] h-[85px] top-[365px] left-[370px]"
-          ></div>
-          <div
-            class="format border-[#ffb6c1] w-[120px] h-[60px] top-[380px] left-[390px]"
-          ></div>
-        </div>
-      </div>
-
-      <!-- 专业摄影监视器元素 -->
-      <div
-        class="monitor-param top-6 left-6 flex items-center gap-2 text-red-500"
-      >
-        <div class="w-3 h-3 bg-red-500 rounded-full animate-blink"></div>
-        <span id="recordStatus">REC</span>
-      </div>
-
-      <div class="monitor-param top-16 left-6 text-cyan-400">
-        CAM: ARRI ALEXA Mini LF
-      </div>
-
-      <div class="monitor-param top-26 left-6 text-cyan-400">
-        RES: 6K (6560x3100) | FPS: 24.00
-      </div>
-
-      <div class="monitor-param top-36 left-6 text-cyan-400">
-        ISO: 800 | SHUTTER: 1/48 | APERTURE: T2.8
-      </div>
-
-      <div
-        class="monitor-param top-6 left-1/2 -translate-x-1/2 text-yellow-400"
-      >
-        ASPECT RATIO: 2.39:1 (Cinemascope)
-      </div>
-
-      <div class="monitor-param top-6 right-6 text-green-400">BAT: 98% 🔋</div>
-
-      <div class="monitor-param top-16 right-6 text-green-400">
-        STORAGE: 128GB REMAIN
-      </div>
-
-      <div
-        id="timecode"
-        class="monitor-param bottom-6 right-6 text-red-500 font-bold"
-      >
-        00:00:00:00
+    <!-- 彩色嵌套线条容器（居中放大） -->
+    <div id="formatContainer" class="absolute inset-0 flex justify-center items-center">
+      <div class="relative w-[900px] h-[700px] scale-[1.2] opacity-70">
+        <!-- 各尺寸的彩色线条 -->
+        <div class="format border-[#ffd700] w-[800px] h-[550px] top-[100px] left-[50px]"></div>
+        <div class="format border-[#add8e6] w-[700px] h-[480px] top-[135px] left-[100px]"></div>
+        <div class="format border-[#00fa9a] w-[600px] h-[410px] top-[170px] left-[150px]"></div>
+        <div class="format border-[#00bfff] w-[500px] h-[340px] top-[205px] left-[200px]"></div>
+        <div class="format border-[#ff6347] w-[450px] h-[300px] top-[230px] left-[225px]"></div>
+        <div class="format border-[#ff8c00] w-[400px] h-[260px] top-[255px] left-[250px]"></div>
+        <div class="format border-[#9370db] w-[350px] h-[220px] top-[280px] left-[275px]"></div>
+        <div class="format border-[#f08080] w-[300px] h-[180px] top-[305px] left-[300px]"></div>
+        <div class="format border-[#20b2aa] w-[250px] h-[140px] top-[330px] left-[325px]"></div>
+        <div class="format border-[#dda0dd] w-[200px] h-[110px] top-[350px] left-[350px]"></div>
+        <div class="format border-[#98fb98] w-[160px] h-[85px] top-[365px] left-[370px]"></div>
+        <div class="format border-[#ffb6c1] w-[120px] h-[60px] top-[380px] left-[390px]"></div>
       </div>
     </div>
 
-    <!-- 前景内容层 -->
-    <div class="relative z-10" id="contentWrapper">
-      <!-- 首屏区域 -->
-      <section
-        class="h-screen flex flex-col justify-center items-center text-center px-6"
-      >
-        <h1
-          class="text-5xl md:text-7xl font-light tracking-widest mb-6 animate-fade-in-up"
-        >
-          光痕叙事
-        </h1>
-        <p class="max-w-xl text-zinc-300 text-2xl md:text-3xl animate-fade-in">
-          摄影_朴恩在<br />
-        </p>
-      </section>
-      <!-- 自我介绍 / Portrait + Statement（人物在左） -->
-      <section
-        class="h-screen flex items-center px-6 md:px-20 max-w-7xl mx-auto"
-      >
-        <div class="grid md:grid-cols-2 gap-16 w-full items-center">
-          <!-- 左侧：人物影像（作为一个画幅） -->
-          <div class="relative animate-fade-in max-w-sm md:max-w-md">
-            <!-- 画幅外框 -->
-            <div
-              class="relative aspect-[3/4] border border-zinc-600 overflow-hidden"
-            >
-              <!-- 照片 -->
-              <img
-                src="assets/IP Photos/1.jpg"
-                alt="Portrait"
-                class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700"
-              />
+    <!-- 专业摄影监视器元素 -->
+    <div class="monitor-param top-6 left-6 flex items-center gap-2 text-red-500">
+      <div class="w-3 h-3 bg-red-500 rounded-full animate-blink"></div>
+      <span id="recordStatus">REC</span>
+    </div>
 
-              <!-- 轻微遮罩，统一电影感 -->
-              <div class="absolute inset-0 bg-black/20"></div>
-            </div>
+    <div class="monitor-param top-16 left-6 text-cyan-400">
+      CAM: ARRI ALEXA Mini LF
+    </div>
 
-            <!-- 照片说明（像监视器字幕） -->
-            <div class="mt-3 text-xs text-zinc-500 font-mono tracking-wide">
-              FRAME — AUTHOR / AVAILABLE LIGHT
-            </div>
+    <div class="monitor-param top-26 left-6 text-cyan-400">
+      RES: 6K (6560x3100) | FPS: 24.00
+    </div>
+
+    <div class="monitor-param top-36 left-6 text-cyan-400">
+      ISO: 800 | SHUTTER: 1/48 | APERTURE: T2.8
+    </div>
+
+    <div class="monitor-param top-6 left-1/2 -translate-x-1/2 text-yellow-400">
+      ASPECT RATIO: 2.39:1 (Cinemascope)
+    </div>
+
+    <div class="monitor-param top-6 right-6 text-green-400">BAT: 98% 🔋</div>
+
+    <div class="monitor-param top-16 right-6 text-green-400">
+      STORAGE: 128GB REMAIN
+    </div>
+
+    <div id="timecode" class="monitor-param bottom-6 right-6 text-red-500 font-bold">
+      00:00:00:00
+    </div>
+  </div>
+
+  <!-- 前景内容层 -->
+  <div class="relative z-10" id="contentWrapper">
+    <!-- 首屏区域 -->
+    <section class="h-screen flex flex-col justify-center items-center text-center px-6">
+      <h1 class="text-5xl md:text-7xl font-light tracking-widest mb-6 animate-fade-in-up">
+        光痕叙事
+      </h1>
+      <p class="max-w-xl text-zinc-300 text-2xl md:text-3xl animate-fade-in">
+        摄影_朴恩在<br />
+      </p>
+    </section>
+
+    <!-- 自我介绍 / Portrait + Statement（人物在左） -->
+    <section class="h-screen flex items-center px-6 md:px-20 max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-16 w-full items-center">
+        <!-- 左侧：人物影像（作为一个画幅） -->
+        <div class="relative animate-fade-in max-w-sm md:max-w-md">
+          <!-- 画幅外框 -->
+          <div class="relative aspect-[3/4] border border-zinc-600 overflow-hidden">
+            <!-- 照片 -->
+            <img
+              src="assets/IP Photos/1.jpg"
+              alt="Portrait"
+              class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700"
+            />
+
+            <!-- 轻微遮罩，统一电影感 -->
+            <div class="absolute inset-0 bg-black/20"></div>
           </div>
 
-          <!-- 右侧：作者陈述 -->
-          <div class="space-y-8 animate-fade-in-up">
-            <h2 class="text-3xl md:text-4xl font-light tracking-widest">
-              Personal statement
-            </h2>
-
-            <p class="text-zinc-300 leading-relaxed text-base md:text-lg">
-              我将摄影视为一种表演行为。<br />
-              它并非站在镜头之外的记录，<br />
-              而是以镜头作为“眼睛”，进入叙事之中。
-            </p>
-
-            <p class="text-zinc-400 leading-relaxed text-sm md:text-base">
-              摄影不是旁观者。<br />
-              它与演员共同承担叙事的重量，<br />
-              在光与时间中，完成一次在场。
-            </p>
-             <!-- 修改：text-gray-700 改为 text-white -->
-             <p class="text-lg text-white mb-4 font-semibold lang-text" data-key="shortFilmTitle">短篇电影</p>
-                    <div class="flex flex-wrap gap-4 mb-8">
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm1">Gently again（再次温柔）</span>
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm2">여름 감기(黄热病)</span>
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm3">평행선（平行线）</span>
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm4">보헤미아 1 （放荡不羁1）</span>
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm4">보헤미아 2 :뮤직비디오（放荡不羁2：MV）</span>
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm5">운석（陨石）</span>
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm6">Can We Kiss Forever(Mv)</span>
-                     </div>
-                     <!-- 修改：text-gray-700 改为 text-white -->
-                     <p class="text-lg text-white mb-4 font-semibold lang-text" data-key="adTitle">广告宣传</p>
-                     <div class="flex flex-wrap gap-4">
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad1">다슈（美妆广告）</span>
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad2">24 WNGP世界自然健美比赛（活动宣传）</span>
-                        <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad3">25 중앙대 트래일러（25年中央大学电影节宣传片）</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
+          <!-- 照片说明（像监视器字幕） -->
+          <div class="mt-3 text-xs text-zinc-500 font-mono tracking-wide">
+            FRAME — AUTHOR / AVAILABLE LIGHT
           </div>
         </div>
-      </section>
 
+        <!-- 右侧：作者陈述 -->
+        <div class="space-y-8 animate-fade-in-up">
+          <!-- 姓名 -->
+          <h2 class="text-3xl md:text-4xl font-light tracking-widest">
+            朴恩在. EZ
+          </h2>
 
+          <!-- 个人信息区域 -->
+          <div class="text-base md:text-lg space-y-2">
+            <p class="text-zinc-400 leading-normal m-0">
+              2004年出生于广东深圳，常驻 广东东莞
+            </p>
+            <p class="text-white leading-normal m-0">
+              Education | 教育程度
+            </p>
+            <p class="text-zinc-400 leading-normal m-0">
+              本科院校：韩国中央大学（传媒编导与表演）<br />职位：摄影指导、掌机、跟焦、照明
+            </p>
+          </div>
 
+          <!-- 短篇电影部分 -->
+          <p class="text-lg text-white mb-4 font-semibold lang-text m-0" data-key="shortFilmTitle">短篇电影</p>
+          <div class="flex flex-wrap gap-4 mb-8">
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm1">Gently again（再次温柔）</span>
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm2">여름 감기(黄热病)</span>
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm3">평행선（平行线）</span>
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm4">보헤미아 1 （放荡不羁1）</span>
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm4">보헤미아 2 :뮤직비디오（放荡不羁2：MV）</span>
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm5">운석（陨石）</span>
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="shortFilm6">Can We Kiss Forever(Mv)</span>
+          </div>
 
+          <!-- 广告宣传部分 -->
+          <p class="text-lg text-white mb-4 font-semibold lang-text m-0" data-key="adTitle">广告宣传</p>
+          <div class="flex flex-wrap gap-4">
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad1">다슈（美妆广告）</span>
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad2">24 WNGP世界自然健美比赛（活动宣传）</span>
+            <span class="bg-slate-100 text-slate-800 px-4 py-2 rounded-full text-sm font-medium lang-text" data-key="ad3">25 중앙대 트래일러（25年中央大学电影节宣传片）</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
 <!-- 视频模块保持原有样式不变 -->
 <section class="py-40 px-6 max-w-6xl mx-auto">

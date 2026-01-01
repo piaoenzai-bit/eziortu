@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="white" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="#ffffff" />
-    <title>静帧叙事</title>
+    <title>现场照片</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       /* ========== 苹果设计系统基础变量 ========== */
@@ -83,6 +83,7 @@
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
         padding-bottom: env(safe-area-inset-bottom);
+        /* 调整顶部内边距，为导航栏留出空间 */
         padding-top: calc(env(safe-area-inset-top) + 44px);
       }
 
@@ -253,7 +254,7 @@
       /* ========== 状态栏信息（苹果风格） ========== */
       .status-bar {
         position: fixed;
-        top: calc(env(safe-area-inset-top) + 44px);
+        top: calc(env(safe-area-inset-top) + 44px); /* 调整位置，避开导航栏 */
         left: 0;
         right: 0;
         display: flex;
@@ -271,10 +272,14 @@
 
       /* ========== 页面标题（苹果排版规范） ========== */
       .page-header {
-        padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-xl);
+        padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-xl); /* 调整顶部间距 */
         text-align: center;
         max-width: 720px;
         margin: 0 auto;
+        /* 锚点定位目标 */
+        scroll-margin-top: calc(
+          env(safe-area-inset-top) + 44px + var(--spacing-md)
+        );
       }
 
       .page-title {
@@ -431,13 +436,13 @@
         <div class="back-icon"></div>
         <span>返回</span>
       </div>
-      <div class="navbar-title">静帧叙事</div>
+      <div class="navbar-title">现场照片</div>
     </nav>
 
     <!-- 苹果风格状态栏信息 -->
     <div class="status-bar">
-      <div>STILL FRAMES</div>
-      <div class="frame-counter" id="frameCounter">01/20</div>
+      <div>ON-SET PHOTOS</div>
+      <div class="frame-counter" id="frameCounter">01/16</div>
     </div>
 
     <!-- 背景动画元素 -->
@@ -450,10 +455,10 @@
 
     <!-- 页面内容 -->
     <main>
-      <!-- 标题区域 -->
+      <!-- 标题区域 - 锚点目标 -->
       <header class="page-header" id="header">
-        <h1 class="page-title">静帧</h1>
-        <p class="page-subtitle">Still Frames · 朴恩在</p>
+        <h1 class="page-title">现场照片</h1>
+        <p class="page-subtitle">On-Set Photos · 朴恩在</p>
       </header>
 
       <!-- 图片画廊 - 锚点目标 -->
@@ -462,7 +467,7 @@
           <!-- 第1张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/1.jpg"
+              src="assets/On-set photos/1.jpg"
               class="gallery-image"
               data-index="01"
               onload="this.classList.add('loaded')"
@@ -471,7 +476,7 @@
           <!-- 第2张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/5.jpg"
+              src="assets/On-set photos/7.jpg"
               class="gallery-image"
               data-index="02"
               onload="this.classList.add('loaded')"
@@ -480,7 +485,7 @@
           <!-- 第3张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/9.jpg"
+              src="assets/On-set photos/15.jpg"
               class="gallery-image"
               data-index="03"
               onload="this.classList.add('loaded')"
@@ -489,7 +494,7 @@
           <!-- 第4张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/11.jpg"
+              src="assets/On-set photos/17.jpg"
               class="gallery-image"
               data-index="04"
               onload="this.classList.add('loaded')"
@@ -498,7 +503,7 @@
           <!-- 第5张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/13.jpg"
+              src="assets/On-set photos/22.jpg"
               class="gallery-image"
               data-index="05"
               onload="this.classList.add('loaded')"
@@ -507,7 +512,7 @@
           <!-- 第6张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/16.jpg"
+              src="assets/On-set photos/19.jpg"
               class="gallery-image"
               data-index="06"
               onload="this.classList.add('loaded')"
@@ -516,7 +521,7 @@
           <!-- 第7张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/18.jpg"
+              src="assets/On-set photos/23.jpg"
               class="gallery-image"
               data-index="07"
               onload="this.classList.add('loaded')"
@@ -525,7 +530,7 @@
           <!-- 第8张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/23.jpg"
+              src="assets/On-set photos/25.jpg"
               class="gallery-image"
               data-index="08"
               onload="this.classList.add('loaded')"
@@ -534,7 +539,7 @@
           <!-- 第9张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/30.jpg"
+              src="assets/On-set photos/21.jpg"
               class="gallery-image"
               data-index="09"
               onload="this.classList.add('loaded')"
@@ -543,7 +548,7 @@
           <!-- 第10张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/28.jpg"
+              src="assets/On-set photos/8.jpg"
               class="gallery-image"
               data-index="10"
               onload="this.classList.add('loaded')"
@@ -552,7 +557,7 @@
           <!-- 第11张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/33.jpg"
+              src="assets/On-set photos/10.jpg"
               class="gallery-image"
               data-index="11"
               onload="this.classList.add('loaded')"
@@ -561,7 +566,7 @@
           <!-- 第12张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/16.jpg"
+              src="assets/On-set photos/18.jpg"
               class="gallery-image"
               data-index="12"
               onload="this.classList.add('loaded')"
@@ -570,7 +575,7 @@
           <!-- 第13张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/34.jpg"
+              src="assets/On-set photos/20.jpg"
               class="gallery-image"
               data-index="13"
               onload="this.classList.add('loaded')"
@@ -579,7 +584,7 @@
           <!-- 第14张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/36.jpg"
+              src="assets/On-set photos/9.jpg"
               class="gallery-image"
               data-index="14"
               onload="this.classList.add('loaded')"
@@ -588,7 +593,7 @@
           <!-- 第15张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/37.jpg"
+              src="assets/On-set photos/4.jpg"
               class="gallery-image"
               data-index="15"
               onload="this.classList.add('loaded')"
@@ -597,45 +602,9 @@
           <!-- 第16张 -->
           <div class="gallery-item">
             <img
-              src="assets/StillFrames/38.jpg"
+              src="assets/On-set photos/5.jpg"
               class="gallery-image"
               data-index="16"
-              onload="this.classList.add('loaded')"
-            />
-          </div>
-          <!-- 第17张 -->
-          <div class="gallery-item">
-            <img
-              src="assets/StillFrames/40.jpg"
-              class="gallery-image"
-              data-index="17"
-              onload="this.classList.add('loaded')"
-            />
-          </div>
-          <!-- 第18张 -->
-          <div class="gallery-item">
-            <img
-              src="assets/StillFrames/39.jpg"
-              class="gallery-image"
-              data-index="18"
-              onload="this.classList.add('loaded')"
-            />
-          </div>
-          <!-- 第19张 -->
-          <div class="gallery-item">
-            <img
-              src="assets/StillFrames/43.jpg"
-              class="gallery-image"
-              data-index="19"
-              onload="this.classList.add('loaded')"
-            />
-          </div>
-          <!-- 第20张 -->
-          <div class="gallery-item">
-            <img
-              src="assets/StillFrames/15.jpg"
-              class="gallery-image"
-              data-index="20"
               onload="this.classList.add('loaded')"
             />
           </div>
@@ -701,7 +670,7 @@
 
       // 4. 滚动监听 - 苹果风格的平滑动画
       let currentFrame = 1;
-      const totalFrames = 20;
+      const totalFrames = 16; // 更新为16张图片
       const frameCounter = document.getElementById("frameCounter");
       const backToTop = document.getElementById("backToTop");
       const frameDecorations = document.querySelectorAll(".frame-decoration");

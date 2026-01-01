@@ -2,39 +2,80 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>光痕叙事</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
-
     <style>
       :root {
         --bg: 0;
         --fg: 255;
+        --accent: 255, 255, 255;
+        --blur: 20px;
+        --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --duration: 0.8s; /* 延长动画时长，让变化更明显 */
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
       body {
-        margin: 0;
         background: rgb(var(--bg), var(--bg), var(--bg));
         color: rgb(var(--fg), var(--fg), var(--fg));
-        font-family: "Courier New", monospace;
-        transition: background 0.15s linear, color 0.15s linear;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+          "Helvetica Neue", "Courier New", monospace;
+        transition: background var(--duration) var(--ease),
+          color var(--duration) var(--ease);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        perspective: 1200px; /* 增大透视距离，强化3D效果 */
       }
 
-      /* ================= 背景画幅 ================= */
+      /* ================= 苹果风格毛玻璃 ================= */
+      .glass {
+        background: rgba(var(--bg), var(--bg), var(--bg), 0.7);
+        backdrop-filter: blur(var(--blur));
+        -webkit-backdrop-filter: blur(var(--blur));
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.1);
+      }
+
+      /* ================= 背景画幅（强化动效） ================= */
+      .format-container {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
       .format {
         position: absolute;
-        inset: 0;
-        border: 1.5px solid rgb(var(--fg), var(--fg), var(--fg));
+        inset: 12px;
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.8);
         transform-origin: center;
-        pointer-events: none;
-        transition: border-color 0.15s linear;
+        transition: border-color var(--duration) var(--spring),
+          /* 改用弹簧曲线，变化更夸张 */ opacity var(--duration) var(--spring),
+          transform var(--duration) var(--spring); /* 新增transform过渡 */
+        opacity: 0.7;
+        border-radius: 4px;
       }
 
-      /* ================= HUD ================= */
+      /* ================= HUD（苹果风格精简） ================= */
       .hud {
         font-size: 11px;
-        text-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        z-index: 50;
+        letter-spacing: 0.5px;
       }
 
       @keyframes blink {
@@ -43,106 +84,547 @@
           opacity: 1;
         }
         50% {
-          opacity: 0.3;
+          opacity: 0.2;
         }
       }
+
       .blink {
-        animation: blink 1s infinite;
+        animation: blink 1.2s infinite ease-in-out;
       }
 
-      /* ================= Section ================= */
+      /* ================= Section（强化滚动动效） ================= */
+      main {
+        position: relative;
+        z-index: 10;
+        perspective: 1000px; /* 增大透视 */
+      }
+
       section {
         min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 4rem 1.5rem;
+        padding: 2rem 1.5rem;
+        transform-style: preserve-3d;
+        transition: transform 0.6s var(--spring); /* 延长时长+弹簧曲线 */
       }
 
-      /* 核心：统一并缩短模块间距 */
       .content-flow {
         min-height: auto;
-        padding: 1.8rem 1.5rem;
-      }
-      .content-flow + .content-flow {
-        margin-top: -0.5rem;
+        padding: 2rem 1.5rem;
+        margin-bottom: 3rem;
+        transform-style: preserve-3d;
       }
 
+      /* ================= 封面页强化互动设计 ================= */
+      .hero-section {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      /* 强化背景图层动效 */
+      .hero-bg-container {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at 30% 40%,
+            rgba(var(--fg), var(--fg), var(--fg), 0.25) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            circle at 70% 80%,
+            rgba(var(--fg), var(--fg), var(--fg), 0.15) 0%,
+            transparent 65%
+          );
+        animation: bgPulse 8s infinite ease-in-out alternate;
+        transition: all 0.8s var(--spring); /* 背景也加入滚动过渡 */
+      }
+
+      @keyframes bgPulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+      }
+
+      /* 强化互动的视觉元素 */
+      .hero-decor {
+        position: absolute;
+        z-index: -1;
+        opacity: 0.25; /* 提高基础透明度，让元素更明显 */
+        pointer-events: none;
+        transition: all 0.8s var(--spring); /* 所有装饰元素都用弹簧曲线过渡 */
+      }
+
+      /* 强化镜头光效 */
+      .decor-lens-flare {
+        top: 10%;
+        left: 8%;
+        width: clamp(18rem, 50vw, 30rem); /* 增大尺寸 */
+        height: clamp(18rem, 50vw, 30rem);
+        background: radial-gradient(
+          circle,
+          rgba(var(--fg), var(--fg), var(--fg), 0.25) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        animation: lensFlare 10s infinite ease-in-out alternate;
+      }
+
+      @keyframes lensFlare {
+        0% {
+          transform: translate(-20px, 20px) scale(1);
+          opacity: 0.2;
+        }
+        100% {
+          transform: translate(20px, -20px) scale(1.1);
+          opacity: 0.3;
+        }
+      }
+
+      /* 强化九宫格动效 */
+      .decor-grid {
+        bottom: 15%;
+        right: 8%;
+        width: clamp(12rem, 40vw, 25rem); /* 增大尺寸 */
+        height: clamp(12rem, 40vw, 25rem);
+        border: 1.5px solid rgba(var(--fg), var(--fg), var(--fg), 0.3); /* 加粗边框+提高透明度 */
+        position: relative;
+        animation: gridRotate 15s infinite linear; /* 加快旋转速度 */
+      }
+
+      .decor-grid::before,
+      .decor-grid::after {
+        content: "";
+        position: absolute;
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.3); /* 提高透明度 */
+      }
+
+      .decor-grid::before {
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 1.5px; /* 加粗线条 */
+        transform: translateY(-50%);
+      }
+
+      .decor-grid::after {
+        left: 50%;
+        top: 0;
+        height: 100%;
+        width: 1.5px; /* 加粗线条 */
+        transform: translateX(-50%);
+      }
+
+      .decor-grid .grid-line {
+        position: absolute;
+        background: rgba(
+          var(--fg),
+          var(--fg),
+          var(--fg),
+          0.25
+        ); /* 提高透明度 */
+      }
+
+      .decor-grid .grid-line.v {
+        width: 1.5px; /* 加粗线条 */
+        height: 100%;
+        top: 0;
+      }
+
+      .decor-grid .grid-line.h {
+        height: 1.5px; /* 加粗线条 */
+        width: 100%;
+        left: 0;
+      }
+
+      .decor-grid .grid-line.v:nth-child(1) {
+        left: 33.3%;
+      }
+      .decor-grid .grid-line.v:nth-child(2) {
+        left: 66.6%;
+      }
+      .decor-grid .grid-line.h:nth-child(3) {
+        top: 33.3%;
+      }
+      .decor-grid .grid-line.h:nth-child(4) {
+        top: 66.6%;
+      }
+
+      @keyframes gridRotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* 主内容容器 */
+      .hero-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        transform-style: preserve-3d;
+        animation: heroFadeIn 1.8s var(--spring);
+        max-width: 85%;
+        margin: 0 auto;
+      }
+
+      @keyframes heroFadeIn {
+        0% {
+          opacity: 0;
+          transform: translateZ(-50px) translateY(50px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateZ(0) translateY(0);
+        }
+      }
+
+      /* 标题区域 - 强化动效 */
+      .hero-title-wrapper {
+        margin-bottom: 3.5rem;
+        transition: all 0.8s var(--spring); /* 标题也加入滚动过渡 */
+      }
+
+      .hero-title {
+        font-size: clamp(2.8rem, 10vw, 5rem);
+        font-weight: 400;
+        letter-spacing: 0.25em;
+        margin-bottom: 1.2rem;
+        position: relative;
+        transform: translateZ(60px); /* 增大3D距离 */
+        text-transform: uppercase;
+        text-shadow: 0 0 20px rgba(var(--fg), var(--fg), var(--fg), 0.1); /* 增加文字光晕 */
+      }
+
+      .hero-title::after {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 2px; /* 加粗分割线 */
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgb(var(--fg), var(--fg), var(--fg)),
+          transparent
+        );
+        animation: linePulse 3s infinite ease-in-out; /* 加快脉冲速度 */
+        box-shadow: 0 0 10px rgba(var(--fg), var(--fg), var(--fg), 0.3); /* 分割线光晕 */
+      }
+
+      @keyframes linePulse {
+        0%,
+        100% {
+          width: 50%;
+          opacity: 0.8;
+        }
+        50% {
+          width: 80%;
+          opacity: 1;
+        }
+      }
+
+      .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.25rem);
+        letter-spacing: 0.4em;
+        opacity: 0.85;
+        transform: translateZ(40px); /* 增大3D距离 */
+        font-weight: 300;
+        text-transform: uppercase;
+      }
+
+      /* 核心标语 */
+      .hero-tagline {
+        font-size: clamp(0.875rem, 3vw, 1rem);
+        letter-spacing: 0.15em;
+        opacity: 0.75;
+        max-width: 85%;
+        line-height: 2.2;
+        transform: translateZ(30px); /* 增大3D距离 */
+        font-weight: 200;
+        transition: all 0.8s var(--spring);
+      }
+
+      /* 强化滚动指示器 */
+      .hero-scroll-indicator {
+        position: absolute;
+        bottom: 3rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 1; /* 提高基础透明度 */
+        animation: scrollIndicator 2s infinite ease-in-out; /* 加快动画速度 */
+        z-index: 10;
+      }
+
+      @keyframes scrollIndicator {
+        0% {
+          transform: translateX(-50%) translateY(0);
+          opacity: 0.8;
+        }
+        50% {
+          transform: translateX(-50%) translateY(15px);
+          opacity: 1;
+        } /* 增大移动距离 */
+        100% {
+          transform: translateX(-50%) translateY(0);
+          opacity: 0.8;
+        }
+      }
+
+      .scroll-line {
+        width: 2px; /* 加粗指示线 */
+        height: 50px; /* 加长指示线 */
+        background: linear-gradient(
+          to bottom,
+          rgb(var(--fg), var(--fg), var(--fg)),
+          transparent
+        );
+        margin-bottom: 12px;
+        box-shadow: 0 0 10px rgba(var(--fg), var(--fg), var(--fg), 0.3); /* 指示线光晕 */
+      }
+
+      .scroll-text {
+        font-size: 11px; /* 加大文字 */
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        opacity: 1;
+        font-weight: 300;
+      }
+
+      /* ================= 面板（苹果风格设计） ================= */
       .panel {
-        border: 1px solid rgb(var(--fg), var(--fg), var(--fg));
-        padding: 1.5rem;
-        backdrop-filter: blur(2px);
-        transition: border-color 0.15s linear;
+        border-radius: 16px;
+        padding: 2rem;
+        transition: border-color var(--duration) var(--ease),
+          transform 0.6s var(--spring),
+          /* 弹簧曲线，hover效果更夸张 */ box-shadow 0.6s var(--spring);
+        width: 100%;
+        max-width: 100%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transform: translateZ(0);
+      }
+
+      .panel:hover {
+        transform: translateZ(20px) translateY(-8px) scale(1.02); /* 增大hover效果 */
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
       }
 
       .title {
         font-size: 0.75rem;
         letter-spacing: 0.3em;
         opacity: 0.7;
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+
+      /* ================= 按钮（强化互动） ================= */
+      .btn-view {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        padding: 10px 20px; /* 加大按钮 */
+        border-radius: 10px; /* 调整圆角 */
+        transition: all 0.4s var(--spring); /* 弹簧曲线，互动更明显 */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.15); /* 加深背景 */
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.2); /* 增加边框 */
+      }
+
+      .btn-view:hover {
+        background: rgba(
+          var(--fg),
+          var(--fg),
+          var(--fg),
+          0.25
+        ); /* 加深hover背景 */
+        transform: translateZ(10px) scale(1.05); /* 放大+3D效果 */
+        box-shadow: 0 5px 15px rgba(var(--fg), var(--fg), var(--fg), 0.1);
+      }
+
+      .btn-view:active {
+        transform: scale(0.98) translateZ(5px); /* 点击效果更明显 */
+      }
+
+      /* ================= 视频播放器（苹果风格） ================= */
+      .video-container {
+        touch-action: none;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .video-wrapper {
+        border-radius: 8px;
+        overflow: hidden;
+        background: #000;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.4s var(--spring);
+      }
+
+      .video-wrapper:hover {
+        transform: translateZ(10px) scale(1.01);
+      }
+
+      video {
+        outline: none;
+        transition: opacity 0.5s var(--ease);
+      }
+
+      /* ================= 图片（强化加载动效） ================= */
+      img {
+        border-radius: 8px;
+        transition: opacity 0.8s var(--spring),
+          /* 弹簧曲线 */ transform 0.8s var(--spring);
+        opacity: 0;
+        transform: translateY(30px) scale(0.95); /* 初始状态更明显 */
+      }
+
+      img.loaded {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      /* ================= 滚动条（强化视觉） ================= */
+      ::-webkit-scrollbar {
+        width: 6px; /* 加宽滚动条 */
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.05);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.4);
+        border-radius: 3px;
+        transition: all 0.3s var(--spring);
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.6);
+        transform: scaleX(1.2);
       }
     </style>
   </head>
 
   <body>
-    <!-- ================= 背景画幅 ================= -->
-    <div
-      class="fixed inset-0 z-0 flex items-center justify-center overflow-hidden"
-    >
-      <div class="relative aspect-[2.39/1] w-[92vw]">
+    <!-- ================= 背景画幅（强化动效） ================= -->
+    <div class="format-container">
+      <div class="relative aspect-[16/9] w-[90vw] h-[85vh]">
         <div class="format" data-depth="0"></div>
         <div class="format" data-depth="1"></div>
         <div class="format" data-depth="2"></div>
         <div class="format" data-depth="3"></div>
-        <div class="format" data-depth="4"></div>
       </div>
     </div>
 
-    <!-- ================= HUD ================= -->
+    <!-- ================= HUD（苹果风格精简） ================= -->
     <div
       class="fixed top-4 left-4 z-20 hud text-red-500 flex items-center gap-2"
     >
       <span class="w-2 h-2 bg-red-500 rounded-full blink"></span> REC
     </div>
     <div class="fixed top-4 right-4 z-20 hud">BAT 97%</div>
-    <div class="fixed bottom-4 right-4 z-20 hud font-bold" id="timecode">
+    <div class="fixed bottom-4 right-4 z-20 hud font-semibold" id="timecode">
       00:00:00:00
     </div>
 
-    <main class="relative z-10">
-      <!-- 封面 -->
-      <section>
-        <div class="text-center">
-          <h1 class="text-4xl tracking-widest mb-4">光痕叙事</h1>
-          <p class="tracking-widest opacity-70">摄影 · 朴恩在</p>
+    <main>
+      <!-- 封面（强化互动版） -->
+      <section class="hero-section">
+        <!-- 背景图层 -->
+        <div class="hero-bg-container">
+          <div class="hero-bg"></div>
+        </div>
+
+        <!-- 强化互动的装饰元素 -->
+        <div class="hero-decor decor-lens-flare" id="lensFlare"></div>
+        <div class="hero-decor decor-grid" id="grid"></div>
+
+        <!-- 主内容 -->
+        <div class="hero-container">
+          <div class="hero-title-wrapper" id="titleWrapper">
+            <h1 class="hero-title">光痕叙事</h1>
+            <p class="hero-subtitle">摄影 · 朴恩在</p>
+          </div>
+
+          <p class="hero-tagline" id="tagline">
+            用光影编织故事，让瞬间成为永恒<br />
+            每一次开机，都是进去故事的过程
+          </p>
+        </div>
+
+        <!-- 强化的滚动指示器 -->
+        <div class="hero-scroll-indicator">
+          <div class="scroll-line"></div>
+          <div class="scroll-text">Discover More</div>
         </div>
       </section>
 
-      <!-- 个人简介 -->
-      <section>
-        <div class="panel max-w-xl w-full">
+      <!-- 个人简介（苹果风格面板） -->
+      <section class="content-flow">
+        <div class="panel glass">
           <div class="title">PROFILE</div>
-          <div class="aspect-[3/4] mb-4 overflow-hidden border">
+          <div
+            class="aspect-[3/4] mb-4 overflow-hidden border-0 rounded-lg shadow-lg"
+          >
             <img
               src="assets/IP Photos/1.jpg"
-              class="w-full h-full object-cover"
+              class="w-full h-full"
+              onload="this.classList.add('loaded')"
             />
           </div>
-          <p class="text-sm leading-relaxed">
-            摄影并非站在镜头之外的记录者。<br /><br />
-            它进入叙事，参与情绪，与演员一同完成表演。
+          <p
+            class="text-sm leading-relaxed font-light tracking-tight transform-none"
+            style="
+              transform: none;
+              text-align: left;
+              letter-spacing: 0.2px;
+              font-synthesis: none;
+              text-rendering: optimizeLegibility;
+            "
+          >
+            <span class="text-xl font-medium">朴恩在</span><br />
+            2004 广东东莞 毕业于韩国中央大学(Chung ang University)<br /><br />
+            职位：摄影指导、掌机、跟焦、灯光、录助、剪辑调色<br /><br />
+            在大学期间，完整的完成过学校长篇电影项目的现场剪辑，在韩国还在市长级出席的晚会中担任Youtobe直播现场导播，掌握中韩语言的沟通，跟过许多中、韩剧组，掌握剧组各个部门的分工体系。
           </p>
         </div>
       </section>
 
-      <!-- 视频监视器 -->
+      <!-- 视频监视器（苹果风格设计） -->
       <section class="content-flow flex justify-center">
-        <div class="w-full max-w-[900px]">
-          <div
-            class="relative bg-black rounded-xl overflow-hidden border border-zinc-700 font-mono mx-auto"
-          >
+        <div class="w-full max-w-full">
+          <div class="glass video-wrapper">
             <div
-              class="flex justify-between px-4 py-2 text-xs text-white border-b border-zinc-700"
+              class="flex justify-between px-4 py-2 text-xs text-white bg-black/80"
             >
               <div class="flex gap-4">
                 <span>FPS 24</span><span>SHUTTER 180°</span><span>EI 800</span>
@@ -150,7 +632,7 @@
               <span class="text-yellow-400">[LDS]</span>
             </div>
 
-            <div class="relative aspect-video bg-black">
+            <div class="relative aspect-video bg-black video-container">
               <video
                 src="assets/video/1.mp4"
                 autoplay
@@ -158,145 +640,329 @@
                 loop
                 playsinline
                 class="absolute inset-0 w-full h-full object-cover"
+                poster="assets/StillFrames/01.jpg"
               ></video>
-              <div class="absolute inset-6 border border-white/70"></div>
+              <div class="absolute inset-6 border border-white/60"></div>
               <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-5 h-5 border border-white/70"></div>
+                <div class="w-5 h-5 border border-white/60"></div>
               </div>
             </div>
 
-            <div
-              class="flex justify-between px-4 py-2 text-xs border-t border-zinc-700"
-            >
+            <div class="flex justify-between px-4 py-2 text-xs bg-black/80">
               <span class="text-white">BAT 13.2V</span>
-              <span class="text-red-500 font-bold">00:57:29:08</span>
+              <span class="text-red-500 font-semibold">00:57:29:08</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 静帧 -->
+      <!-- 静帧（苹果风格网格） -->
       <section class="content-flow">
-        <div class="panel w-full max-w-3xl relative">
+        <div class="panel glass relative">
           <div class="title">STILL FRAMES</div>
 
-          <!-- 图片网格 -->
-          <div class="grid grid-cols-2 gap-3">
+          <!-- 苹果风格图片网格 -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
             <img
-              src="assets/StillFrames/01.jpg"
-              class="aspect-video object-cover"
+              src="assets/StillFrames/1.jpg"
+              class="aspect-video shadow-md"
+              onload="this.classList.add('loaded')"
             />
             <img
               src="assets/StillFrames/5.jpg"
-              class="aspect-video object-cover"
+              class="aspect-video shadow-md"
+              onload="this.classList.add('loaded')"
             />
             <img
               src="assets/StillFrames/28.jpg"
-              class="aspect-video object-cover"
+              class="aspect-video shadow-md"
+              onload="this.classList.add('loaded')"
             />
             <img
               src="assets/StillFrames/33.jpg"
-              class="aspect-video object-cover"
+              class="aspect-video shadow-md"
+              onload="this.classList.add('loaded')"
             />
           </div>
 
-          <!-- 进入按钮 -->
+          <!-- 强化互动的按钮 -->
           <a
-            href="stillframes.html"
-            class="absolute right-4 bottom-4 text-white text-[11px] tracking-widest px-3 py-1 border border-white opacity-80 hover:opacity-100 transition"
+            href="stillframes_mobile.html"
+            class="btn-view absolute right-6 bottom-6 text-white border border-white/20"
           >
             VIEW ALL →
           </a>
         </div>
       </section>
 
-      <!-- 现场 -->
+      <!-- 现场（苹果风格适配） -->
       <section class="content-flow">
-        <div class="panel max-w-xl w-full">
+        <div class="panel glass relative">
           <div class="title">ON SET</div>
           <img
             src="assets/On-set photos/4.jpg"
-            class="aspect-video object-cover"
+            class="aspect-video w-full mb-8 shadow-md"
+            onload="this.classList.add('loaded')"
           />
-          <!-- 进入按钮 -->
           <a
-            href="stillframes.html"
-            class="absolute right-4 bottom-4 text-white text-[11px] tracking-widest px-3 py-1 border border-white opacity-80 hover:opacity-100 transition"
+            href="Onsetphotos_mobile.html"
+            class="btn-view absolute right-6 bottom-6 text-white border border-white/20"
           >
             VIEW ALL →
           </a>
         </div>
       </section>
 
-      <!-- 联系 -->
-      <section class="content-flow">
-        <div class="panel max-w-md w-full text-center">
+      <!-- 联系（苹果风格交互） -->
+      <section class="content-flow pb-16">
+        <div class="panel glass text-center">
           <div class="title">CONTACT</div>
-          <p class="text-sm">
+          <p class="text-sm leading-relaxed my-6 font-light">
             Email · piaoenzai@gmail.com<br />
             Phone · 138-2526-7531<br />
             WeChat · eziortu
           </p>
-          <p class="text-xs text-zinc-500 mt-2">AVAILABLE FOR COLLABORATION</p>
+          <p class="text-xs text-zinc-400 mt-2 tracking-wider">
+            AVAILABLE FOR COLLABORATION
+          </p>
         </div>
       </section>
     </main>
 
     <script>
-      /* ===== 时间码 ===== */
+      /* ===== 时间码（苹果风格精准计时） ===== */
       let h = 0,
         m = 0,
         s = 0,
         f = 0;
       const fps = 24;
       const timecode = document.getElementById("timecode");
+      let lastUpdate = performance.now();
 
-      setInterval(() => {
-        if (++f >= fps) {
-          f = 0;
-          if (++s >= 60) {
-            s = 0;
-            if (++m >= 60) {
-              m = 0;
-              h++;
+      function updateTimecode(timestamp) {
+        const delta = timestamp - lastUpdate;
+
+        if (delta >= 1000 / fps) {
+          lastUpdate = timestamp;
+
+          if (++f >= fps) {
+            f = 0;
+            if (++s >= 60) {
+              s = 0;
+              if (++m >= 60) {
+                m = 0;
+                h++;
+              }
             }
           }
+
+          timecode.textContent = `${String(h).padStart(2, "0")}:${String(
+            m
+          ).padStart(2, "0")}:${String(s).padStart(2, "0")}:${String(
+            f
+          ).padStart(2, "0")}`;
         }
-        timecode.textContent = `${String(h).padStart(2, "0")}:${String(
-          m
-        ).padStart(2, "0")}:${String(s).padStart(2, "0")}:${String(f).padStart(
-          2,
-          "0"
-        )}`;
-      }, 1000 / fps);
 
-      /* ===== 滚动统一驱动 ===== */
+        requestAnimationFrame(updateTimecode);
+      }
+
+      requestAnimationFrame(updateTimecode);
+
+      /* ===== 强化的滚动互动效果 ===== */
       const formats = document.querySelectorAll(".format");
+      const sections = document.querySelectorAll("section");
 
-      window.addEventListener("scroll", () => {
-        const scrollMax = document.body.scrollHeight - innerHeight;
-        const p = Math.min(scrollY / scrollMax, 1);
+      // 获取所有需要强化动效的元素
+      const lensFlare = document.getElementById("lensFlare");
+      const grid = document.getElementById("grid");
+      const titleWrapper = document.getElementById("titleWrapper");
+      const tagline = document.getElementById("tagline");
+      const heroBg = document.querySelector(".hero-bg");
+      const scrollIndicator = document.querySelector(".hero-scroll-indicator");
 
-        /* 背景慢，字体快 */
-        const bg = Math.round(p * 255);
-        const fg = Math.round(255 - Math.min(p * 380, 255));
+      let ticking = false;
 
-        document.documentElement.style.setProperty("--bg", bg);
-        document.documentElement.style.setProperty("--fg", fg);
+      function handleScroll() {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const scrollMax = document.body.scrollHeight - windowHeight;
+            const scrollProgress = Math.min(scrollY / scrollMax, 1);
+            const heroProgress = Math.min(1, scrollY / windowHeight);
 
-        formats.forEach((el, i) => {
-          const d = i * 0.15;
-          const scale = 1 + p * (0.6 + d);
-          const x = p * (120 + i * 60);
-          const y = p * (80 + i * 40);
-          const r = p * (12 + i * 6);
+            // 1. 背景色彩过渡（更夸张的变化）
+            const bg = Math.round(scrollProgress * 255);
+            const fg = Math.round(255 - Math.min(scrollProgress * 350, 255)); // 加大对比度
+            document.documentElement.style.setProperty("--bg", bg);
+            document.documentElement.style.setProperty("--fg", fg);
 
-          el.style.transform = `
-            scale(${scale})
-            translate(${x}px, ${y}px)
-            rotate(${r}deg)
-          `;
-        });
+            // 2. 背景画幅的夸张动效
+            formats.forEach((el, i) => {
+              const depth = i * 0.15; // 增大深度系数
+              const scale = 1 + scrollProgress * (1.5 + depth); // 更夸张的缩放
+              const rotate = scrollProgress * (30 + i * 10); // 更夸张的旋转
+              const translateX =
+                scrollProgress * (200 + i * 60) * (i % 2 === 0 ? 1 : -1); // 更大的位移
+              const translateY =
+                scrollProgress * (150 + i * 50) * (i % 2 === 0 ? -1 : 1); // 更大的位移
+              const opacity = 0.7 - scrollProgress * 0.5 + i * 0.08; // 更明显的透明度变化
+
+              el.style.transform = `
+              scale(${scale})
+              rotate(${rotate}deg)
+              translate(${translateX}px, ${translateY}px)
+            `;
+              el.style.opacity = opacity;
+              el.style.borderColor = `rgba(${fg}, ${fg}, ${fg}, ${
+                0.9 - scrollProgress * 0.4
+              })`; // 更明显的边框透明度变化
+            });
+
+            // 3. 强化的视差滚动效果
+            sections.forEach((section, index) => {
+              const sectionTop = section.offsetTop;
+              const sectionProgress = Math.max(
+                0,
+                Math.min(
+                  1,
+                  (scrollY - sectionTop + windowHeight) / (windowHeight * 1.2)
+                )
+              );
+              const rotateY = sectionProgress * 8 - 4; // 更夸张的旋转角度
+              const translateZ = sectionProgress * 60; // 更大的3D距离
+              const translateY = -sectionProgress * 30; // 新增垂直位移
+
+              section.style.transform = `
+              rotateY(${rotateY}deg)
+              translateZ(${translateZ}px)
+              translateY(${translateY}px)
+            `;
+            });
+
+            // 4. 极度夸张的封面元素滚动动效
+            if (titleWrapper) {
+              titleWrapper.style.transform = `
+              translateZ(${80 - heroProgress * 150}px)
+              translateY(${heroProgress * 80}px)
+              scale(${1 - heroProgress * 0.2})
+            `;
+              titleWrapper.style.opacity = 1 - heroProgress * 0.98;
+            }
+
+            if (tagline) {
+              tagline.style.transform = `
+              translateZ(${50 - heroProgress * 100}px)
+              translateY(${heroProgress * 60}px)
+              scale(${1 - heroProgress * 0.15})
+            `;
+              tagline.style.opacity = 1 - heroProgress * 0.95;
+            }
+
+            // 镜头光晕的夸张动效
+            if (lensFlare) {
+              lensFlare.style.transform = `
+              translate(${-20 + heroProgress * 300}px, ${
+                20 - heroProgress * 250
+              }px)
+              scale(${1 + heroProgress * 0.8})
+              rotate(${heroProgress * 45}deg)
+            `;
+              lensFlare.style.opacity = 0.25 - heroProgress * 0.25;
+            }
+
+            // 九宫格的夸张动效
+            if (grid) {
+              grid.style.transform = `
+              rotate(${heroProgress * 540}deg)
+              translate(${heroProgress * 250}px, ${heroProgress * 200}px)
+              scale(${1 + heroProgress * 0.8})
+            `;
+              grid.style.opacity = 0.25 - heroProgress * 0.25;
+            }
+
+            // 滚动指示器的夸张淡出
+            if (scrollIndicator) {
+              scrollIndicator.style.opacity = 1 - heroProgress * 1.2;
+              scrollIndicator.style.transform = `translateX(-50%) translateY(${
+                heroProgress * 50
+              }px)`;
+            }
+
+            // 背景的夸张变化
+            if (heroBg) {
+              heroBg.style.opacity = 1 - heroProgress * 1;
+              heroBg.style.transform = `scale(${1 + heroProgress * 0.5})`;
+              heroBg.style.filter = `blur(${heroProgress * 5}px)`; // 新增模糊效果
+            }
+
+            ticking = false;
+          });
+
+          ticking = true;
+        }
+      }
+
+      // 被动监听滚动事件，提升性能
+      window.addEventListener("scroll", handleScroll, { passive: true });
+
+      // 初始触发一次
+      handleScroll();
+
+      /* ===== 图片懒加载（强化动效） ===== */
+      document.addEventListener("DOMContentLoaded", () => {
+        const images = document.querySelectorAll("img");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.src;
+                observer.unobserve(img);
+              }
+            });
+          },
+          {
+            rootMargin: "300px 0px",
+            threshold: 0.05, // 更早触发加载
+          }
+        );
+
+        images.forEach((img) => observer.observe(img));
+      });
+
+      /* ===== 禁止双击缩放（苹果原生体验） ===== */
+      document.addEventListener(
+        "dblclick",
+        (e) => {
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+
+      /* ===== 鼠标移动互动效果（新增） ===== */
+      document.addEventListener("mousemove", (e) => {
+        const mouseX = e.clientX / window.innerWidth - 0.5;
+        const mouseY = e.clientY / window.innerHeight - 0.5;
+
+        // 鼠标移动时让元素跟随移动，增强互动感
+        if (lensFlare) {
+          lensFlare.style.transform += ` translate(${mouseX * 30}px, ${
+            mouseY * 30
+          }px)`;
+        }
+
+        if (grid) {
+          grid.style.transform += ` rotate(${mouseX * 10}deg) translate(${
+            mouseY * 20
+          }px, ${mouseX * 20}px)`;
+        }
+
+        if (titleWrapper) {
+          titleWrapper.style.transform += ` translateZ(${
+            mouseX * 10
+          }px) rotateY(${mouseX * 5}deg) rotateX(${-mouseY * 5}deg)`;
+        }
       });
     </script>
   </body>
