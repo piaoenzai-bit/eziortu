@@ -7,17 +7,35 @@
 
     <script>
       (function () {
+        /* 1️⃣ 终端判断 */
         const ua = navigator.userAgent.toLowerCase();
-
         const isMobile =
           /android|iphone|ipad|ipod|mobile/i.test(ua) ||
           window.innerWidth < 768;
 
-        if (isMobile) {
-          window.location.replace("mobile.html");
-        } else {
-          window.location.replace("index-pc.html");
-        }
+        /* 2️⃣ 语言判断 */
+        const lang = (navigator.language || navigator.userLanguage || "zh")
+          .toLowerCase()
+          .slice(0, 2);
+
+        /* 3️⃣ 页面映射 */
+        const pageMap = {
+          pc: {
+            zh: "index-pc.html",
+            ko: "index-pc-ko.html",
+          },
+          mobile: {
+            zh: "mobile.html",
+            ko: "mobile-ko.html",
+          },
+        };
+
+        /* 4️⃣ 兜底语言（防止不存在） */
+        const device = isMobile ? "mobile" : "pc";
+        const targetPage = pageMap[device][lang] || pageMap[device]["zh"];
+
+        /* 5️⃣ 跳转 */
+        window.location.replace(targetPage);
       })();
     </script>
 

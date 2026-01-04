@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>光痕叙事</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --bg: 0;
+        --fg: 255;
+        --accent: 255, 255, 255;
+        --blur: 20px;
+        --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --duration: 0.8s; /* 延长动画时长，让变化更明显 */
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: rgb(var(--bg), var(--bg), var(--bg));
+        color: rgb(var(--fg), var(--fg), var(--fg));
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+          "Helvetica Neue", "Courier New", monospace;
+        transition: background var(--duration) var(--ease),
+          color var(--duration) var(--ease);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        perspective: 1200px; /* 恢复透视，用于背景画幅动效 */
+        text-align: left;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        letter-spacing: 0.2px;
+      }
+
+      /* ================= 苹果风格毛玻璃 ================= */
+      .glass {
+        background: rgba(var(--bg), var(--bg), var(--bg), 0.7);
+        backdrop-filter: blur(var(--blur));
+        -webkit-backdrop-filter: blur(var(--blur));
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.1);
+      }
+
+      /* ================= 背景画幅（完全恢复所有动态UI效果） ================= */
+      .format-container {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .format {
+        position: absolute;
+        inset: 12px;
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.8);
+        transform-origin: center;
+        transition: border-color var(--duration) var(--spring),
+          opacity var(--duration) var(--spring),
+          transform var(--duration) var(--spring); /* 恢复transform过渡 */
+        opacity: 0.7;
+        border-radius: 4px;
+      }
+
+      /* ================= HUD（苹果风格精简） ================= */
+      .hud {
+        font-size: 11px;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        z-index: 50;
+        letter-spacing: 0.5px;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
+      }
+
+      .blink {
+        animation: blink 1.2s infinite ease-in-out;
+      }
+
+      /* ================= Section（仅移除模块倾斜，保留基础布局） ================= */
+      main {
+        position: relative;
+        z-index: 10;
+      }
+
+      section {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 1.5rem;
+        /* 移除3D和倾斜相关属性 */
+      }
+
+      .content-flow {
+        min-height: auto;
+        padding: 2rem 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      /* ================= 封面页（仅删模块倾斜，恢复背景装饰动效） ================= */
+      .hero-section {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      /* 恢复背景图层动效 */
+      .hero-bg-container {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at 30% 40%,
+            rgba(var(--fg), var(--fg), var(--fg), 0.25) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            circle at 70% 80%,
+            rgba(var(--fg), var(--fg), var(--fg), 0.15) 0%,
+            transparent 65%
+          );
+        animation: bgPulse 8s infinite ease-in-out alternate;
+        transition: all 0.8s var(--spring); /* 恢复背景过渡 */
+      }
+
+      @keyframes bgPulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+      }
+
+      /* 恢复装饰元素动效 */
+      .hero-decor {
+        position: absolute;
+        z-index: -1;
+        opacity: 0.25;
+        pointer-events: none;
+        transition: all 0.8s var(--spring); /* 恢复所有过渡 */
+      }
+
+      /* 恢复镜头光效动画 */
+      .decor-lens-flare {
+        top: 10%;
+        left: 8%;
+        width: clamp(18rem, 50vw, 30rem);
+        height: clamp(18rem, 50vw, 30rem);
+        background: radial-gradient(
+          circle,
+          rgba(var(--fg), var(--fg), var(--fg), 0.25) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        animation: lensFlare 10s infinite ease-in-out alternate;
+      }
+
+      @keyframes lensFlare {
+        0% {
+          transform: translate(-20px, 20px) scale(1);
+          opacity: 0.2;
+        }
+        100% {
+          transform: translate(20px, -20px) scale(1.1);
+          opacity: 0.3;
+        }
+      }
+
+      /* 恢复九宫格旋转动画 */
+      .decor-grid {
+        bottom: 15%;
+        right: 8%;
+        width: clamp(12rem, 40vw, 25rem);
+        height: clamp(12rem, 40vw, 25rem);
+        border: 1.5px solid rgba(var(--fg), var(--fg), var(--fg), 0.3);
+        position: relative;
+        animation: gridRotate 15s infinite linear;
+      }
+
+      .decor-grid::before,
+      .decor-grid::after {
+        content: "";
+        position: absolute;
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.3);
+      }
+
+      .decor-grid::before {
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 1.5px;
+        transform: translateY(-50%);
+      }
+
+      .decor-grid::after {
+        left: 50%;
+        top: 0;
+        height: 100%;
+        width: 1.5px;
+        transform: translateX(-50%);
+      }
+
+      .decor-grid .grid-line {
+        position: absolute;
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.25);
+      }
+
+      .decor-grid .grid-line.v {
+        width: 1.5px;
+        height: 100%;
+        top: 0;
+      }
+
+      .decor-grid .grid-line.h {
+        height: 1.5px;
+        width: 100%;
+        left: 0;
+      }
+
+      .decor-grid .grid-line.v:nth-child(1) {
+        left: 33.3%;
+      }
+      .decor-grid .grid-line.v:nth-child(2) {
+        left: 66.6%;
+      }
+      .decor-grid .grid-line.h:nth-child(3) {
+        top: 33.3%;
+      }
+      .decor-grid .grid-line.h:nth-child(4) {
+        top: 66.6%;
+      }
+
+      @keyframes gridRotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* 主内容容器（仅移除倾斜，保留淡入） */
+      .hero-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        animation: heroFadeIn 1.8s var(--spring);
+        max-width: 85%;
+        margin: 0 auto;
+      }
+
+      @keyframes heroFadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* 标题区域（仅移除倾斜，保留透明度过渡） */
+      .hero-title-wrapper {
+        margin-bottom: 3.5rem;
+        transition: opacity 0.8s var(--spring);
+      }
+
+      .hero-title {
+        font-size: clamp(2.8rem, 10vw, 5rem);
+        font-weight: 400;
+        letter-spacing: 0.25em;
+        margin-bottom: 1.2rem;
+        position: relative;
+        text-transform: uppercase;
+        text-shadow: 0 0 20px rgba(var(--fg), var(--fg), var(--fg), 0.1);
+      }
+
+      .hero-title::after {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgb(var(--fg), var(--fg), var(--fg)),
+          transparent
+        );
+        animation: linePulse 3s infinite ease-in-out;
+        box-shadow: 0 0 10px rgba(var(--fg), var(--fg), var(--fg), 0.3);
+      }
+
+      @keyframes linePulse {
+        0%,
+        100% {
+          width: 50%;
+          opacity: 0.8;
+        }
+        50% {
+          width: 80%;
+          opacity: 1;
+        }
+      }
+
+      .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.25rem);
+        letter-spacing: 0.4em;
+        opacity: 0.85;
+        font-weight: 300;
+        text-transform: uppercase;
+      }
+
+      /* 核心标语（仅移除倾斜，保留透明度过渡） */
+      .hero-tagline {
+        font-size: clamp(0.875rem, 3vw, 1rem);
+        letter-spacing: 0.15em;
+        opacity: 0.75;
+        max-width: 85%;
+        line-height: 2.2;
+        font-weight: 200;
+        transition: opacity 0.8s var(--spring);
+      }
+
+      /* 恢复滚动指示器动画（仅移除垂直位移） */
+      .hero-scroll-indicator {
+        position: absolute;
+        bottom: 3rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 1;
+        animation: scrollIndicator 2s infinite ease-in-out;
+        z-index: 10;
+      }
+
+      @keyframes scrollIndicator {
+        0% {
+          transform: translateX(-50%);
+          opacity: 0.8;
+        }
+        50% {
+          transform: translateX(-50%);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(-50%);
+          opacity: 0.8;
+        }
+      }
+
+      .scroll-line {
+        width: 2px;
+        height: 50px;
+        background: linear-gradient(
+          to bottom,
+          rgb(var(--fg), var(--fg), var(--fg)),
+          transparent
+        );
+        margin-bottom: 12px;
+        box-shadow: 0 0 10px rgba(var(--fg), var(--fg), var(--fg), 0.3);
+      }
+
+      .scroll-text {
+        font-size: 11px;
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        opacity: 1;
+        font-weight: 300;
+      }
+
+      /* ================= 面板（仅移除hover倾斜，保留阴影变化） ================= */
+      .panel {
+        border-radius: 16px;
+        padding: 2rem;
+        transition: border-color var(--duration) var(--ease),
+          box-shadow 0.6s var(--spring);
+        width: 100%;
+        max-width: 100%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .panel:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .title {
+        font-size: 0.75rem;
+        letter-spacing: 0.3em;
+        opacity: 0.7;
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+
+      /* ================= 按钮（仅移除hover倾斜，保留背景/阴影变化） ================= */
+      .btn-view {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        transition: background 0.4s var(--spring), box-shadow 0.4s var(--spring);
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.15);
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.2);
+      }
+
+      .btn-view:hover {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.25);
+        box-shadow: 0 5px 15px rgba(var(--fg), var(--fg), var(--fg), 0.1);
+      }
+
+      .btn-view:active {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.3);
+      }
+
+      /* ================= 视频播放器（保留原始UI） ================= */
+      .video-container {
+        touch-action: none;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .video-wrapper {
+        border-radius: 8px;
+        overflow: hidden;
+        background: #000;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      video {
+        outline: none;
+        transition: opacity 0.5s var(--ease);
+      }
+
+      /* ================= 图片（恢复加载动效，仅移除倾斜） ================= */
+      img {
+        border-radius: 8px;
+        transition: opacity 0.8s var(--spring), transform 0.8s var(--spring);
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      img.loaded {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ================= 滚动条 ================= */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.05);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.4);
+        border-radius: 3px;
+        transition: background 0.3s var(--spring);
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.6);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ================= 背景画幅（完全保留所有动态UI） ================= -->
+    <div class="format-container">
+      <div class="relative aspect-[16/9] w-[90vw] h-[85vh]">
+        <div class="format" data-depth="0"></div>
+        <div class="format" data-depth="1"></div>
+        <div class="format" data-depth="2"></div>
+        <div class="format" data-depth="3"></div>
+      </div>
+    </div>
+
+    <!-- ================= HUD ================= -->
+    <div
+      class="fixed top-4 left-4 z-20 hud text-red-500 flex items-center gap-2"
+    >
+      <span class="w-2 h-2 bg-red-500 rounded-full blink"></span> REC
+    </div>
+    <div class="fixed top-4 right-4 z-20 hud">BAT 97%</div>
+    <div class="fixed bottom-4 right-4 z-20 hud font-semibold" id="timecode">
+      00:00:00:00
+    </div>
+
+    <main>
+      <!-- 封面 -->
+      <section class="hero-section">
+        <!-- 背景图层 -->
+        <div class="hero-bg-container">
+          <div class="hero-bg"></div>
+        </div>
+
+        <!-- 恢复装饰元素动效 -->
+        <div class="hero-decor decor-lens-flare" id="lensFlare"></div>
+        <div class="hero-decor decor-grid" id="grid"></div>
+
+        <!-- 主内容 -->
+        <div class="hero-container">
+          <div class="hero-title-wrapper" id="titleWrapper">
+            <h1 class="hero-title">빛자국 서사</h1>
+            <p class="hero-subtitle">촬영 · 박은재</p>
+          </div>
+
+          <p class="hero-tagline" id="tagline">
+            빛과 그림자로 이야기를 짜고, 순간을 영원으로 만든다.<br />
+            매번 시작할 때마다, 이야기에 들어가는 과정이다.
+          </p>
+        </div>
+
+        <!-- 滚动指示器 -->
+        <div class="hero-scroll-indicator">
+          <div class="scroll-line"></div>
+          <div class="scroll-text">Discover More</div>
+        </div>
+      </section>
+
+      <!-- 个人简介 -->
+      <section class="content-flow">
+        <div class="panel glass">
+          <div class="title">PROFILE</div>
+          <div
+            class="aspect-[3/4] mb-4 overflow-hidden border-0 rounded-lg shadow-lg"
+          >
+            <img
+              src="assets/IP Photos/1.jpg"
+              class="w-full h-full"
+              onload="this.classList.add('loaded')"
+            />
+          </div>
+          <p class="text-sm leading-relaxed font-light">
+            <span class="text-xl font-medium">박은재</span><br />
+            2004년 중국 광둥성 둥관 출신 / 중앙대학교(Chung Ang University)
+            재학<br /><br />
+            역할: 촬영감독, 촬영보조, 포커스, 조명 담당, 녹음보조, 편집 및
+            컬러그레이딩<br /><br />
+          </p>
+        </div>
+      </section>
+
+      <!-- 视频监视器 -->
+      <section class="content-flow flex justify-center">
+        <div class="w-full max-w-full">
+          <div class="glass video-wrapper">
+            <div
+              class="flex justify-between px-4 py-2 text-xs text-white bg-black/80"
+            >
+              <div class="flex gap-4">
+                <span>FPS 24</span><span>SHUTTER 180°</span><span>EI 800</span>
+              </div>
+              <span class="text-yellow-400">[LDS]</span>
+            </div>
+
+            <div class="relative aspect-video bg-black video-container">
+              <video
+                src="assets/video/1.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                class="absolute inset-0 w-full h-full object-cover"
+                poster="assets/StillFrames/01.jpg"
+              ></video>
+              <div class="absolute inset-6 border border-white/60"></div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-5 h-5 border border-white/60"></div>
+              </div>
+            </div>
+
+            <div class="flex justify-between px-4 py-2 text-xs bg-black/80">
+              <span class="text-white">BAT 13.2V</span>
+              <span class="text-red-500 font-semibold">00:57:29:08</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 静帧 -->
+      <section class="content-flow">
+        <div class="panel glass relative">
+          <div class="title">STILL FRAMES</div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+            <img
+              src="assets/StillFrames/1.jpg"
+              class="aspect-video shadow-md"
+              onload="this.classList.add('loaded')"
+            />
+            <img
+              src="assets/StillFrames/5.jpg"
+              class="aspect-video shadow-md"
+              onload="this.classList.add('loaded')"
+            />
+            <img
+              src="assets/StillFrames/28.jpg"
+              class="aspect-video shadow-md"
+              onload="this.classList.add('loaded')"
+            />
+            <img
+              src="assets/StillFrames/33.jpg"
+              class="aspect-video shadow-md"
+              onload="this.classList.add('loaded')"
+            />
+          </div>
+
+          <a
+            href="stillframes_mobile.html"
+            class="btn-view absolute right-6 bottom-6 text-white border border-white/20"
+          >
+            VIEW ALL →
+          </a>
+        </div>
+      </section>
+
+      <!-- 现场 -->
+      <section class="content-flow">
+        <div class="panel glass relative">
+          <div class="title">ON SET</div>
+          <img
+            src="assets/On-set photos/4.jpg"
+            class="aspect-video w-full mb-8 shadow-md"
+            onload="this.classList.add('loaded')"
+          />
+          <a
+            href="Onsetphotos_mobile.html"
+            class="btn-view absolute right-6 bottom-6 text-white border border-white/20"
+          >
+            VIEW ALL →
+          </a>
+        </div>
+      </section>
+
+      <!-- 联系 -->
+      <section class="content-flow pb-16">
+        <div class="panel glass text-center">
+          <div class="title">CONTACT</div>
+          <p class="text-sm leading-relaxed my-6 font-light">
+            Email · piaoenzai@gmail.com<br />
+            Phone（+86） · 138-2526-7531<br />Phone（+82） · 010-5949-5527<br />
+            WeChat · eziortu
+          </p>
+          <p class="text-xs text-zinc-400 mt-2 tracking-wider">
+            AVAILABLE FOR COLLABORATION
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      /* ===== 时间码 ===== */
+      let h = 0,
+        m = 0,
+        s = 0,
+        f = 0;
+      const fps = 24;
+      const timecode = document.getElementById("timecode");
+      let lastUpdate = performance.now();
+
+      function updateTimecode(timestamp) {
+        const delta = timestamp - lastUpdate;
+
+        if (delta >= 1000 / fps) {
+          lastUpdate = timestamp;
+
+          if (++f >= fps) {
+            f = 0;
+            if (++s >= 60) {
+              s = 0;
+              if (++m >= 60) {
+                m = 0;
+                h++;
+              }
+            }
+          }
+
+          timecode.textContent = `${String(h).padStart(2, "0")}:${String(
+            m
+          ).padStart(2, "0")}:${String(s).padStart(2, "0")}:${String(
+            f
+          ).padStart(2, "0")}`;
+        }
+
+        requestAnimationFrame(updateTimecode);
+      }
+
+      requestAnimationFrame(updateTimecode);
+
+      /* ===== 完全恢复背景画幅的动态交互效果 ===== */
+      const formats = document.querySelectorAll(".format");
+      const sections = document.querySelectorAll("section");
+
+      // 获取所有背景装饰元素
+      const lensFlare = document.getElementById("lensFlare");
+      const grid = document.getElementById("grid");
+      const titleWrapper = document.getElementById("titleWrapper");
+      const tagline = document.getElementById("tagline");
+      const heroBg = document.querySelector(".hero-bg");
+      const scrollIndicator = document.querySelector(".hero-scroll-indicator");
+
+      let ticking = false;
+
+      function handleScroll() {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const scrollMax = document.body.scrollHeight - windowHeight;
+            const scrollProgress = Math.min(scrollY / scrollMax, 1);
+            const heroProgress = Math.min(1, scrollY / windowHeight);
+
+            // 1. 完全恢复背景色彩过渡
+            const bg = Math.round(scrollProgress * 255);
+            const fg = Math.round(255 - Math.min(scrollProgress * 350, 255));
+            document.documentElement.style.setProperty("--bg", bg);
+            document.documentElement.style.setProperty("--fg", fg);
+
+            // 2. 完全恢复背景画幅的动态交互效果
+            formats.forEach((el, i) => {
+              const depth = i * 0.15;
+              const scale = 1 + scrollProgress * (1.5 + depth);
+              const rotate = scrollProgress * (30 + i * 10);
+              const translateX =
+                scrollProgress * (200 + i * 60) * (i % 2 === 0 ? 1 : -1);
+              const translateY =
+                scrollProgress * (150 + i * 50) * (i % 2 === 0 ? -1 : 1);
+              const opacity = 0.7 - scrollProgress * 0.5 + i * 0.08;
+
+              el.style.transform = `
+                scale(${scale})
+                rotate(${rotate}deg)
+                translate(${translateX}px, ${translateY}px)
+              `;
+              el.style.opacity = opacity;
+              el.style.borderColor = `rgba(${fg}, ${fg}, ${fg}, ${
+                0.9 - scrollProgress * 0.4
+              })`;
+            });
+
+            // 3. 仅保留封面元素的透明度变化（移除倾斜/位移）
+            if (titleWrapper) {
+              titleWrapper.style.opacity = 1 - heroProgress * 0.98;
+            }
+
+            if (tagline) {
+              tagline.style.opacity = 1 - heroProgress * 0.95;
+            }
+
+            if (lensFlare) {
+              lensFlare.style.opacity = 0.25 - heroProgress * 0.25;
+            }
+
+            if (grid) {
+              grid.style.opacity = 0.25 - heroProgress * 0.25;
+            }
+
+            if (heroBg) {
+              heroBg.style.opacity = 1 - heroProgress * 1;
+            }
+
+            if (scrollIndicator) {
+              scrollIndicator.style.opacity = 1 - heroProgress * 1.2;
+            }
+
+            ticking = false;
+          });
+
+          ticking = true;
+        }
+      }
+
+      // 被动监听滚动事件
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      handleScroll();
+
+      /* ===== 图片懒加载 ===== */
+      document.addEventListener("DOMContentLoaded", () => {
+        const images = document.querySelectorAll("img");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.src;
+                observer.unobserve(img);
+              }
+            });
+          },
+          {
+            rootMargin: "300px 0px",
+            threshold: 0.05,
+          }
+        );
+
+        images.forEach((img) => observer.observe(img));
+      });
+
+      /* ===== 禁止双击缩放 ===== */
+      document.addEventListener(
+        "dblclick",
+        (e) => {
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+
+      /* ===== 恢复鼠标移动互动效果（仅背景元素） ===== */
+      document.addEventListener("mousemove", (e) => {
+        const mouseX = e.clientX / window.innerWidth - 0.5;
+        const mouseY = e.clientY / window.innerHeight - 0.5;
+
+        // 仅背景装饰元素跟随鼠标移动
+        if (lensFlare) {
+          lensFlare.style.transform = `translate(${mouseX * 30}px, ${
+            mouseY * 30
+          }px)`;
+        }
+
+        if (grid) {
+          grid.style.transform = `rotate(${mouseX * 10}deg)`;
+        }
+      });
+    </script>
+  </body>
+</html>
