@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="ko-KR">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>光痕叙事</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>빛의 흔적 서사 | 박은재</title>
     <style>
       :root {
-        --bg: 0;
-        --fg: 255;
-        --accent: 255, 255, 255;
-        --blur: 20px;
-        --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        --bg: 6;
+        --fg: 246;
         --ease: cubic-bezier(0.22, 1, 0.36, 1);
-        --duration: 0.8s; /* 延长动画时长，让变化更明显 */
+        --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        --duration: 0.8s;
       }
 
       * {
@@ -25,32 +22,46 @@
         padding: 0;
       }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
+        min-height: 100vh;
         background: rgb(var(--bg), var(--bg), var(--bg));
         color: rgb(var(--fg), var(--fg), var(--fg));
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-          "Helvetica Neue", "Courier New", monospace;
-        transition: background var(--duration) var(--ease),
-          color var(--duration) var(--ease);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue",
+          "PingFang SC", "Microsoft YaHei", sans-serif;
         overflow-x: hidden;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        perspective: 1200px; /* 恢复透视，用于背景画幅动效 */
-        text-align: left;
-        font-synthesis: none;
         text-rendering: optimizeLegibility;
-        letter-spacing: 0.2px;
+        -webkit-font-smoothing: antialiased;
+        transition:
+          background var(--duration) var(--ease),
+          color var(--duration) var(--ease);
       }
 
-      /* ================= 苹果风格毛玻璃 ================= */
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img,
+      video {
+        display: block;
+        width: 100%;
+      }
+
       .glass {
-        background: rgba(var(--bg), var(--bg), var(--bg), 0.7);
-        backdrop-filter: blur(var(--blur));
-        -webkit-backdrop-filter: blur(var(--blur));
-        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.1);
+        background: rgba(255, 255, 255, 0.075);
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.12);
+        backdrop-filter: blur(28px) saturate(150%);
+        -webkit-backdrop-filter: blur(28px) saturate(150%);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          0 24px 80px rgba(0, 0, 0, 0.18);
       }
 
-      /* ================= 背景画幅（完全恢复所有动态UI效果） ================= */
       .format-container {
         position: fixed;
         inset: 0;
@@ -62,24 +73,117 @@
         pointer-events: none;
       }
 
+      .format-stage {
+        position: relative;
+        width: 90vw;
+        height: 85vh;
+        aspect-ratio: 16 / 9;
+      }
+
       .format {
         position: absolute;
         inset: 12px;
-        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.8);
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.62);
+        border-radius: 8px;
+        opacity: 0.62;
         transform-origin: center;
-        transition: border-color var(--duration) var(--spring),
+        transition:
+          border-color var(--duration) var(--spring),
           opacity var(--duration) var(--spring),
-          transform var(--duration) var(--spring); /* 恢复transform过渡 */
-        opacity: 0.7;
-        border-radius: 4px;
+          transform var(--duration) var(--spring);
       }
 
-      /* ================= HUD（苹果风格精简） ================= */
+      .top-nav {
+        position: fixed;
+        top: 18px;
+        left: 50%;
+        z-index: 60;
+        width: min(calc(100vw - 32px), 720px);
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px 0 16px;
+        border-radius: 999px;
+        color: rgba(var(--fg), var(--fg), var(--fg), 0.9);
+        transform: translateX(-50%);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .brand::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgb(255, 65, 54);
+        box-shadow: 0 0 16px rgba(255, 65, 54, 0.9);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2px;
+        font-size: 12px;
+        color: rgba(var(--fg), var(--fg), var(--fg), 0.68);
+      }
+
+      .nav-links a {
+        min-height: 30px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 12px;
+        border-radius: 999px;
+        transition:
+          background 0.3s var(--ease),
+          color 0.3s var(--ease);
+      }
+
+      .nav-links a:hover {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.12);
+        color: rgba(var(--fg), var(--fg), var(--fg), 0.96);
+      }
+
       .hud {
-        font-size: 11px;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        position: fixed;
         z-index: 50;
-        letter-spacing: 0.5px;
+        top: 74px;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+      }
+
+      .hud-left {
+        left: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: rgb(255, 65, 54);
+      }
+
+      .hud-right {
+        right: 16px;
+      }
+
+      .timecode {
+        top: auto;
+        right: 16px;
+        bottom: 16px;
+        font-weight: 600;
+      }
+
+      .rec-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgb(255, 65, 54);
+        animation: blink 1.2s infinite ease-in-out;
       }
 
       @keyframes blink {
@@ -88,398 +192,627 @@
           opacity: 1;
         }
         50% {
-          opacity: 0.2;
+          opacity: 0.24;
         }
       }
 
-      .blink {
-        animation: blink 1.2s infinite ease-in-out;
-      }
-
-      /* ================= Section（仅移除模块倾斜，保留基础布局） ================= */
       main {
         position: relative;
         z-index: 10;
       }
 
       section {
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 2rem 1.5rem;
-        /* 移除3D和倾斜相关属性 */
-      }
-
-      .content-flow {
-        min-height: auto;
-        padding: 2rem 1.5rem;
-        margin-bottom: 3rem;
-      }
-
-      /* ================= 封面页（仅删模块倾斜，恢复背景装饰动效） ================= */
-      .hero-section {
         position: relative;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
       }
 
-      /* 恢复背景图层动效 */
-      .hero-bg-container {
+      .hero {
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        padding: 7rem clamp(1.25rem, 5vw, 5.5rem) 3.5rem;
+      }
+
+      .hero-media {
         position: absolute;
         inset: 0;
-        z-index: -2;
+        z-index: -4;
+        background-image:
+          linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.72)),
+          url("assets/StillFrames/1.jpg");
+        background-position: center;
+        background-size: cover;
+        filter: saturate(0.82) contrast(1.08);
+        opacity: 0.52;
+        transform: scale(1.03);
+        transition:
+          opacity 0.8s var(--ease),
+          transform 1.2s var(--ease);
       }
 
       .hero-bg {
         position: absolute;
         inset: 0;
-        background: radial-gradient(
-            circle at 30% 40%,
-            rgba(var(--fg), var(--fg), var(--fg), 0.25) 0%,
-            transparent 65%
+        z-index: -3;
+        background:
+          linear-gradient(
+            115deg,
+            rgba(var(--fg), var(--fg), var(--fg), 0.16) 0%,
+            transparent 28%,
+            transparent 68%,
+            rgba(165, 155, 132, 0.13) 100%
           ),
-          radial-gradient(
-            circle at 70% 80%,
-            rgba(var(--fg), var(--fg), var(--fg), 0.15) 0%,
-            transparent 65%
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.04),
+            transparent 36%,
+            rgba(0, 0, 0, 0.42)
           );
+        pointer-events: none;
         animation: bgPulse 8s infinite ease-in-out alternate;
-        transition: all 0.8s var(--spring); /* 恢复背景过渡 */
+        transition: opacity 0.8s var(--spring);
       }
 
       @keyframes bgPulse {
         0% {
           transform: scale(1);
-          opacity: 1;
+          opacity: 0.86;
         }
         100% {
-          transform: scale(1.1);
+          transform: scale(1.04);
           opacity: 1;
         }
       }
 
-      /* 恢复装饰元素动效 */
-      .hero-decor {
+      .hero-vignette {
         position: absolute;
-        z-index: -1;
-        opacity: 0.25;
-        pointer-events: none;
-        transition: all 0.8s var(--spring); /* 恢复所有过渡 */
+        inset: 0;
+        z-index: -2;
+        background:
+          radial-gradient(
+            ellipse at center,
+            transparent 0%,
+            rgba(0, 0, 0, 0.22) 56%,
+            rgba(0, 0, 0, 0.76) 100%
+          ),
+          linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.42),
+            transparent 35%,
+            rgba(0, 0, 0, 0.28)
+          );
       }
 
-      /* 恢复镜头光效动画 */
-      .decor-lens-flare {
-        top: 10%;
-        left: 8%;
-        width: clamp(18rem, 50vw, 30rem);
-        height: clamp(18rem, 50vw, 30rem);
-        background: radial-gradient(
-          circle,
-          rgba(var(--fg), var(--fg), var(--fg), 0.25) 0%,
-          transparent 70%
-        );
+      .decor-lens {
+        position: absolute;
+        top: 12%;
+        left: 7%;
+        z-index: -1;
+        width: clamp(18rem, 46vw, 34rem);
+        height: clamp(18rem, 46vw, 34rem);
         border-radius: 50%;
+        background: conic-gradient(
+          from 140deg,
+          transparent,
+          rgba(var(--fg), var(--fg), var(--fg), 0.13),
+          transparent,
+          rgba(180, 170, 145, 0.12),
+          transparent
+        );
+        filter: blur(8px);
+        opacity: 0.22;
+        pointer-events: none;
         animation: lensFlare 10s infinite ease-in-out alternate;
+        transition:
+          opacity 0.8s var(--spring),
+          transform 0.8s var(--spring);
       }
 
       @keyframes lensFlare {
         0% {
           transform: translate(-20px, 20px) scale(1);
-          opacity: 0.2;
+          opacity: 0.14;
         }
         100% {
-          transform: translate(20px, -20px) scale(1.1);
-          opacity: 0.3;
+          transform: translate(20px, -20px) scale(1.08);
+          opacity: 0.24;
         }
       }
 
-      /* 恢复九宫格旋转动画 */
       .decor-grid {
-        bottom: 15%;
-        right: 8%;
-        width: clamp(12rem, 40vw, 25rem);
-        height: clamp(12rem, 40vw, 25rem);
-        border: 1.5px solid rgba(var(--fg), var(--fg), var(--fg), 0.3);
-        position: relative;
-        animation: gridRotate 15s infinite linear;
+        position: absolute;
+        right: 6%;
+        bottom: 13%;
+        z-index: -1;
+        width: clamp(12rem, 36vw, 25rem);
+        height: clamp(12rem, 36vw, 25rem);
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.26);
+        opacity: 0.22;
+        pointer-events: none;
+        animation: gridRotate 18s infinite linear;
+        transition:
+          opacity 0.8s var(--spring),
+          transform 0.8s var(--spring);
       }
 
       .decor-grid::before,
-      .decor-grid::after {
+      .decor-grid::after,
+      .grid-line {
         content: "";
         position: absolute;
-        background: rgba(var(--fg), var(--fg), var(--fg), 0.3);
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.22);
       }
 
       .decor-grid::before {
         top: 50%;
         left: 0;
         width: 100%;
-        height: 1.5px;
+        height: 1px;
         transform: translateY(-50%);
       }
 
       .decor-grid::after {
-        left: 50%;
         top: 0;
+        left: 50%;
+        width: 1px;
         height: 100%;
-        width: 1.5px;
         transform: translateX(-50%);
       }
 
-      .decor-grid .grid-line {
-        position: absolute;
-        background: rgba(var(--fg), var(--fg), var(--fg), 0.25);
-      }
-
-      .decor-grid .grid-line.v {
-        width: 1.5px;
-        height: 100%;
+      .grid-line.v {
         top: 0;
+        width: 1px;
+        height: 100%;
       }
 
-      .decor-grid .grid-line.h {
-        height: 1.5px;
-        width: 100%;
+      .grid-line.h {
         left: 0;
+        width: 100%;
+        height: 1px;
       }
 
-      .decor-grid .grid-line.v:nth-child(1) {
+      .grid-line.v.one {
         left: 33.3%;
       }
-      .decor-grid .grid-line.v:nth-child(2) {
+
+      .grid-line.v.two {
         left: 66.6%;
       }
-      .decor-grid .grid-line.h:nth-child(3) {
+
+      .grid-line.h.one {
         top: 33.3%;
       }
-      .decor-grid .grid-line.h:nth-child(4) {
+
+      .grid-line.h.two {
         top: 66.6%;
       }
 
       @keyframes gridRotate {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
+        to {
           transform: rotate(360deg);
         }
       }
 
-      /* 主内容容器（仅移除倾斜，保留淡入） */
-      .hero-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 2rem;
-        animation: heroFadeIn 1.8s var(--spring);
-        max-width: 85%;
-        margin: 0 auto;
+      .hero-inner {
+        width: min(100%, 1160px);
+        min-height: calc(100svh - 11rem);
+        display: grid;
+        grid-template-rows: 1fr auto;
+        gap: 2rem;
+        animation: heroIn 1.8s var(--spring);
       }
 
-      @keyframes heroFadeIn {
-        0% {
+      @keyframes heroIn {
+        from {
           opacity: 0;
+          filter: blur(18px);
         }
-        100% {
+        to {
           opacity: 1;
+          filter: blur(0);
         }
       }
 
-      /* 标题区域（仅移除倾斜，保留透明度过渡） */
-      .hero-title-wrapper {
-        margin-bottom: 3.5rem;
+      .hero-copy {
+        align-self: center;
+        max-width: 860px;
+      }
+
+      .hero-kicker {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        margin-bottom: 1.35rem;
+        padding: 0 12px;
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .hero-title-wrap {
         transition: opacity 0.8s var(--spring);
       }
 
       .hero-title {
-        font-size: clamp(2.8rem, 10vw, 5rem);
-        font-weight: 400;
-        letter-spacing: 0.25em;
-        margin-bottom: 1.2rem;
-        position: relative;
-        text-transform: uppercase;
-        text-shadow: 0 0 20px rgba(var(--fg), var(--fg), var(--fg), 0.1);
-      }
-
-      .hero-title::after {
-        content: "";
-        position: absolute;
-        bottom: -20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60%;
-        height: 2px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgb(var(--fg), var(--fg), var(--fg)),
-          transparent
-        );
-        animation: linePulse 3s infinite ease-in-out;
-        box-shadow: 0 0 10px rgba(var(--fg), var(--fg), var(--fg), 0.3);
-      }
-
-      @keyframes linePulse {
-        0%,
-        100% {
-          width: 50%;
-          opacity: 0.8;
-        }
-        50% {
-          width: 80%;
-          opacity: 1;
-        }
+        max-width: 760px;
+        color: #fff;
+        font-size: clamp(3.8rem, 13vw, 9.8rem);
+        line-height: 0.92;
+        font-weight: 650;
+        letter-spacing: 0;
+        text-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
       }
 
       .hero-subtitle {
-        font-size: clamp(1rem, 4vw, 1.25rem);
-        letter-spacing: 0.4em;
-        opacity: 0.85;
-        font-weight: 300;
-        text-transform: uppercase;
+        margin-top: 1.4rem;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: clamp(1rem, 2.3vw, 1.38rem);
+        line-height: 1.5;
+        font-weight: 400;
       }
 
-      /* 核心标语（仅移除倾斜，保留透明度过渡） */
       .hero-tagline {
-        font-size: clamp(0.875rem, 3vw, 1rem);
-        letter-spacing: 0.15em;
-        opacity: 0.75;
-        max-width: 85%;
-        line-height: 2.2;
-        font-weight: 200;
+        max-width: 560px;
+        margin-top: 1.25rem;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: clamp(0.9rem, 2vw, 1.05rem);
+        line-height: 1.95;
+        font-weight: 300;
         transition: opacity 0.8s var(--spring);
       }
 
-      /* 恢复滚动指示器动画（仅移除垂直位移） */
-      .hero-scroll-indicator {
-        position: absolute;
-        bottom: 3rem;
-        left: 50%;
-        transform: translateX(-50%);
+      .hero-actions {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        opacity: 1;
-        animation: scrollIndicator 2s infinite ease-in-out;
-        z-index: 10;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 2rem;
       }
 
-      @keyframes scrollIndicator {
-        0% {
-          transform: translateX(-50%);
-          opacity: 0.8;
+      .button {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 0 18px;
+        font-size: 14px;
+        font-weight: 550;
+        transition:
+          transform 0.35s var(--ease),
+          background 0.35s var(--ease),
+          color 0.35s var(--ease),
+          border-color 0.35s var(--ease);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .button.primary {
+        background: rgba(255, 255, 255, 0.94);
+        color: #070707;
+      }
+
+      .button.secondary {
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.86);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .hero-meta {
+        align-self: end;
+        width: min(100%, 780px);
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .meta-item {
+        min-height: 88px;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.11);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.065);
+        backdrop-filter: blur(22px) saturate(150%);
+        -webkit-backdrop-filter: blur(22px) saturate(150%);
+      }
+
+      .meta-label {
+        display: block;
+        margin-bottom: 10px;
+        color: rgba(255, 255, 255, 0.48);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+      }
+
+      .meta-value {
+        display: block;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 14px;
+        line-height: 1.45;
+        font-weight: 550;
+      }
+
+      .scroll-hint {
+        position: absolute;
+        right: clamp(1.25rem, 5vw, 5.5rem);
+        bottom: 3rem;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: scrollHint 2s infinite ease-in-out;
+      }
+
+      @keyframes scrollHint {
+        0%,
+        100% {
+          opacity: 0.72;
         }
         50% {
-          transform: translateX(-50%);
           opacity: 1;
         }
-        100% {
-          transform: translateX(-50%);
-          opacity: 0.8;
-        }
-      }
-
-      .scroll-line {
-        width: 2px;
-        height: 50px;
-        background: linear-gradient(
-          to bottom,
-          rgb(var(--fg), var(--fg), var(--fg)),
-          transparent
-        );
-        margin-bottom: 12px;
-        box-shadow: 0 0 10px rgba(var(--fg), var(--fg), var(--fg), 0.3);
       }
 
       .scroll-text {
-        font-size: 11px;
-        letter-spacing: 0.4em;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 10px;
+        font-weight: 550;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
-        opacity: 1;
-        font-weight: 300;
+        white-space: nowrap;
       }
 
-      /* ================= 面板（仅移除hover倾斜，保留阴影变化） ================= */
+      .scroll-line {
+        width: 54px;
+        height: 1px;
+        background: linear-gradient(to right, #fff, transparent);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.22);
+      }
+
+      .content-section {
+        min-height: auto;
+        padding: 4rem clamp(1.25rem, 4vw, 4.5rem);
+      }
+
       .panel {
-        border-radius: 16px;
-        padding: 2rem;
-        transition: border-color var(--duration) var(--ease),
-          box-shadow 0.6s var(--spring);
-        width: 100%;
-        max-width: 100%;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        width: min(100%, 1120px);
+        margin: 0 auto;
+        padding: clamp(1.25rem, 4vw, 2.5rem);
+        border-radius: 24px;
+        transition:
+          border-color var(--duration) var(--ease),
+          box-shadow 0.6s var(--spring),
+          background var(--duration) var(--ease);
       }
 
       .panel:hover {
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          0 30px 90px rgba(0, 0, 0, 0.2);
+      }
+
+      .section-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: clamp(1.5rem, 5vw, 4rem);
+        align-items: center;
       }
 
       .title {
-        font-size: 0.75rem;
-        letter-spacing: 0.3em;
-        opacity: 0.7;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1.15rem;
+        font-size: 0.72rem;
+        font-weight: 650;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
-        font-weight: 500;
+        opacity: 0.62;
       }
 
-      /* ================= 按钮（仅移除hover倾斜，保留背景/阴影变化） ================= */
-      .btn-view {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 11px;
-        padding: 10px 20px;
-        border-radius: 10px;
-        transition: background 0.4s var(--spring), box-shadow 0.4s var(--spring);
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: transparent;
-        font-weight: 500;
-        letter-spacing: 0.3px;
-        background: rgba(var(--fg), var(--fg), var(--fg), 0.15);
-        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.2);
+      .section-heading {
+        margin-bottom: 1rem;
+        font-size: clamp(2rem, 5vw, 4.2rem);
+        line-height: 1.03;
+        font-weight: 650;
       }
 
-      .btn-view:hover {
-        background: rgba(var(--fg), var(--fg), var(--fg), 0.25);
-        box-shadow: 0 5px 15px rgba(var(--fg), var(--fg), var(--fg), 0.1);
+      .section-copy {
+        color: rgba(var(--fg), var(--fg), var(--fg), 0.66);
+        font-size: 0.96rem;
+        line-height: 1.9;
+        font-weight: 300;
       }
 
-      .btn-view:active {
-        background: rgba(var(--fg), var(--fg), var(--fg), 0.3);
+      .profile-panel {
+        background: rgba(8, 8, 8, 0.68);
+        border-color: rgba(255, 255, 255, 0.18);
+        color: rgba(255, 255, 255, 0.96);
       }
 
-      /* ================= 视频播放器（保留原始UI） ================= */
-      .video-container {
-        touch-action: none;
-        border-radius: 12px;
+      .profile-panel .title {
+        color: rgba(255, 255, 255, 0.86);
+        opacity: 0.86;
+      }
+
+      .profile-panel .section-heading {
+        color: #fff;
+      }
+
+      .profile-panel .section-copy {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 400;
+      }
+
+      .profile-photo {
         overflow: hidden;
+        border-radius: 22px;
+        background: rgba(0, 0, 0, 0.24);
+      }
+
+      .profile-photo img {
+        aspect-ratio: 3 / 4;
+      }
+
+      .experience-list {
+        margin-top: 1.6rem;
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .experience-heading {
+        margin-bottom: 0.2rem;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 0.72rem;
+        font-weight: 650;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .experience-item {
+        display: grid;
+        grid-template-columns: 18px 1fr;
+        align-items: start;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.95rem;
+        line-height: 1.7;
+        font-weight: 400;
+      }
+
+      .experience-item::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        margin-top: 0.68em;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.72);
       }
 
       .video-wrapper {
-        border-radius: 8px;
+        width: min(100%, 1120px);
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 24px;
+        background: #000;
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.28);
+      }
+
+      .monitor-bar {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem 1.25rem;
+        background: rgba(0, 0, 0, 0.82);
+        color: #fff;
+        font-size: 12px;
+      }
+
+      .monitor-stats {
+        display: flex;
+        gap: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .monitor-accent {
+        color: rgb(255, 218, 82);
+      }
+
+      .monitor-time {
+        color: rgb(255, 65, 54);
+        font-weight: 650;
+      }
+
+      .video-frame {
+        position: relative;
+        aspect-ratio: 16 / 9;
         overflow: hidden;
         background: #000;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
       }
 
-      video {
-        outline: none;
-        transition: opacity 0.5s var(--ease);
+      .video-frame video {
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        object-fit: cover;
       }
 
-      /* ================= 图片（恢复加载动效，仅移除倾斜） ================= */
+      .safe-border {
+        position: absolute;
+        inset: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        pointer-events: none;
+      }
+
+      .focus-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .view-button {
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 15px;
+        border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.16);
+        border-radius: 999px;
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.12);
+        font-size: 12px;
+        font-weight: 550;
+        white-space: nowrap;
+        transition:
+          background 0.4s var(--spring),
+          box-shadow 0.4s var(--spring),
+          transform 0.4s var(--spring);
+      }
+
+      .view-button:hover {
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.2);
+        box-shadow: 0 10px 30px rgba(var(--fg), var(--fg), var(--fg), 0.08);
+        transform: translateY(-1px);
+      }
+
+      .media-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .media-grid img,
+      .single-media img {
+        aspect-ratio: 16 / 9;
+      }
+
       img {
-        border-radius: 8px;
-        transition: opacity 0.8s var(--spring), transform 0.8s var(--spring);
+        height: 100%;
+        object-fit: cover;
+        border-radius: 18px;
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(22px);
+        transition:
+          opacity 0.8s var(--spring),
+          transform 0.8s var(--spring);
       }
 
       img.loaded {
@@ -487,7 +820,26 @@
         transform: translateY(0);
       }
 
-      /* ================= 滚动条 ================= */
+      .contact-panel {
+        padding-block: clamp(2rem, 7vw, 5rem);
+        text-align: center;
+      }
+
+      .contact-panel .section-heading {
+        max-width: 720px;
+        margin-inline: auto;
+      }
+
+      .contact-list {
+        width: min(100%, 560px);
+        margin: 2rem auto 0;
+        display: grid;
+        gap: 10px;
+        color: rgba(var(--fg), var(--fg), var(--fg), 0.74);
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+
       ::-webkit-scrollbar {
         width: 6px;
       }
@@ -497,233 +849,331 @@
       }
 
       ::-webkit-scrollbar-thumb {
-        background: rgba(var(--fg), var(--fg), var(--fg), 0.4);
+        background: rgba(var(--fg), var(--fg), var(--fg), 0.36);
         border-radius: 3px;
-        transition: background 0.3s var(--spring);
       }
 
-      ::-webkit-scrollbar-thumb:hover {
-        background: rgba(var(--fg), var(--fg), var(--fg), 0.6);
+      @media (max-width: 820px) {
+        .top-nav {
+          top: 12px;
+          width: calc(100vw - 24px);
+        }
+
+        .nav-links a:not(:last-child) {
+          display: none;
+        }
+
+        .hud {
+          top: 66px;
+        }
+
+        .timecode {
+          top: auto;
+        }
+
+        .hero {
+          padding: 6rem 1.25rem 2.5rem;
+          align-items: stretch;
+        }
+
+        .hero-inner {
+          min-height: calc(100svh - 8.5rem);
+        }
+
+        .hero-title {
+          font-size: clamp(3.3rem, 21vw, 6.2rem);
+        }
+
+        .hero-meta {
+          width: 100%;
+          grid-template-columns: 1fr;
+        }
+
+        .meta-item {
+          min-height: 68px;
+          padding: 13px 14px;
+        }
+
+        .scroll-hint {
+          display: none;
+        }
+
+        .content-section {
+          padding: 2.75rem 1rem;
+        }
+
+        .section-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .media-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .panel,
+        .video-wrapper {
+          border-radius: 20px;
+        }
+
+        .section-head {
+          align-items: flex-start;
+        }
       }
     </style>
   </head>
 
   <body>
-    <!-- ================= 背景画幅（完全保留所有动态UI） ================= -->
-    <div class="format-container">
-      <div class="relative aspect-[16/9] w-[90vw] h-[85vh]">
-        <div class="format" data-depth="0"></div>
-        <div class="format" data-depth="1"></div>
-        <div class="format" data-depth="2"></div>
-        <div class="format" data-depth="3"></div>
+    <div class="format-container" aria-hidden="true">
+      <div class="format-stage">
+        <div class="format"></div>
+        <div class="format"></div>
+        <div class="format"></div>
+        <div class="format"></div>
       </div>
     </div>
 
-    <!-- ================= HUD ================= -->
-    <div
-      class="fixed top-4 left-4 z-20 hud text-red-500 flex items-center gap-2"
-    >
-      <span class="w-2 h-2 bg-red-500 rounded-full blink"></span> REC
-    </div>
-    <div class="fixed top-4 right-4 z-20 hud">BAT 97%</div>
-    <div class="fixed bottom-4 right-4 z-20 hud font-semibold" id="timecode">
-      00:00:00:00
-    </div>
+    <nav class="top-nav glass" aria-label="메인 내비게이션">
+      <a class="brand" href="#top">Eziortu</a>
+      <div class="nav-links">
+        <a href="#reel">릴</a>
+        <a href="#frames">스틸</a>
+        <a href="#contact">연락</a>
+      </div>
+    </nav>
+
+    <div class="hud hud-left"><span class="rec-dot"></span>REC</div>
+    <div class="hud hud-right">BAT 97%</div>
+    <div class="hud timecode" id="timecode">00:00:00:00</div>
 
     <main>
-      <!-- 封面 -->
-      <section class="hero-section">
-        <!-- 背景图层 -->
-        <div class="hero-bg-container">
-          <div class="hero-bg"></div>
+      <section class="hero" id="top">
+        <div class="hero-media" id="heroMedia"></div>
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-vignette"></div>
+        <div class="decor-lens" id="lensFlare"></div>
+        <div class="decor-grid" id="grid">
+          <span class="grid-line v one"></span>
+          <span class="grid-line v two"></span>
+          <span class="grid-line h one"></span>
+          <span class="grid-line h two"></span>
         </div>
 
-        <!-- 恢复装饰元素动效 -->
-        <div class="hero-decor decor-lens-flare" id="lensFlare"></div>
-        <div class="hero-decor decor-grid" id="grid"></div>
-
-        <!-- 主内容 -->
-        <div class="hero-container">
-          <div class="hero-title-wrapper" id="titleWrapper">
-            <h1 class="hero-title">빛자국 서사</h1>
-            <p class="hero-subtitle">촬영 · 박은재</p>
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <div class="hero-kicker">시네마토그래피 포트폴리오 · 2026</div>
+            <div class="hero-title-wrap" id="titleWrapper">
+              <h1 class="hero-title">빛의 흔적 서사</h1>
+              <p class="hero-subtitle">촬영감독 · 포커스 · DIT</p>
+            </div>
+            <p class="hero-tagline" id="tagline">
+              절제된 화면으로 감정을 붙잡고, 빛과 움직임, 호흡이 함께 이야기
+              속으로 스며들게 합니다.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="#reel">작품 미리보기</a>
+              <a class="button secondary" href="#contact">연락처</a>
+            </div>
           </div>
 
-          <p class="hero-tagline" id="tagline">
-            빛과 그림자로 이야기를 짜고, 순간을 영원으로 만든다.<br />
-            매번 시작할 때마다, 이야기에 들어가는 과정이다.
-          </p>
+          <div class="hero-meta" aria-label="작품 요약">
+            <div class="meta-item">
+              <span class="meta-label">활동 지역</span>
+              <span class="meta-value">대한민국 서울 / 중국 광둥성</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">언어</span>
+              <span class="meta-value">한국어 · 중국어</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">전문 분야</span>
+              <span class="meta-value">촬영감독 · 포커스 · DIT</span>
+            </div>
+          </div>
         </div>
 
-        <!-- 滚动指示器 -->
-        <div class="hero-scroll-indicator">
+        <div class="scroll-hint">
+          <div class="scroll-text">더 보기</div>
           <div class="scroll-line"></div>
-          <div class="scroll-text">Discover More</div>
         </div>
       </section>
 
-      <!-- 个人简介 -->
-      <section class="content-flow">
-        <div class="panel glass">
-          <div class="title">PROFILE</div>
-          <div
-            class="aspect-[3/4] mb-4 overflow-hidden border-0 rounded-lg shadow-lg"
-          >
+      <section class="content-section" id="profile">
+        <div class="panel glass section-grid profile-panel">
+          <div class="profile-photo">
             <img
               src="assets/IP Photos/1.jpg"
-              class="w-full h-full"
-              onload="this.classList.add('loaded')"
+              alt="박은재 프로필 사진"
+              loading="lazy"
+              decoding="async"
             />
           </div>
-          <p class="text-sm leading-relaxed font-light">
-            <span class="text-xl font-medium">박은재</span><br />
-            2004년 중국 광둥성 둥관 출신 / 중앙대학교(Chung Ang University)
-            재학<br /><br />
-            역할: 촬영감독, 촬영보조, 포커스, 조명 담당, 녹음보조, 편집 및
-            컬러그레이딩<br /><br />
-          </p>
-        </div>
-      </section>
 
-      <!-- 视频监视器 -->
-      <section class="content-flow flex justify-center">
-        <div class="w-full max-w-full">
-          <div class="glass video-wrapper">
-            <div
-              class="flex justify-between px-4 py-2 text-xs text-white bg-black/80"
-            >
-              <div class="flex gap-4">
-                <span>FPS 24</span><span>SHUTTER 180°</span><span>EI 800</span>
-              </div>
-              <span class="text-yellow-400">[LDS]</span>
+          <div class="profile-text">
+            <h2 class="section-heading">박은재</h2>
+            <p class="section-copy">2004 중국 광둥성 둥관</p>
+            <div class="title">중앙대학교 Chung-Ang University</div>
+            <div class="title">
+              포지션: 촬영감독_포커스_조명_녹음 보조_편집_색보정_DIT
             </div>
 
-            <div class="relative aspect-video bg-black video-container">
-              <video
-                src="assets/video/1.mp4"
-                autoplay
-                muted
-                loop
-                playsinline
-                class="absolute inset-0 w-full h-full object-cover"
-                poster="assets/StillFrames/01.jpg"
-              ></video>
-              <div class="absolute inset-6 border border-white/60"></div>
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-5 h-5 border border-white/60"></div>
+            <div class="experience-list" aria-label="경력">
+              <div class="experience-heading">경력</div>
+              <div class="experience-item">
+                평택시 제15회 가을음악회 라이브 스위처
               </div>
-            </div>
-
-            <div class="flex justify-between px-4 py-2 text-xs bg-black/80">
-              <span class="text-white">BAT 13.2V</span>
-              <span class="text-red-500 font-semibold">00:57:29:08</span>
+              <div class="experience-item">
+                Broken Flower 장편영화 현장 편집
+              </div>
+              <div class="experience-item">
+                WNGP 세계 내추럴 보디빌딩 대회 선수 개인 홍보 영상（한국 지역）
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 静帧 -->
-      <section class="content-flow">
-        <div class="panel glass relative">
-          <div class="title">STILL FRAMES</div>
+      <section class="content-section" id="reel">
+        <div class="video-wrapper glass">
+          <div class="monitor-bar">
+            <div class="monitor-stats">
+              <span>FPS 24</span>
+              <span>SHUTTER 180°</span>
+              <span>EI 800</span>
+            </div>
+            <span class="monitor-accent">[LDS]</span>
+          </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+          <div class="video-frame">
+            <video
+              src="assets/video/1.mp4"
+              autoplay
+              muted
+              loop
+              playsinline
+              poster="assets/StillFrames/1.jpg"
+            ></video>
+            <div class="safe-border"></div>
+            <div class="focus-box"></div>
+          </div>
+
+          <div class="monitor-bar">
+            <span>BAT 13.2V</span>
+            <span class="monitor-time">00:57:29:08</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="frames">
+        <div class="panel glass">
+          <div class="section-head">
+            <div>
+              <div class="title">스틸 프레임</div>
+              <h2 class="section-heading">프레임 스틸컷</h2>
+            </div>
+            <a href="stillframes_mobile.html" class="view-button"
+              >전체 보기 →</a
+            >
+          </div>
+
+          <div class="media-grid">
             <img
               src="assets/StillFrames/1.jpg"
-              class="aspect-video shadow-md"
-              onload="this.classList.add('loaded')"
+              alt="스틸컷 작품 1"
+              loading="lazy"
+              decoding="async"
             />
             <img
               src="assets/StillFrames/5.jpg"
-              class="aspect-video shadow-md"
-              onload="this.classList.add('loaded')"
+              alt="스틸컷 작품 2"
+              loading="lazy"
+              decoding="async"
             />
             <img
               src="assets/StillFrames/28.jpg"
-              class="aspect-video shadow-md"
-              onload="this.classList.add('loaded')"
+              alt="스틸컷 작품 3"
+              loading="lazy"
+              decoding="async"
             />
             <img
               src="assets/StillFrames/33.jpg"
-              class="aspect-video shadow-md"
-              onload="this.classList.add('loaded')"
+              alt="스틸컷 작품 4"
+              loading="lazy"
+              decoding="async"
             />
           </div>
-
-          <a
-            href="stillframes_mobile.html"
-            class="btn-view absolute right-6 bottom-6 text-white border border-white/20"
-          >
-            VIEW ALL →
-          </a>
         </div>
       </section>
 
-      <!-- 现场 -->
-      <section class="content-flow">
-        <div class="panel glass relative">
-          <div class="title">ON SET</div>
-          <img
-            src="assets/On-set photos/4.jpg"
-            class="aspect-video w-full mb-8 shadow-md"
-            onload="this.classList.add('loaded')"
-          />
-          <a
-            href="Onsetphotos_mobile.html"
-            class="btn-view absolute right-6 bottom-6 text-white border border-white/20"
-          >
-            VIEW ALL →
-          </a>
+      <section class="content-section">
+        <div class="panel glass">
+          <div class="section-head">
+            <div>
+              <div class="title">촬영 현장</div>
+              <h2 class="section-heading">현장 스틸컷</h2>
+            </div>
+            <a href="Onsetphotos_mobile.html" class="view-button"
+              >전체 보기 →</a
+            >
+          </div>
+
+          <div class="single-media">
+            <img
+              src="assets/On-set photos/4.jpg"
+              alt="촬영 현장 사진"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
       </section>
 
-      <!-- 联系 -->
-      <section class="content-flow pb-16">
-        <div class="panel glass text-center">
-          <div class="title">CONTACT</div>
-          <p class="text-sm leading-relaxed my-6 font-light">
-            Email · piaoenzai@gmail.com<br />
-            Phone（+86） · 138-2526-7531<br />Phone（+82） · 010-5949-5527<br />
-            WeChat · eziortu
-          </p>
-          <p class="text-xs text-zinc-400 mt-2 tracking-wider">
-            AVAILABLE FOR COLLABORATION
-          </p>
+      <section class="content-section" id="contact">
+        <div class="panel glass contact-panel">
+          <div class="title">연락처</div>
+          <h2 class="section">좋은 협업 기대하겠습니다.</h2>
+          <div class="contact-list">
+            <p>이메일 · piaoenzai@gmail.com</p>
+            <p>전화（+82） · 010-5949-5527</p>
+            <p>전화（+86） · 138-2526-7531</p>
+            <p>위챗 · eziortu</p>
+          </div>
         </div>
       </section>
     </main>
 
     <script>
-      /* ===== 时间码 ===== */
-      let h = 0,
-        m = 0,
-        s = 0,
-        f = 0;
+      let h = 0;
+      let m = 0;
+      let s = 0;
+      let f = 0;
       const fps = 24;
       const timecode = document.getElementById("timecode");
       let lastUpdate = performance.now();
 
       function updateTimecode(timestamp) {
-        const delta = timestamp - lastUpdate;
-
-        if (delta >= 1000 / fps) {
+        if (timestamp - lastUpdate >= 1000 / fps) {
           lastUpdate = timestamp;
+          f += 1;
 
-          if (++f >= fps) {
+          if (f >= fps) {
             f = 0;
-            if (++s >= 60) {
-              s = 0;
-              if (++m >= 60) {
-                m = 0;
-                h++;
-              }
-            }
+            s += 1;
+          }
+
+          if (s >= 60) {
+            s = 0;
+            m += 1;
+          }
+
+          if (m >= 60) {
+            m = 0;
+            h += 1;
           }
 
           timecode.textContent = `${String(h).padStart(2, "0")}:${String(
-            m
+            m,
           ).padStart(2, "0")}:${String(s).padStart(2, "0")}:${String(
-            f
+            f,
           ).padStart(2, "0")}`;
         }
 
@@ -732,130 +1182,111 @@
 
       requestAnimationFrame(updateTimecode);
 
-      /* ===== 完全恢复背景画幅的动态交互效果 ===== */
       const formats = document.querySelectorAll(".format");
-      const sections = document.querySelectorAll("section");
-
-      // 获取所有背景装饰元素
       const lensFlare = document.getElementById("lensFlare");
       const grid = document.getElementById("grid");
       const titleWrapper = document.getElementById("titleWrapper");
       const tagline = document.getElementById("tagline");
-      const heroBg = document.querySelector(".hero-bg");
-      const scrollIndicator = document.querySelector(".hero-scroll-indicator");
-
+      const heroBg = document.getElementById("heroBg");
+      const heroMedia = document.getElementById("heroMedia");
+      const scrollHint = document.querySelector(".scroll-hint");
       let ticking = false;
 
       function handleScroll() {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const scrollMax = document.body.scrollHeight - windowHeight;
-            const scrollProgress = Math.min(scrollY / scrollMax, 1);
-            const heroProgress = Math.min(1, scrollY / windowHeight);
+        if (ticking) return;
+        ticking = true;
 
-            // 1. 完全恢复背景色彩过渡
-            const bg = Math.round(scrollProgress * 255);
-            const fg = Math.round(255 - Math.min(scrollProgress * 350, 255));
-            document.documentElement.style.setProperty("--bg", bg);
-            document.documentElement.style.setProperty("--fg", fg);
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const windowHeight = window.innerHeight;
+          const scrollMax = document.body.scrollHeight - windowHeight;
+          const scrollProgress = Math.min(scrollY / Math.max(scrollMax, 1), 1);
+          const heroProgress = Math.min(1, scrollY / windowHeight);
 
-            // 2. 完全恢复背景画幅的动态交互效果
-            formats.forEach((el, i) => {
-              const depth = i * 0.15;
-              const scale = 1 + scrollProgress * (1.5 + depth);
-              const rotate = scrollProgress * (30 + i * 10);
-              const translateX =
-                scrollProgress * (200 + i * 60) * (i % 2 === 0 ? 1 : -1);
-              const translateY =
-                scrollProgress * (150 + i * 50) * (i % 2 === 0 ? -1 : 1);
-              const opacity = 0.7 - scrollProgress * 0.5 + i * 0.08;
+          const bg = Math.round(6 + scrollProgress * 244);
+          const fg = Math.round(246 - Math.min(scrollProgress * 330, 236));
+          document.documentElement.style.setProperty("--bg", bg);
+          document.documentElement.style.setProperty("--fg", fg);
 
-              el.style.transform = `
-                scale(${scale})
-                rotate(${rotate}deg)
-                translate(${translateX}px, ${translateY}px)
-              `;
-              el.style.opacity = opacity;
-              el.style.borderColor = `rgba(${fg}, ${fg}, ${fg}, ${
-                0.9 - scrollProgress * 0.4
-              })`;
-            });
+          formats.forEach((el, i) => {
+            const depth = i * 0.15;
+            const scale = 1 + scrollProgress * (1.5 + depth);
+            const rotate = scrollProgress * (30 + i * 10);
+            const translateX =
+              scrollProgress * (200 + i * 60) * (i % 2 === 0 ? 1 : -1);
+            const translateY =
+              scrollProgress * (150 + i * 50) * (i % 2 === 0 ? -1 : 1);
+            const opacity = 0.62 - scrollProgress * 0.45 + i * 0.06;
 
-            // 3. 仅保留封面元素的透明度变化（移除倾斜/位移）
-            if (titleWrapper) {
-              titleWrapper.style.opacity = 1 - heroProgress * 0.98;
-            }
-
-            if (tagline) {
-              tagline.style.opacity = 1 - heroProgress * 0.95;
-            }
-
-            if (lensFlare) {
-              lensFlare.style.opacity = 0.25 - heroProgress * 0.25;
-            }
-
-            if (grid) {
-              grid.style.opacity = 0.25 - heroProgress * 0.25;
-            }
-
-            if (heroBg) {
-              heroBg.style.opacity = 1 - heroProgress * 1;
-            }
-
-            if (scrollIndicator) {
-              scrollIndicator.style.opacity = 1 - heroProgress * 1.2;
-            }
-
-            ticking = false;
+            el.style.transform = `
+              scale(${scale})
+              rotate(${rotate}deg)
+              translate(${translateX}px, ${translateY}px)
+            `;
+            el.style.opacity = opacity;
+            el.style.borderColor = `rgba(${fg}, ${fg}, ${fg}, ${
+              0.78 - scrollProgress * 0.36
+            })`;
           });
 
-          ticking = true;
-        }
+          if (titleWrapper)
+            titleWrapper.style.opacity = 1 - heroProgress * 0.92;
+          if (tagline) tagline.style.opacity = 1 - heroProgress * 0.88;
+          if (lensFlare) lensFlare.style.opacity = 0.22 - heroProgress * 0.22;
+          if (grid) grid.style.opacity = 0.22 - heroProgress * 0.22;
+          if (heroBg) heroBg.style.opacity = 1 - heroProgress * 0.9;
+
+          if (heroMedia) {
+            heroMedia.style.opacity = 0.52 - heroProgress * 0.3;
+            heroMedia.style.transform = `scale(${1.03 + heroProgress * 0.04})`;
+          }
+
+          if (scrollHint) scrollHint.style.opacity = 1 - heroProgress * 1.2;
+
+          ticking = false;
+        });
       }
 
-      // 被动监听滚动事件
       window.addEventListener("scroll", handleScroll, { passive: true });
       handleScroll();
 
-      /* ===== 图片懒加载 ===== */
       document.addEventListener("DOMContentLoaded", () => {
         const images = document.querySelectorAll("img");
+
+        images.forEach((img) => {
+          if (img.complete) img.classList.add("loaded");
+        });
+
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.src;
-                observer.unobserve(img);
+                entry.target.classList.add("loaded");
+                observer.unobserve(entry.target);
               }
             });
           },
           {
             rootMargin: "300px 0px",
             threshold: 0.05,
-          }
+          },
         );
 
         images.forEach((img) => observer.observe(img));
       });
 
-      /* ===== 禁止双击缩放 ===== */
       document.addEventListener(
         "dblclick",
-        (e) => {
-          e.preventDefault();
+        (event) => {
+          event.preventDefault();
         },
-        { passive: false }
+        { passive: false },
       );
 
-      /* ===== 恢复鼠标移动互动效果（仅背景元素） ===== */
-      document.addEventListener("mousemove", (e) => {
-        const mouseX = e.clientX / window.innerWidth - 0.5;
-        const mouseY = e.clientY / window.innerHeight - 0.5;
+      document.addEventListener("mousemove", (event) => {
+        const mouseX = event.clientX / window.innerWidth - 0.5;
+        const mouseY = event.clientY / window.innerHeight - 0.5;
 
-        // 仅背景装饰元素跟随鼠标移动
         if (lensFlare) {
           lensFlare.style.transform = `translate(${mouseX * 30}px, ${
             mouseY * 30

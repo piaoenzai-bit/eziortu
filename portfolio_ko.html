@@ -1,12 +1,12 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="ko-KR">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>光痕叙事 | 朴恩在</title>
+    <title>빛의 흔적 서사 | 박은재</title>
     <style>
       :root {
         --bg: 6;
@@ -30,14 +30,12 @@
         min-height: 100vh;
         background: rgb(var(--bg), var(--bg), var(--bg));
         color: rgb(var(--fg), var(--fg), var(--fg));
-        font-family:
-          -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue",
-          "PingFang SC", "Microsoft YaHei", sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+          "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
         overflow-x: hidden;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
-        transition:
-          background var(--duration) var(--ease),
+        transition: background var(--duration) var(--ease),
           color var(--duration) var(--ease);
       }
 
@@ -57,8 +55,7 @@
         border: 1px solid rgba(var(--fg), var(--fg), var(--fg), 0.12);
         backdrop-filter: blur(28px) saturate(150%);
         -webkit-backdrop-filter: blur(28px) saturate(150%);
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
           0 24px 80px rgba(0, 0, 0, 0.18);
       }
 
@@ -87,8 +84,7 @@
         border-radius: 8px;
         opacity: 0.62;
         transform-origin: center;
-        transition:
-          border-color var(--duration) var(--spring),
+        transition: border-color var(--duration) var(--spring),
           opacity var(--duration) var(--spring),
           transform var(--duration) var(--spring);
       }
@@ -140,9 +136,7 @@
         align-items: center;
         padding: 0 12px;
         border-radius: 999px;
-        transition:
-          background 0.3s var(--ease),
-          color 0.3s var(--ease);
+        transition: background 0.3s var(--ease), color 0.3s var(--ease);
       }
 
       .nav-links a:hover {
@@ -217,25 +211,25 @@
         position: absolute;
         inset: 0;
         z-index: -4;
-        background-image:
-          linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.72)),
+        background-image: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.12),
+            rgba(0, 0, 0, 0.72)
+          ),
           url("assets/StillFrames/1.jpg");
         background-position: center;
         background-size: cover;
         filter: saturate(0.82) contrast(1.08);
         opacity: 0.52;
         transform: scale(1.03);
-        transition:
-          opacity 0.8s var(--ease),
-          transform 1.2s var(--ease);
+        transition: opacity 0.8s var(--ease), transform 1.2s var(--ease);
       }
 
       .hero-bg {
         position: absolute;
         inset: 0;
         z-index: -3;
-        background:
-          linear-gradient(
+        background: linear-gradient(
             115deg,
             rgba(var(--fg), var(--fg), var(--fg), 0.16) 0%,
             transparent 28%,
@@ -268,8 +262,7 @@
         position: absolute;
         inset: 0;
         z-index: -2;
-        background:
-          radial-gradient(
+        background: radial-gradient(
             ellipse at center,
             transparent 0%,
             rgba(0, 0, 0, 0.22) 56%,
@@ -303,9 +296,7 @@
         opacity: 0.22;
         pointer-events: none;
         animation: lensFlare 10s infinite ease-in-out alternate;
-        transition:
-          opacity 0.8s var(--spring),
-          transform 0.8s var(--spring);
+        transition: opacity 0.8s var(--spring), transform 0.8s var(--spring);
       }
 
       @keyframes lensFlare {
@@ -330,9 +321,7 @@
         opacity: 0.22;
         pointer-events: none;
         animation: gridRotate 18s infinite linear;
-        transition:
-          opacity 0.8s var(--spring),
-          transform 0.8s var(--spring);
+        transition: opacity 0.8s var(--spring), transform 0.8s var(--spring);
       }
 
       .decor-grid::before,
@@ -482,11 +471,8 @@
         padding: 0 18px;
         font-size: 14px;
         font-weight: 550;
-        transition:
-          transform 0.35s var(--ease),
-          background 0.35s var(--ease),
-          color 0.35s var(--ease),
-          border-color 0.35s var(--ease);
+        transition: transform 0.35s var(--ease), background 0.35s var(--ease),
+          color 0.35s var(--ease), border-color 0.35s var(--ease);
         -webkit-tap-highlight-color: transparent;
       }
 
@@ -588,15 +574,12 @@
         margin: 0 auto;
         padding: clamp(1.25rem, 4vw, 2.5rem);
         border-radius: 24px;
-        transition:
-          border-color var(--duration) var(--ease),
-          box-shadow 0.6s var(--spring),
-          background var(--duration) var(--ease);
+        transition: border-color var(--duration) var(--ease),
+          box-shadow 0.6s var(--spring), background var(--duration) var(--ease);
       }
 
       .panel:hover {
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
           0 30px 90px rgba(0, 0, 0, 0.2);
       }
 
@@ -781,10 +764,8 @@
         font-size: 12px;
         font-weight: 550;
         white-space: nowrap;
-        transition:
-          background 0.4s var(--spring),
-          box-shadow 0.4s var(--spring),
-          transform 0.4s var(--spring);
+        transition: background 0.4s var(--spring),
+          box-shadow 0.4s var(--spring), transform 0.4s var(--spring);
       }
 
       .view-button:hover {
@@ -810,9 +791,7 @@
         border-radius: 18px;
         opacity: 0;
         transform: translateY(22px);
-        transition:
-          opacity 0.8s var(--spring),
-          transform 0.8s var(--spring);
+        transition: opacity 0.8s var(--spring), transform 0.8s var(--spring);
       }
 
       img.loaded {
@@ -932,13 +911,13 @@
       </div>
     </div>
 
-    <nav class="top-nav glass" aria-label="主导航">
+    <nav class="top-nav glass" aria-label="메인 내비게이션">
       <a class="brand" href="#top">Eziortu</a>
       <div class="nav-links">
-        <a href="#profile">Profile</a>
-        <a href="#reel">Reel</a>
-        <a href="#frames">Frames</a>
-        <a href="#contact">Contact</a>
+        <a href="#profile">소개</a>
+        <a href="#reel">릴</a>
+        <a href="#frames">스틸</a>
+        <a href="#contact">연락</a>
       </div>
     </nav>
 
@@ -961,38 +940,38 @@
 
         <div class="hero-inner">
           <div class="hero-copy">
-            <div class="hero-kicker">Cinematography Portfolio · 2026</div>
+            <div class="hero-kicker">시네마토그래피 포트폴리오 · 2026</div>
             <div class="hero-title-wrap" id="titleWrapper">
-              <h1 class="hero-title">光痕叙事</h1>
-              <p class="hero-subtitle">摄影指导 · 掌机 · 跟焦 · DIT</p>
+              <h1 class="hero-title">빛의 흔적 서사</h1>
+              <p class="hero-subtitle">촬영감독 · 카메라 오퍼레이터 · 포커스 풀러 · DIT</p>
             </div>
             <p class="hero-tagline" id="tagline">
-              用克制的画面留住情绪，让光线、运动和呼吸一起进入故事。
+              절제된 화면으로 감정을 붙잡고, 빛과 움직임, 호흡이 함께 이야기 속으로 스며들게 합니다.
             </p>
             <div class="hero-actions">
-              <a class="button primary" href="#reel">作品预览</a>
-              <a class="button secondary" href="#contact">联系合作</a>
+              <a class="button primary" href="#reel">작품 미리보기</a>
+              <a class="button secondary" href="#contact">협업 문의</a>
             </div>
           </div>
 
-          <div class="hero-meta" aria-label="作品摘要">
+          <div class="hero-meta" aria-label="작품 요약">
             <div class="meta-item">
-              <span class="meta-label">BASE</span>
-              <span class="meta-value">广东东莞 / 韩国首尔</span>
+              <span class="meta-label">활동 지역</span>
+              <span class="meta-value">중국 광둥성 둥관 / 대한민국 서울</span>
             </div>
             <div class="meta-item">
-              <span class="meta-label">LANGUAGE</span>
-              <span class="meta-value">中文 · 韩语</span>
+              <span class="meta-label">언어</span>
+              <span class="meta-value">중국어 · 한국어</span>
             </div>
             <div class="meta-item">
-              <span class="meta-label">FOCUS</span>
-              <span class="meta-value">摄影指导 · 焦点 · DIT</span>
+              <span class="meta-label">전문 분야</span>
+              <span class="meta-value">촬영감독 · 포커스 · DIT</span>
             </div>
           </div>
         </div>
 
         <div class="scroll-hint">
-          <div class="scroll-text">Discover More</div>
+          <div class="scroll-text">더 보기</div>
           <div class="scroll-line"></div>
         </div>
       </section>
@@ -1002,27 +981,28 @@
           <div class="profile-photo">
             <img
               src="assets/IP Photos/1.jpg"
-              alt="朴恩在肖像"
+              alt="박은재 프로필 사진"
               loading="lazy"
               decoding="async"
             />
           </div>
 
           <div class="profile-text">
-            <div class="title">PROFILE</div>
-            <h2 class="section-heading">朴恩在</h2>
-            <p class="section-copy">
-              2004 广东东莞<div class="title">韩国中央大学 Chung-Ang University</div>
-              <div class="title">职位： 摄影指导、跟焦、灯光、录助、剪辑调色、DIT、掌机</div>
-            </p>
+            <div class="title">소개</div>
+            <h2 class="section-heading">박은재</h2>
+            <p class="section-copy">2004 중국 광둥성 둥관</p>
+            <div class="title">중앙대학교 Chung-Ang University</div>
+            <div class="title">
+              포지션: 촬영감독, 포커스 풀러, 조명, 녹음 보조, 편집/색보정, DIT, 카메라 오퍼레이터
+            </div>
 
-            <div class="experience-list" aria-label="经历">
-              <div class="experience-heading">经历</div>
-              <div class="experience-item">韩国平泽市<第15届 秋季音乐会>现场导播</div>
-              <div class="experience-item">Broken Flower长篇电影现场剪辑</div>
-              <div class="experience-item">DASHU 男士美妆产品广告</div>
+            <div class="experience-list" aria-label="경력">
+              <div class="experience-heading">경력</div>
+              <div class="experience-item">대한민국 평택시 제15회 가을음악회 현장 중계 디렉터</div>
+              <div class="experience-item">Broken Flower 장편영화 현장 편집</div>
+              <div class="experience-item">DASHU 남성 뷰티 제품 광고</div>
               <div class="experience-item">
-                WNGP 世界自然健美比赛选手个人宣传片（韩国赛区）
+                WNGP 세계 내추럴 보디빌딩 대회 선수 개인 홍보 영상（한국 지역）
               </div>
             </div>
           </div>
@@ -1064,34 +1044,34 @@
         <div class="panel glass">
           <div class="section-head">
             <div>
-              <div class="title">STILL FRAMES</div>
-              <h2 class="section-heading">精选静帧</h2>
+              <div class="title">스틸 프레임</div>
+              <h2 class="section-heading">선정 스틸컷</h2>
             </div>
-            <a href="stillframes_mobile.html" class="view-button">VIEW ALL →</a>
+            <a href="stillframes_mobile.html" class="view-button">전체 보기 →</a>
           </div>
 
           <div class="media-grid">
             <img
               src="assets/StillFrames/1.jpg"
-              alt="静帧作品 1"
+              alt="스틸컷 작품 1"
               loading="lazy"
               decoding="async"
             />
             <img
               src="assets/StillFrames/5.jpg"
-              alt="静帧作品 2"
+              alt="스틸컷 작품 2"
               loading="lazy"
               decoding="async"
             />
             <img
               src="assets/StillFrames/28.jpg"
-              alt="静帧作品 3"
+              alt="스틸컷 작품 3"
               loading="lazy"
               decoding="async"
             />
             <img
               src="assets/StillFrames/33.jpg"
-              alt="静帧作品 4"
+              alt="스틸컷 작품 4"
               loading="lazy"
               decoding="async"
             />
@@ -1103,16 +1083,16 @@
         <div class="panel glass">
           <div class="section-head">
             <div>
-              <div class="title">ON SET</div>
-              <h2 class="section-heading">现场瞬间</h2>
+              <div class="title">촬영 현장</div>
+              <h2 class="section-heading">현장의 순간</h2>
             </div>
-            <a href="Onsetphotos_mobile.html" class="view-button">VIEW ALL →</a>
+            <a href="Onsetphotos_mobile.html" class="view-button">전체 보기 →</a>
           </div>
 
           <div class="single-media">
             <img
               src="assets/On-set photos/4.jpg"
-              alt="片场工作照"
+              alt="촬영 현장 사진"
               loading="lazy"
               decoding="async"
             />
@@ -1122,13 +1102,13 @@
 
       <section class="content-section" id="contact">
         <div class="panel glass contact-panel">
-          <div class="title">CONTACT</div>
-          <h2 class="section-heading">Available for collaboration.</h2>
+          <div class="title">연락처</div>
+          <h2 class="section-heading">협업 가능합니다.</h2>
           <div class="contact-list">
-            <p>Email · piaoenzai@gmail.com</p>
-            <p>Phone（+86） · 138-2526-7531</p>
-            <p>Phone（+82） · 010-5949-5527</p>
-            <p>WeChat · eziortu</p>
+            <p>이메일 · piaoenzai@gmail.com</p>
+            <p>전화（+86） · 138-2526-7531</p>
+            <p>전화（+82） · 010-5949-5527</p>
+            <p>위챗 · eziortu</p>
           </div>
         </div>
       </section>
@@ -1164,9 +1144,9 @@
           }
 
           timecode.textContent = `${String(h).padStart(2, "0")}:${String(
-            m,
+            m
           ).padStart(2, "0")}:${String(s).padStart(2, "0")}:${String(
-            f,
+            f
           ).padStart(2, "0")}`;
         }
 
@@ -1222,8 +1202,7 @@
             })`;
           });
 
-          if (titleWrapper)
-            titleWrapper.style.opacity = 1 - heroProgress * 0.92;
+          if (titleWrapper) titleWrapper.style.opacity = 1 - heroProgress * 0.92;
           if (tagline) tagline.style.opacity = 1 - heroProgress * 0.88;
           if (lensFlare) lensFlare.style.opacity = 0.22 - heroProgress * 0.22;
           if (grid) grid.style.opacity = 0.22 - heroProgress * 0.22;
@@ -1262,7 +1241,7 @@
           {
             rootMargin: "300px 0px",
             threshold: 0.05,
-          },
+          }
         );
 
         images.forEach((img) => observer.observe(img));
@@ -1273,7 +1252,7 @@
         (event) => {
           event.preventDefault();
         },
-        { passive: false },
+        { passive: false }
       );
 
       document.addEventListener("mousemove", (event) => {
