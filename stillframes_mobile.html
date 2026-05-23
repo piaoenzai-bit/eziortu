@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -43,7 +43,8 @@
         --spacing-3xl: 64px;
 
         --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+        --shadow-md:
+          0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
         --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
 
         --blur-xs: 4px;
@@ -75,8 +76,9 @@
       body {
         background-color: var(--system-bg);
         color: var(--system-fg);
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
-          "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons",
+          "Helvetica Neue", "Helvetica", "Arial", sans-serif;
         font-weight: 400;
         line-height: 1.47059;
         letter-spacing: -0.022em;
@@ -429,9 +431,9 @@
     <nav class="apple-navbar">
       <div class="back-button" id="navBackButton">
         <div class="back-icon"></div>
-        <span>返回</span>
+        <span>Return </span>
       </div>
-      <div class="navbar-title">静帧叙事</div>
+      <div class="navbar-title">Narrative of Light Traces</div>
     </nav>
 
     <!-- 苹果风格状态栏信息 -->
@@ -452,8 +454,8 @@
     <main>
       <!-- 标题区域 -->
       <header class="page-header" id="header">
-        <h1 class="page-title">静帧</h1>
-        <p class="page-subtitle">Still Frames · 朴恩在</p>
+        <h1 class="page-title">Still Frames</h1>
+        <p class="page-subtitle">Still Frames · eziortu</p>
       </header>
 
       <!-- 图片画廊 - 锚点目标 -->
@@ -695,7 +697,7 @@
         const safeTop = env("safe-area-inset-top");
         document.documentElement.style.setProperty(
           "--safe-area-top",
-          `${safeTop}px`
+          `${safeTop}px`,
         );
       }
 
@@ -710,7 +712,7 @@
       function updateFrameCounter() {
         frameCounter.textContent = `${String(currentFrame).padStart(
           2,
-          "0"
+          "0",
         )}/${totalFrames}`;
       }
 
@@ -720,13 +722,13 @@
         const documentHeight = document.body.scrollHeight;
         const scrollProgress = Math.min(
           1,
-          scrollY / (documentHeight - windowHeight)
+          scrollY / (documentHeight - windowHeight),
         );
 
         // 更新帧计数器
         currentFrame = Math.min(
           totalFrames,
-          Math.floor(scrollProgress * totalFrames) + 1
+          Math.floor(scrollProgress * totalFrames) + 1,
         );
         updateFrameCounter();
 
@@ -749,7 +751,7 @@
           const rect = item.getBoundingClientRect();
           const itemProgress = Math.max(
             0,
-            Math.min(1, 1 - (rect.top - windowHeight) / (windowHeight * 1.5))
+            Math.min(1, 1 - (rect.top - windowHeight) / (windowHeight * 1.5)),
           );
           const translateY = (1 - itemProgress) * 20;
 
@@ -774,7 +776,7 @@
           {
             rootMargin: "200px 0px",
             threshold: 0.01,
-          }
+          },
         );
 
         images.forEach((img) => observer.observe(img));
@@ -797,7 +799,7 @@
           (e) => {
             touchStartY = e.touches[0].clientY;
           },
-          { passive: true }
+          { passive: true },
         );
 
         document.addEventListener(
@@ -811,7 +813,7 @@
               e.preventDefault();
             }
           },
-          { passive: false }
+          { passive: false },
         );
       }
 
@@ -839,7 +841,7 @@
               ticking = true;
             }
           },
-          { passive: true }
+          { passive: true },
         );
 
         // 窗口大小变化监听
@@ -851,8 +853,8 @@
         return (
           parseFloat(
             getComputedStyle(document.documentElement).getPropertyValue(
-              variable
-            )
+              variable,
+            ),
           ) || 0
         );
       }
